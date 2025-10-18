@@ -1,0 +1,119 @@
+{
+  "name": "micro-learner-ai",
+  "version": "1.0.0",
+  "description": "AI-powered meeting assistant",
+  "main": "main.js",
+  "author": "MicroLearnerAI.com",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "build:win": "electron-builder --win",
+    "build:mac": "electron-builder --mac",
+    "build:linux": "electron-builder --linux",
+    "dist": "npm run build",
+    "postinstall": "node download-models.js",
+    "prebuild": "npm run setup-python-deps",
+    "setup-python-deps": "pip install vosk && npm run download-models",
+    "download-models": "node download-models.js",
+    "publish:updates": "electron-builder --publish=always"
+  },
+  "build": {
+    "appId": "com.microlearner.ai-assistant",
+    "productName": "Micro Learner AI",
+    "copyright": "Copyright © 2025 Micro Learner AI",
+    "directories": {
+      "output": "release-builds"
+    },
+    "files": [
+      "main.js",
+      "assets/**/*",
+      "ai/**/*",
+      "*.html",
+      "*.css",
+      "*.js",
+      "*.py",
+      "preload.js",
+      "languagetool-manager.js",
+      "download-models.js",
+      "models/**/*",
+      "renderer.js",
+      "index.html",
+      "styles.css",
+      "assets/icon.png",
+      "node_modules/compromise/**/*",
+      "node_modules/express/**/*",
+      "node_modules/python-shell/**/*",
+      "node_modules/electron-updater/**/*",
+      "!**/node_modules/**/*.{md,markdown,ts,test}",
+      "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples,docs}",
+      "!**/node_modules/.bin",
+      "!release-builds/**",
+      "!.git/**",
+      "!**/*.map",
+      "!**/*.log"
+    ],
+    "extraResources": [
+      {
+        "from": "models/vosk-model-small-en-us-0.15",
+        "to": "models/vosk-model-small-en-us-0.15",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": "assets",
+        "to": "assets"
+      }
+    ],
+    "asar": false,
+    "compression": "store",
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": false
+    },
+    "win": {
+      "icon": "assets/icon.png",
+      "target": "nsis",
+      "publish": {
+        "provider": "generic",
+        "url": "https://microlearnerai.com/backend/download/win/"
+      }
+    },
+    "mac": {
+      "icon": "assets/icon.png",
+      "target": "dmg",
+      "publish": {
+        "provider": "generic",
+        "url": "https://microlearnerai.com/backend/download/mac/"
+      }
+    },
+    "linux": {
+      "icon": "assets/icon.png",
+      "target": "AppImage",
+      "publish": {
+        "provider": "generic",
+        "url": "https://microlearnerai.com/backend/download/linux/"
+      }
+    }
+  },
+  "keywords": [
+    "electron",
+    "speech-recognition",
+    "ai",
+    "meeting",
+    "assistant"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "adm-zip": "^0.5.16",
+    "electron": "^27.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "dependencies": {
+    "compromise": "^14.14.4",
+    "electron-updater": "^6.6.2",
+    "express": "^4.18.2",
+    "python-shell": "^5.0.0"
+  }
+}

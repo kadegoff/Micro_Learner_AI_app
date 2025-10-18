@@ -1,0 +1,35 @@
+2025-10-09 14:33:45,064 - INFO - Vosk module imported successfully on Windows
+2025-10-09 14:33:45,064 - INFO - Using OLD Vosk API (KaldiRecognizer)
+2025-10-09 14:33:45,076 - DEBUG - Vosk logging level set to quiet
+2025-10-09 14:33:45,077 - INFO - Vosk imported and configured successfully
+2025-10-09 14:33:45,077 - INFO - Loading Vosk model from: C:\xampp\htdocs\ai-meeting-assistant\models\vosk-model-small-en-us-0.15
+2025-10-09 14:33:45,078 - INFO - Loading Vosk model...
+2025-10-09 14:33:45,666 - INFO - Model loaded successfully
+2025-10-09 14:33:45,786 - INFO - Created KaldiRecognizer (old API) with 16kHz sample rate
+2025-10-09 14:33:45,787 - DEBUG - SetWords(True) successful
+2025-10-09 14:33:45,787 - DEBUG - SetPartialWords(True) successful
+2025-10-09 14:33:45,787 - INFO - Vosk recognizer initialized and configured successfully
+2025-10-09 14:33:45,787 - INFO - Audio processor thread started for Windows
+2025-10-09 14:33:45,787 - INFO - Audio processor thread started (Windows mode)
+2025-10-09 14:33:45,787 - INFO - Starting main audio reading loop on Windows
+2025-10-09 14:33:45,788 - INFO - Expecting Int16 PCM audio data from JavaScript
+2025-10-09 14:33:45,789 - INFO - \u2705 Queued chunk #1: 8192 bytes, 4096 samples, queue size: 1
+2025-10-09 14:33:45,789 - INFO - \u2705 Queued chunk #2: 8192 bytes, 4096 samples, queue size: 2
+2025-10-09 14:33:45,789 - INFO - \u2705 Queued chunk #3: 8192 bytes, 4096 samples, queue size: 3
+2025-10-09 14:33:45,789 - DEBUG - Processing chunk #1: Valid Int16 PCM: 8192 bytes, 4096 samples
+2025-10-09 14:33:45,789 - DEBUG - Audio analysis: max=0/32767, avg=0.0
+2025-10-09 14:33:45,790 - INFO - \u2705 Queued chunk #4: 8192 bytes, 4096 samples, queue size: 3
+2025-10-09 14:33:45,790 - DEBUG - \u26a0\ufe0f SILENT AUDIO detected!
+2025-10-09 14:33:45,790 - INFO - \u2705 Queued chunk #5: 8192 bytes, 4096 samples, queue size: 4
+2025-10-09 14:33:45,796 - DEBUG - Processing chunk #2: Valid Int16 PCM: 8192 bytes, 4096 samples
+2025-10-09 14:33:45,797 - DEBUG - Audio analysis: max=1/32767, avg=0.4
+2025-10-09 14:33:45,797 - DEBUG - \u26a0\ufe0f Very low audio level
+2025-10-09 14:33:46,085 - DEBUG - Processing chunk #3: Valid Int16 PCM: 8192 bytes, 4096 samples
+2025-10-09 14:33:46,085 - DEBUG - Audio analysis: max=0/32767, avg=0.0
+2025-10-09 14:33:46,085 - DEBUG - \u26a0\ufe0f SILENT AUDIO detected!
+2025-10-09 14:33:46,093 - DEBUG - Processing chunk #4: Valid Int16 PCM: 8192 bytes, 4096 samples
+2025-10-09 14:33:46,093 - DEBUG - Audio analysis: max=1/32767, avg=0.2
+2025-10-09 14:33:46,093 - DEBUG - \u26a0\ufe0f Very low audio level
+2025-10-09 14:33:46,100 - DEBUG - Processing chunk #5: Valid Int16 PCM: 8192 bytes, 4096 samples
+2025-10-09 14:33:46,100 - DEBUG - Audio analysis: max=0/32767, avg=0.0
+2025-10-09 14:33:46,100 - DEBUG - \u26a0\ufe0f SILENT AUDIO detected!

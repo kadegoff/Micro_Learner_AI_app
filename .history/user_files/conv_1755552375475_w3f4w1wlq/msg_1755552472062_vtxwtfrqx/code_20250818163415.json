@@ -1,0 +1,27 @@
+"{
+  "id": "68a39abfdb66a_1755552447",
+  "filename": "basic-examples.js",
+  "language": "javascript",
+  "sections": {
+    "variables": {
+      "type": "declaration",
+      "name": "variable_examples",
+      "start_line": 1,
+      "end_line": 5,
+      "content": "// Variable declarations\nconst name = 'John';\nlet age = 30;\nvar isStudent = false;"
+    },
+    "function_example": {
+      "type": "function",
+      "name": "greet",
+      "start_line": 7,
+      "end_line": 11,
+      "content": "// Function example\nfunction greet(person) {\n  return `Hello, ${person}!`;\n}\nconsole.log(greet(name));"
+    },
+    "array_operations": {
+      "type": "operation",
+      "name": "array_manipulation",
+      "start_line": 13,
+      "end_line": 19,
+      "content": "// Array operations\nconst numbers = [1, 2, 3, 4, 5];\nconst doubled = numbers.map(num => num * 2);\nconst evens = numbers.filter(num => num % 2 === 0);\n\nconsole.log('Doubled:', doubled);\nconsole.log('Evens:', evens);"
+    },
+    "obje"

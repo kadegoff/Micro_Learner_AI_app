@@ -1,0 +1,100 @@
+// config.js - Configuration and Constants
+"use strict";
+
+const $DebugTestMode = true;
+
+// Constants and Configuration
+const CONFIG = {
+  BACKEND_URL: "http://localhost/memoria/backend",
+  MAX_MESSAGES_DISPLAY: 600,
+  LONG_MESSAGE_THRESHOLD: 250,
+  LARGE_CONTENT_THRESHOLD: 1500,
+  AUTO_RESIZE_MAX_HEIGHT: 100,
+  MAX_CONTEXT_MESSAGES: 10,
+  STORAGE_KEYS: {
+    TOKEN: "memoria_token",
+    USER: "memoria_user",
+    CHAT_HISTORY: "chatHistory",
+    TOPICS: "topics",
+    SELECTED_MODEL: "selectedAIModel",
+    CONTEXT_PLUS: "contextPlusEnabled",
+  },
+};
+
+// AI Models configuration
+const AI_MODELS = {
+  basic: [
+    { id: "chatgpt", name: "ChatGPT(Recommended)", category: "basic" },
+    { id: "chatgpt-5-nano", name: "ChatGPT 5 nano", category: "basic" },
+    {
+      id: "claude-3.5",
+      name: "Claude 3.5(Creative Writing)",
+      category: "basic",
+    },
+    { id: "deepseek-chat", name: "DeepSeek Chat", category: "basic" },
+  ],
+  advanced: [
+    { id: "claude-4.0", name: "Claude 4.0", category: "advanced" },
+    { id: "chatgpt-5", name: "ChatGPT 5", category: "advanced" },
+    { id: "grok-4", name: "Grok 4", category: "advanced" },
+    {
+      id: "deepseek-r1",
+      name: "DeepSeek R1(Math/Coding)",
+      category: "advanced",
+      default: true,
+    },
+  ],
+  fast: [
+    { id: "gemini-flash-2.5", name: "Gemini Flash 2.5", category: "fast" },
+  ],
+};
+// config.js - Configuration and Constants
+"use strict";
+
+const $DebugTestMode = true;
+
+// Constants and Configuration
+const CONFIG = {
+  BACKEND_URL: "http://localhost/memoria/backend",
+  MAX_MESSAGES_DISPLAY: 600,
+  LONG_MESSAGE_THRESHOLD: 250,
+  LARGE_CONTENT_THRESHOLD: 1500,
+  AUTO_RESIZE_MAX_HEIGHT: 100,
+  MAX_CONTEXT_MESSAGES: 10,
+  STORAGE_KEYS: {
+    TOKEN: "memoria_token",
+    USER: "memoria_user",
+    CHAT_HISTORY: "chatHistory",
+    TOPICS: "topics",
+    SELECTED_MODEL: "selectedAIModel",
+    CONTEXT_PLUS: "contextPlusEnabled",
+  },
+};
+
+// AI Models configuration
+const AI_MODELS = {
+  basic: [
+    { id: "chatgpt", name: "ChatGPT(Recommended)", category: "basic" },
+    { id: "chatgpt-5-nano", name: "ChatGPT 5 nano", category: "basic" },
+    {
+      id: "claude-3.5",
+      name: "Claude 3.5(Creative Writing)",
+      category: "basic",
+    },
+    { id: "deepseek-chat", name: "DeepSeek Chat", category: "basic" },
+  ],
+  advanced: [
+    { id: "claude-4.0", name: "Claude 4.0", category: "advanced" },
+    { id: "chatgpt-5", name: "ChatGPT 5", category: "advanced" },
+    { id: "grok-4", name: "Grok 4", category: "advanced" },
+    {
+      id: "deepseek-r1",
+      name: "DeepSeek R1(Math/Coding)",
+      category: "advanced",
+      default: true,
+    },
+  ],
+  fast: [
+    { id: "gemini-flash-2.5", name: "Gemini Flash 2.5", category: "fast" },
+  ],
+};

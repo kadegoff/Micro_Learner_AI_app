@@ -1,0 +1,53 @@
+  private function interpretWithCoreMemories($userId, $query)
+    {
+        global $debuglog;
+
+        // Get user's core memories
+        $coreMemoryIds = $this->redis->zRange($this->coreMemoryPrefix . "user:{$userId}", 0, -1);
+
+        foreach ($coreMemoryIds as $coreMemoryId) {
+            $coreMemoryKey = $this->coreMemoryPrefix . $coreMemoryId;
+            $pattern = $this->redis->hGet($coreMemoryKey, 'pattern');
+            $interpretation = $this->redis->hGet($coreMemoryKey, 'interpretation');
+
+            if (preg_match('/' . preg_quote($pattern, '/') . '/', $query)) {
+                // Increment usage count
+                $this->redis->hIncrBy($coreMemoryKey, 'usage_count', 1);
+
+                $debuglog[] = "Core memory pattern matched: $interpretation";
+                return [
+                    'original' => $query,
+                    'interpreted' => $interpretation,
+                    'pattern_matched' => $pattern
+                ];
+            }
+        }
+
+        return ['original' => $query, 'interpreted' => $query, 'pattern_matched' => null];
+    }  private function interpretWithCoreMemories($userId, $query)
+    {
+        global $debuglog;
+
+        // Get user's core memories
+        $coreMemoryIds = $this->redis->zRange($this->coreMemoryPrefix . "user:{$userId}", 0, -1);
+
+        foreach ($coreMemoryIds as $coreMemoryId) {
+            $coreMemoryKey = $this->coreMemoryPrefix . $coreMemoryId;
+            $pattern = $this->redis->hGet($coreMemoryKey, 'pattern');
+            $interpretation = $this->redis->hGet($coreMemoryKey, 'interpretation');
+
+            if (preg_match('/' . preg_quote($pattern, '/') . '/', $query)) {
+                // Increment usage count
+                $this->redis->hIncrBy($coreMemoryKey, 'usage_count', 1);
+
+                $debuglog[] = "Core memory pattern matched: $interpretation";
+                return [
+                    'original' => $query,
+                    'interpreted' => $interpretation,
+                    'pattern_matched' => $pattern
+                ];
+            }
+        }
+
+        return ['original' => $query, 'interpreted' => $query, 'pattern_matched' => null];
+    }

@@ -1,0 +1,109 @@
+/*STYLE FOR MAC BUTTONS*/
+/* Apple-style window controls for Mac users */
+.platform-mac .window-controls {
+  order: -1 !important;
+  margin-left: 12px !important;
+  margin-right: auto !important;
+}
+
+.platform-mac .window-control-btn {
+  width: 12px !important;
+  height: 12px !important;
+  border-radius: 50% !important;
+  border: none !important;
+  cursor: pointer !important;
+  margin-right: 8px !important;
+  position: relative !important;
+  transition: all 0.15s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 9px !important;
+  color: rgba(0, 0, 0, 0.8) !important;
+  box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Close button - Red */
+.platform-mac .close-btn {
+  background: linear-gradient(
+    135deg,
+    #ff6058 0%,
+    #ff5f57 50%,
+    #ff4c4c 100%
+  ) !important;
+}
+
+.platform-mac .close-btn:hover {
+  background: linear-gradient(
+    135deg,
+    #ff7a73 0%,
+    #ff6058 50%,
+    #ff5f57 100%
+  ) !important;
+  transform: scale(1.05) !important;
+}
+
+.platform-mac .close-btn::before {
+  content: "✕";
+  transition: opacity 0.15s ease;
+}
+
+/* Minimize button - Yellow */
+.platform-mac .minimize-btn {
+  background: linear-gradient(
+    135deg,
+    #ffbd2e 0%,
+    #ffb800 50%,
+    #ffab00 100%
+  ) !important;
+}
+
+.platform-mac .minimize-btn:hover {
+  background: linear-gradient(
+    135deg,
+    #ffd60a 0%,
+    #ffcd00 50%,
+    #ffbd2e 100%
+  ) !important;
+  transform: scale(1.05) !important;
+}
+
+.platform-mac .minimize-btn::before {
+  content: "−" !important;
+  transition: opacity 0.15s ease;
+}
+
+/* Maximize button - Green */
+.platform-mac .maximize-btn {
+  background: linear-gradient(
+    135deg,
+    #28ca42 0%,
+    #20c637 50%,
+    #1ac033 100%
+  ) !important;
+}
+
+.platform-mac .maximize-btn:hover {
+  background: linear-gradient(
+    135deg,
+    #30d158 0%,
+    #28ca42 50%,
+    #20c637 100%
+  ) !important;
+  transform: scale(1.05) !important;
+}
+
+.platform-mac .maximize-btn::before {
+  content: "⤢" !important;
+  transition: opacity 0.15s ease;
+}
+
+/* Remove spacing for the last button */
+.platform-mac .window-control-btn:last-child {
+  margin-right: 0;
+}
+
+/* Hide resize handle on Mac */
+.platform-mac .resize-handle {
+  display: none;
+}

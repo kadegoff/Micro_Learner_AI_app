@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign In - Micro LearnerAI</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #ffffff;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      .login-container {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        padding: 40px;
+        width: 100%;
+        max-width: 400px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      }
+
+      .logo {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .logo h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #ffffff, #e0e7ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 8px;
+      }
+
+      .logo p {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.875rem;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      .form-input {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        color: #ffffff;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        outline: none;
+      }
+
+      .form-input:focus {
+        border-color: rgba(255, 255, 255, 0.5);
+        background: rgba(255, 255, 255, 0.15);
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+      }
+
+      .form-input::placeholder {
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      .btn {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-bottom: 16px;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(79, 70, 229, 0.4);
+      }
+
+      .btn-primary:disabled {
+        opacity: 0.7;
+        transform: none;
+        box-shadow: none;
+        cursor: not-allowed;
+      }
+
+      .btn-secondary {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.5);
+      }
+
+      .divider {
+        text-align: center;
+        margin: 20px 0;
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.875rem;
+      }
+
+      .alert {
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        font-size: 0.875rem;
+      }
+
+      .alert-error {
+        background: rgba(239, 68, 68, 0.2);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        color: #fca5a5;
+      }
+
+      .alert-success {
+        background: rgba(34, 197, 94, 0.2);
+        border: 1px solid rgba(34, 197, 94, 0.3);
+        color: #86efac;
+      }
+
+      .loading {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: #ffffff;
+        animation: spin 1s ease-in-out infinite;
+        margin-right: 8px;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .toggle-form {
+        text-align: center;
+        margin-top: 20px;
+      }
+
+      .toggle-form a {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        font-size: 0.875rem;
+        transition: color 0.3s ease;
+      }
+
+      .toggle-form a:hover {
+        color: #ffffff;
+      }
+
+      .form-container {
+        transition: all 0.3s ease;
+      }
+
+      .form-container.hidden {
+        display: none;
+      }
+
+      .back-button {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.875rem;
+        transition: all 0.3s ease;
+      }
+
+      .back-button:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+    </style>
+  </head>
+  <body>
+    <button class="back-button" onclick="window.close()">← Back to App</button>
+
+    <div class="login-container">
+      <div class="logo">
+        <h1>Micro Learner AI</h1>
+        <p>Sign in to your AI assistant</p>
+      </div>
+
+      <div id="alertContainer"></div>
+
+      <!-- Login Form -->
+      <div id="loginForm" class="form-container">
+        <form id="loginFormElement">
+          <div class="form-group">
+            <label class="form-label" for="loginEmail">Email</label>
+            <input
+              type="email"
+              id="loginEmail"
+              class="form-input"
+              placeholder="Enter your email"
+              required
+              autocomplete="email"
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="loginPassword">Password</label>
+            <input
+              type="password"
+              id="loginPassword"
+              class="form-input"
+              placeholder="Enter your password"
+              required
+              autocomplete="current-password"
+            />
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="loginButton">
+            Sign In
+          </button>
+        </form>
+
+        <div class="divider">or</div>
+
+        <button class="btn btn-secondary" onclick="createNewAccount()">
+          Create New Account
+        </button>
+
+        <div class="toggle-form">
+          <a href="#" onclick="openWebsite()">Open Full Website →</a>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      console.log("Login window loaded");
+
+      // Get the backend URL - same directory as the main app
+      const BACKEND_URL = "http://localhost/Memoria/backend/auth";
+
+      // Show alert function
+      function showAlert(message, type = "error") {
+        const alertContainer = document.getElementById("alertContainer");
+        alertContainer.innerHTML = `
+                <div class="alert alert-${type}">
+                    ${message}
+                </div>
+            `;
+
+        // Auto-hide after 5 seconds
+        setTimeout(() => {
+          alertContainer.innerHTML = "";
+        }, 5000);
+      }
+
+      // Open full website - FIXED: Use electronAPI
+      function openWebsite() {
+        if (window.electronAPI && window.electronAPI.openWebsite) {
+          window.electronAPI.openWebsite();
+        } else {
+          // Fallback for testing
+          console.log(
+            "Would open: http://localhost/Memoria/public/html/Micro_Learner.html"
+          );
+        }
+      }
+
+      // Create new account - FIXED: Use electronAPI
+      function createNewAccount() {
+        if (window.electronAPI && window.electronAPI.createNewAccount) {
+          window.electronAPI.createNewAccount();
+        } else {
+          // Fallback for testing
+          console.log(
+            "Would open: http://localhost/Memoria/public/html/Micro_Learner.html"
+          );
+        }
+      }
+
+      // Handle login form submission
+      document
+        .getElementById("loginFormElement")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const loginButton = document.getElementById("loginButton");
+          const email = document.getElementById("loginEmail").value;
+          const password = document.getElementById("loginPassword").value;
+
+          // Show loading state
+          loginButton.disabled = true;
+          loginButton.innerHTML = '<span class="loading"></span>Signing In...';
+
+          try {
+            console.log("Attempting login to:", `${BACKEND_URL}/login.php`);
+
+            const response = await fetch(`${BACKEND_URL}/login.php`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                email: email,
+                password: password,
+                is_app_login: true,
+              }),
+            });
+
+            console.log(
+              "Login response status:",
+              response.status,
+              response.statusText
+            );
+
+            // Always get the response text first
+            const responseText = await response.text();
+            console.log("Raw response:", responseText);
+
+            // Check if response looks like HTML (contains HTML tags)
+            if (
+              responseText.includes("<!DOCTYPE") ||
+              responseText.includes("<html") ||
+              responseText.includes("<?php")
+            ) {
+              console.error(
+                "Server returned HTML instead of JSON. Full HTML response:"
+              );
+              console.error(responseText);
+              throw new Error(
+                "Server error - returned HTML page instead of JSON response"
+              );
+            }
+
+            // Try to parse as JSON
+            let data;
+            try {
+              data = JSON.parse(responseText);
+            } catch (parseError) {
+              console.error(
+                "JSON parse error. Response content:",
+                responseText
+              );
+              throw new Error(
+                "Invalid JSON response from server. Server might be returning an error page."
+              );
+            }
+
+            // Handle success (200) and client errors (400) the same way
+            if (response.ok && data.success) {
+              showAlert("Login successful! Redirecting...", "success");
+
+              // FIXED: Use electronAPI instead of require
+              if (window.electronAPI && window.electronAPI.sendAuthSuccess) {
+                window.electronAPI.sendAuthSuccess({
+                  token: data.session_token,
+                  user: data.user.id,
+                });
+              } else {
+                console.error(
+                  "electronAPI not available for sending auth success"
+                );
+              }
+
+              setTimeout(() => {
+                window.close();
+              }, 1000);
+            } else {
+              // Handle both 400 responses and failed login attempts
+              const errorMessage =
+                data.message || "Login failed. Please check your credentials.";
+
+              // Check if it's a "user doesn't exist" type error
+              if (
+                errorMessage.toLowerCase().includes("user") ||
+                errorMessage.toLowerCase().includes("account") ||
+                errorMessage.toLowerCase().includes("email")
+              ) {
+                showAlert(
+                  `${errorMessage} Please visit our website to create an account first.`
+                );
+              } else {
+                showAlert(errorMessage);
+              }
+            }
+          } catch (error) {
+            console.error("Login error:", error);
+            showAlert(
+              error.message ||
+                "Connection error. Please check that your web server is running and try again."
+            );
+          } finally {
+            // Reset button state
+            loginButton.disabled = false;
+            loginButton.innerHTML = "Sign In";
+          }
+        });
+      // Handle Enter key on password field
+      document
+        .getElementById("loginPassword")
+        .addEventListener("keypress", (e) => {
+          if (e.key === "Enter") {
+            document.getElementById("loginFormElement").requestSubmit();
+          }
+        });
+
+      // Auto-focus email field
+      document.getElementById("loginEmail").focus();
+    </script>
+  </body>
+</html>

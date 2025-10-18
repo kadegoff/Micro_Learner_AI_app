@@ -1,0 +1,37 @@
+name: Build All Platforms
+
+on: [push] # Runs automatically when you push code
+
+jobs:
+  build-windows:
+    runs-on: windows-latest # ← Microsoft provides Windows machines
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - run: npm install && npm run build:win
+      - uses: actions/upload-artifact@v3
+        with:
+          name: windows-build
+          path: release-builds/
+
+  build-mac:
+    runs-on: macos-latest # ← Apple provides Mac machines
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - run: npm install && npm run build:mac
+      - uses: actions/upload-artifact@v3
+        with:
+          name: mac-build
+          path: release-builds/
+
+  build-linux:
+    runs-on: ubuntu-latest # ← GitHub provides Linux machines
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - run: npm install && npm run build:linux
+      - uses: actions/upload-artifact@v3
+        with:
+          name: linux-build
+          path: release-builds/

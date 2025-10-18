@@ -1,0 +1,78 @@
+{
+  "name": "micro-learner-ai",
+  "version": "1.0.0",
+  "description": "AI-powered meeting assistant",
+  "main": "main.js",
+  "author": "MicroLearnerAI.com",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "build:win": "electron-builder --win",
+    "build:mac": "electron-builder --mac",
+    "build:linux": "electron-builder --linux",
+    "dist": "npm run build",
+    "postinstall": "pip install vosk && node download-models.js"
+  },
+  "build": {
+    "appId": "com.microlearner.ai-assistant",
+    "productName": "Micro Learner AI",
+    "copyright": "Copyright © 2025 Micro Learner AI",
+    "directories": {
+      "output": "release-builds"
+    },
+    "files": [
+      "main.js",
+      "assets/**/*",
+      "*.html",
+      "*.css",
+      "*.js",
+      "preload.js",
+      "languagetool-manager.js",
+      "download-models.js",
+      "node_modules/compromise/**/*",
+      "node_modules/**/*",
+      "!**/node_modules/**/*.{md,markdown,ts,test}",
+      "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples,docs}",
+      "!**/node_modules/.bin",
+      "!release-builds/**",
+      "!.git/**",
+      "!**/*.map",
+      "!**/*.log"
+    ],
+    "asar": true,
+    "asarUnpack": [
+      "node_modules/compromise/**/*",
+      "node_modules/**/*.node"
+    ],
+    "win": {
+      "icon": "assets/icon.png",
+      "target": "nsis"
+    },
+    "mac": {
+      "icon": "assets/icon.png",
+      "target": "dmg"
+    },
+    "linux": {
+      "icon": "assets/icon.png",
+      "target": "AppImage"
+    },
+    "node-integration": false
+  },
+  "keywords": [
+    "electron",
+    "speech-recognition",
+    "ai",
+    "meeting",
+    "assistant"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^27.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "dependencies": {
+    "compromise": "^14.14.4",
+    "express": "^4.18.2",
+    "python-shell": "^5.0.0"
+  }
+}

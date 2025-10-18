@@ -1,0 +1,60 @@
+{
+  "build": {
+    "appId": "com.microlearner.ai-assistant",
+    "productName": "Micro Learner AI",
+    "copyright": "Copyright © 2025 Micro Learner AI",
+    "directories": {
+      "output": "release-builds"
+    },
+    "files": [
+      "main.js",
+      "assets/**/*",
+      "*.html",
+      "*.css",
+      "*.js",
+      "preload.js",
+      "languagetool-manager.js",
+      "download-models.js",
+      "node_modules/compromise/**/*",
+      "node_modules/**/*",
+      "!**/node_modules/**/*.{md,markdown,ts,test}",
+      "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples,docs}",
+      "!**/node_modules/.bin",
+      "!release-builds/**",
+      "!.git/**",
+      "!**/*.map",
+      "!**/*.log"
+    ],
+    "extraResources": [
+      {
+        "from": "python",
+        "to": "python"
+      },
+      {
+        "from": "models",
+        "to": "models"
+      },
+      {
+        "from": "assets",
+        "to": "assets"
+      }
+    ],
+    "asar": true,
+    "asarUnpack": [
+      "node_modules/compromise/**/*",
+      "node_modules/**/*.node",
+      "python/**/*",
+      "models/**/*"
+    ],
+    "win": {
+      "icon": "assets/icon.png",
+      "target": "nsis",
+      "executableName": "Micro Learner AI"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": false
+    }
+  }
+}

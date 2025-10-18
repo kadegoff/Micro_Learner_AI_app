@@ -1,0 +1,3791 @@
+<!DOCTYPE html>
+<html class="html">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Control Bar</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        position: relative;
+        pointer-events: auto;
+        /*-webkit-app-region: drag;*/
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          sans-serif;
+        background: rgba(10, 10, 10, 0.9);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        -webkit-app-region: drag;
+        color: #fff;
+        height: 100vh;
+        width: 100vh;
+        overflow: hidden;
+        user-select: none;
+        transition: all 0.3s ease;
+        display: flex;
+        opacity: 1;
+        line-height: 1;
+        position: relative;
+        pointer-events: auto;
+      }
+
+      body.expanded {
+        background: rgba(10, 10, 10, 0.95);
+        backdrop-filter: blur(35px);
+        -webkit-backdrop-filter: blur(35px);
+        height: 80px !important;
+        max-height: 80px !important;
+        min-height: 80px !important;
+        justify-content: center;
+      }
+
+      body.fade-mode {
+        background: rgba(10, 10, 10, 0.85);
+        backdrop-filter: blur(35px);
+        -webkit-backdrop-filter: blur(35px);
+        opacity: 1;
+      }
+
+      body.inactive-mode {
+        background: rgba(10, 10, 10, 0.8);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        opacity: 0.9;
+      }
+
+      /* 🔧 NEW: Listening mode overrides */
+      body.listening-mode {
+        opacity: 1 !important;
+        visibility: visible !important;
+        display: flex !important;
+        background: rgba(10, 10, 10, 0.95) !important;
+        backdrop-filter: blur(25px) !important;
+        -webkit-backdrop-filter: blur(25px) !important;
+        height: 50px !important;
+        max-height: 50px !important;
+        min-height: 50px !important;
+      }
+
+      /* 🔧 NEW: Ensure listening mode overrides inactive mode */
+      body.inactive-mode.listening-mode {
+        opacity: 1 !important;
+        background: rgba(10, 10, 10, 0.95) !important;
+      }
+
+      .container {
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        padding: 0 12px;
+        gap: 10px;
+        position: relative;
+        width: fit-content;
+        width: max-content;
+        height: 100%;
+        justify-content: space-between;
+        width: 100vw;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        pointer-events: auto;
+      }
+
+      .container_wrapper {
+        height: 100vh;
+        width: max-content;
+        display: flex;
+        align-items: center;
+        -webkit-app-region: drag;
+      }
+
+      .drag {
+        -webkit-app-region: drag;
+      }
+
+      .btn {
+        -webkit-app-region: no-drag;
+        padding: 6px 16px;
+        border: none;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        -webkit-app-region: no-drag;
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        backdrop-filter: blur(10px);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .btn::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        transition: left 0.5s;
+      }
+
+      .btn:hover::before {
+        left: 100%;
+      }
+
+      .listen-btn {
+        background: linear-gradient(
+          135deg,
+          rgba(59, 130, 246, 0.8),
+          rgba(29, 78, 216, 0.8)
+        );
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+      }
+
+      .listen-btn:hover {
+        background: linear-gradient(
+          135deg,
+          rgba(59, 130, 246, 1),
+          rgba(29, 78, 216, 1)
+        );
+        transform: translateY(-1px);
+        box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+      }
+
+      .listen-btn.active {
+        background: linear-gradient(
+          135deg,
+          rgba(239, 68, 68, 0.8),
+          rgba(220, 38, 38, 0.8)
+        );
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+      }
+
+      .screenshot-btn {
+        background: linear-gradient(
+          135deg,
+          rgba(139, 92, 246, 0.8),
+          rgba(124, 58, 237, 0.8)
+        );
+        box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+      }
+
+      .screenshot-btn:hover {
+        background: linear-gradient(
+          135deg,
+          rgba(139, 92, 246, 1),
+          rgba(124, 58, 237, 1)
+        );
+        transform: translateY(-1px);
+        box-shadow: 0 6px 16px rgba(139, 92, 246, 0.4);
+      }
+
+      .settings-btn {
+        background: linear-gradient(
+          135deg,
+          rgba(75, 85, 99, 0.8),
+          rgba(55, 65, 81, 0.8)
+        );
+        box-shadow: 0 4px 12px rgba(75, 85, 99, 0.3);
+        padding: 6px 12px;
+        font-size: 14px;
+      }
+
+      .settings-btn:hover {
+        background: linear-gradient(
+          135deg,
+          rgba(75, 85, 99, 1),
+          rgba(55, 65, 81, 1)
+        );
+        transform: translateY(-1px);
+        box-shadow: 0 6px 16px rgba(75, 85, 99, 0.4);
+      }
+
+      .transcript-btn {
+        background: linear-gradient(
+          135deg,
+          rgba(16, 185, 129, 0.8),
+          rgba(5, 150, 105, 0.8)
+        );
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        padding: 6px 12px;
+        font-size: 11px;
+        display: flex;
+        position: relative;
+      }
+
+      .transcript-btn:hover {
+        background: linear-gradient(
+          135deg,
+          rgba(16, 185, 129, 1),
+          rgba(5, 150, 105, 1)
+        );
+        transform: translateY(-1px);
+        box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+      }
+
+      .transcript-btn.show {
+        display: block;
+        animation: slideInFromRight 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+
+      .ai-btn {
+        background: linear-gradient(
+          135deg,
+          rgba(168, 85, 247, 0.8),
+          rgba(147, 51, 234, 0.8)
+        );
+        box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+        padding: 6px 12px;
+        font-size: 11px;
+        display: none;
+        position: relative;
+      }
+
+      .ai-btn:hover {
+        background: linear-gradient(
+          135deg,
+          rgba(168, 85, 247, 1),
+          rgba(147, 51, 234, 1)
+        );
+        transform: translateY(-1px);
+        box-shadow: 0 6px 16px rgba(168, 85, 247, 0.4);
+      }
+
+      .ai-btn.show {
+        display: block;
+        animation: slideInFromRight 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+
+      .ai-btn.receiving {
+        animation: transcriptReceiving 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+
+      @keyframes slideInFromRight {
+        from {
+          opacity: 0;
+          transform: translateX(50px) scale(0.8);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0) scale(1);
+        }
+      }
+
+      @keyframes transcriptReceiving {
+        0% {
+          transform: scale(1);
+        }
+        30% {
+          transform: scale(0.8) translateX(-20px);
+        }
+        60% {
+          transform: scale(1.1) translateX(10px);
+        }
+        100% {
+          transform: scale(1) translateX(0);
+        }
+      }
+
+      .transcript-btn::after,
+      .ai-btn::after {
+        content: "";
+        position: absolute;
+        top: -2px;
+        right: -2px;
+        width: 8px;
+        height: 8px;
+        background: #ef4444;
+        border-radius: 50%;
+        border: 2px solid rgba(10, 10, 10, 0.9);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .transcript-btn.has-notification::after,
+      .ai-btn.has-notification::after {
+        opacity: 1;
+        animation: notificationPulse 2s infinite;
+      }
+
+      @keyframes notificationPulse {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(1.3);
+          opacity: 0.7;
+        }
+      }
+
+      .status {
+        flex: 1;
+        text-align: center;
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 0 10px;
+        flex-direction: column;
+      }
+
+      .status-main {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      @keyframes downloadingPulse {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.7;
+          transform: scale(0.95);
+        }
+      }
+
+      @keyframes installingPulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.6;
+        }
+      }
+
+      .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #6b7280;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .status-dot.active {
+        background: #10b981;
+        animation: statusPulse 2s infinite;
+        box-shadow: 0 0 12px rgba(16, 185, 129, 0.5);
+      }
+
+      .status-dot.auth {
+        background: #3b82f6;
+        box-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
+      }
+
+      .status-dot.inactive {
+        background: #6b7280;
+      }
+
+      .status-dot.error {
+        background: #ef4444;
+        animation: errorBlink 1s infinite;
+      }
+
+      @keyframes statusPulse {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.6;
+          transform: scale(1.3);
+        }
+      }
+
+      @keyframes errorBlink {
+        0%,
+        50% {
+          opacity: 1;
+        }
+        51%,
+        100% {
+          opacity: 0.3;
+        }
+      }
+
+      .close-btn {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: linear-gradient(
+          135deg,
+          rgba(239, 68, 68, 0.8),
+          rgba(220, 38, 38, 0.8)
+        );
+        border: none;
+        cursor: pointer;
+        display: flex;
+        padding: 12px;
+        align-items: center;
+        justify-content: center;
+        -webkit-app-region: no-drag;
+        font-size: 20px;
+        color: white;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+      }
+
+      .close-btn:hover {
+        background: linear-gradient(
+          135deg,
+          rgba(239, 68, 68, 1),
+          rgba(220, 38, 38, 1)
+        );
+        transform: scale(1.1);
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+      }
+
+      .close-btn:active {
+        transform: scale(0.95);
+      }
+
+      @keyframes connecting {
+        0%,
+        100% {
+          opacity: 0.3;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+
+      .tooltip {
+        position: absolute;
+        bottom: 60px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.9);
+        color: white;
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-size: 11px;
+        white-space: nowrap;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 1000;
+      }
+
+      .tooltip.show {
+        opacity: 1;
+      }
+
+      .tooltip::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 5px solid transparent;
+        border-top-color: rgba(0, 0, 0, 0.9);
+      }
+
+      .shortcuts-hint {
+        position: absolute;
+        top: 60px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.9);
+        color: white;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-size: 10px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 1000;
+      }
+
+      .shortcuts-hint.show {
+        opacity: 1;
+      }
+
+      @keyframes debugPulse {
+        0%,
+        100% {
+          opacity: 0.3;
+        }
+        50% {
+          opacity: 0.8;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+
+      .btn:focus,
+      .close-btn:focus {
+        outline: 2px solid #3b82f6;
+        outline-offset: 2px;
+      }
+
+      @media (prefers-contrast: high) {
+        body {
+          background: rgba(0, 0, 0, 0.95);
+          border: 2px solid #fff;
+        }
+
+        .btn {
+          background: rgba(255, 255, 255, 0.2);
+          border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .status-dot {
+          border: 1px solid #fff;
+        }
+      }
+    </style>
+  </head>
+  <body class="body">
+    <div class="container_wrapper">
+      <div class="container">
+        <button
+          class="btn listen-btn"
+          id="listenBtn"
+          oncontextmenu="handleRightClick(event)"
+          title="Start/Stop Listening. This will start & stop the transcript."
+        >
+          ▶ Listen
+        </button>
+        <button
+          class="btn transcript-btn"
+          id="transcriptBtn"
+          onclick="getTranscriptWords()"
+          title="Send to chat"
+        >
+          💬 Send to chat
+        </button>
+        <button
+          class="btn ai-btn"
+          id="aiBtn"
+          onclick="restoreAI()"
+          title="Restore AI Window"
+          style="display: none"
+        >
+          🤖 AI
+        </button>
+        <button
+          class="btn screenshot-btn"
+          onclick="captureScreenshot()"
+          title="Take Screenshot. This will add the screenshot to your Micro Learner chat."
+        >
+          📸
+        </button>
+        <button
+          class="btn settings-btn"
+          onclick="openSettings()"
+          title="Open Settings"
+        >
+          ⚙️
+        </button>
+        <!--<div class="status">
+          <span class="status-dot" id="statusDot"></span>
+          <span id="statusText">Ready</span>
+        </div>-->
+        <button
+          class="close-btn"
+          onclick="closeAll()"
+          title="Close All Windows"
+        >
+          ×
+        </button>
+
+        <div class="tooltip" id="tooltip"></div>
+
+        <!--<div class="shortcuts-hint" id="shortcutsHint">
+        Space: Toggle • T: Transcript • A: AI • Ctrl+Enter: Screenshot • S:
+        Settings
+      </div>-->
+        <!--<div class="audio-controls" style="display: none;" id="audioControls">
+  <select id="audioSourceSelect">
+    <option value="mixed">System + Microphone</option>
+    <option value="system">System Audio Only</option>
+    <option value="microphone">Microphone Only</option>
+  </select>
+  <button onclick="testAudioSources()">Test Audio</button>
+</div>-->
+      </div>
+    </div>
+
+    <script>
+      const $DebugTestMode = true;
+
+      let isListening = false;
+      window.isListening = isListening;
+
+      // Environment detection
+      const Environment = {
+        isWeb: typeof window !== "undefined" && !window.electronAPI,
+        isElectron: typeof window !== "undefined" && window.electronAPI,
+      };
+
+      class ControlWindowManager {
+        constructor() {
+          this.fadeTimer = null;
+          this.transcriptMinimized = false;
+          this.aiMinimized = false;
+          this.aiRestoring = false;
+          this.windowSizeListenerSet = false;
+
+          // Debug enhancement properties
+          this.authState = {
+            isAuthenticated: false,
+            user: null,
+            token: null,
+          };
+          this.lastActivity = Date.now();
+          this.keepAliveInterval = null;
+          this.storageWatcher = null; // NEW: Storage monitoring
+
+          // 🔧 NEW: LanguageTool status tracking
+          this.languageToolReady = false;
+          this.languageToolInstalled = false;
+
+          this.init();
+        }
+
+        init() {
+          if ($DebugTestMode) {
+            console.log("🚀 ControlWindowManager initializing...");
+          }
+          this.setupEventListeners();
+          this.setupKeyboardShortcuts();
+          this.setupTooltips();
+          this.setupActivityDetection();
+          this.setupWindowCommunication();
+          this.setupKeepAlive();
+          this.restoreSettings();
+          this.checkAuth();
+          this.setupStorageWatcher(); // NEW: Monitor localStorage changes
+          this.setupLanguageToolMonitoring();
+
+          if ($DebugTestMode) {
+            console.log("🚀 Starting window state checks...");
+          }
+          // 🔧 IMMEDIATE check for minimized states
+          this.forceButtonVisibilityCheck();
+
+          // Initial check with delay to ensure localStorage is available
+          setTimeout(() => {
+            if ($DebugTestMode) {
+              console.log("🔍 Running initial window state check...");
+            }
+            this.checkAllWindowStates();
+          }, 100);
+
+          // 🔧 ADDITIONAL aggressive check after a longer delay
+          setTimeout(() => {
+            if ($DebugTestMode) {
+              console.log("🔧 Running additional button visibility check...");
+            }
+            this.forceButtonVisibilityCheck();
+          }, 500);
+
+          // Set up periodic checking
+          setInterval(() => {
+            if ($DebugTestMode) {
+              //console.log("⏰ Periodic window state check...");
+            }
+            this.checkAllWindowStates();
+          }, 1000);
+
+          if ($DebugTestMode) {
+            console.log("✅ ControlWindowManager initialization complete");
+          }
+        }
+
+        // NEW: Monitor localStorage changes in real-time
+        setupStorageWatcher() {
+          if ($DebugTestMode) {
+            console.log(
+              "🔍 STORAGE: Setting up real-time localStorage monitoring..."
+            );
+          }
+
+          // Monitor specific keys for changes
+          const watchedKeys = [
+            "restore_ai",
+            "show_ai_window",
+            "ai_command",
+            "window_command",
+            "ai_minimized",
+            "control_ai_minimized",
+            "ai_heartbeat",
+            "force_control_check",
+            "ai_restoring",
+            "ai_restored",
+          ];
+
+          // Store current values
+          this.lastStorageState = {};
+          watchedKeys.forEach((key) => {
+            this.lastStorageState[key] = localStorage.getItem(key);
+          });
+
+          // Check for changes every 100ms
+          this.storageWatcher = setInterval(() => {
+            watchedKeys.forEach((key) => {
+              const currentValue = localStorage.getItem(key);
+              const lastValue = this.lastStorageState[key];
+
+              if (currentValue !== lastValue) {
+                if ($DebugTestMode) {
+                  //console.log(`🔍 STORAGE: Key "${key}" changed:`);
+                  //console.log(`  Previous: ${lastValue}`);
+                  //console.log(`  Current:  ${currentValue}`);
+                  //console.log(`  Timestamp: ${new Date().toISOString()}`);
+                }
+
+                this.lastStorageState[key] = currentValue;
+              }
+            });
+          }, 100);
+
+          if ($DebugTestMode) {
+            /*console.log(
+                          "✅ STORAGE: Real-time monitoring enabled for keys:",
+                          watchedKeys
+                        );*/
+          }
+        }
+
+        checkAllWindowStates() {
+          if ($DebugTestMode) {
+            /*console.log("🔍 === CHECKING ALL WINDOW STATES ===");
+            console.log("🔍 Timestamp:", new Date().toISOString());
+
+            // Simple localStorage logging (no arrays to track)
+            console.log("🔍 Key localStorage values:");
+            console.log(
+              "  - control_ai_minimized:",
+              localStorage.getItem("control_ai_minimized")
+            );
+            console.log(
+              "  - ai_minimized:",
+              localStorage.getItem("ai_minimized")
+            );
+            console.log(
+              "  - control_transcript_minimized:",
+              localStorage.getItem("control_transcript_minimized")
+            );
+            console.log(
+              "  - transcript_minimized:",
+              localStorage.getItem("transcript_minimized")
+            );
+            console.log(
+              "  - ai_heartbeat:",
+              localStorage.getItem("ai_heartbeat")
+            );
+            console.log(
+              "  - transcript_heartbeat:",
+              localStorage.getItem("transcript_heartbeat")
+            );*/
+          }
+
+          //this.checkTranscriptState();
+          this.checkAIState();
+          this.forceButtonVisibilityCheck();
+
+          if ($DebugTestMode) {
+            //console.log("🔍 Final button states:");
+            const transcriptBtn = document.getElementById("transcriptBtn");
+            const aiBtn = document.getElementById("aiBtn");
+            //console.log("🔍   Transcript button display:",transcriptBtn?.style.display);
+            //console.log("🔍   AI button display:", aiBtn?.style.display);
+            //console.log("🔍 === WINDOW STATES CHECK COMPLETE ===");
+          }
+        }
+        checkAIState() {
+          if ($DebugTestMode) {
+            //console.log("🤖 === CHECKING AI STATE ===");
+            //console.log("🤖 Current time:", Date.now());
+            //console.log("🤖 Current aiMinimized:", this.aiMinimized);
+            //console.log("🤖 Current aiRestoring:", this.aiRestoring);
+          }
+
+          if (this.aiRestoring) {
+            if ($DebugTestMode) {
+              /*console.log(
+                "🔄 AI restoration in progress, skipping state check"
+              );*/
+            }
+            return;
+          }
+
+          const controlMinimized = localStorage.getItem("control_ai_minimized");
+          const aiMinimized = localStorage.getItem("ai_minimized");
+          const forceCheck = localStorage.getItem("force_control_check");
+          const aiHeartbeat = localStorage.getItem("ai_heartbeat");
+          const aiWindowState = localStorage.getItem("ai_window_state");
+          const currentTime = Date.now();
+
+          if ($DebugTestMode) {
+            //console.log("🤖 Storage values:");
+            //console.log("  - control_ai_minimized:", controlMinimized);
+            //console.log("  - ai_minimized:", aiMinimized);
+            //console.log("  - ai_window_state:", aiWindowState);
+            //console.log("  - ai_heartbeat:", aiHeartbeat);
+            //console.log("  - force_control_check:", forceCheck);
+          }
+
+          // Check AI heartbeat age
+          if (aiHeartbeat) {
+            const heartbeatAge = currentTime - parseInt(aiHeartbeat);
+            if ($DebugTestMode) {
+              //console.log("💓 AI heartbeat analysis:");
+              //console.log("  - Raw value:", aiHeartbeat);
+              //console.log("  - Age:", heartbeatAge, "ms");
+              //console.log("  - Is stale (>30s):", heartbeatAge > 30000);
+            }
+
+            // If no heartbeat for 30s, assume minimized
+            if (heartbeatAge > 30000) {
+              if ($DebugTestMode) {
+                //console.log("💓 AI heartbeat stale - assuming AI is minimized");
+              }
+              this.aiMinimized = true;
+              this.showAIButton();
+              return;
+            }
+          } else {
+            if ($DebugTestMode) {
+              //console.log("💓 No AI heartbeat found - AI may not be running");
+            }
+          }
+
+          if (forceCheck) {
+            if ($DebugTestMode) {
+              //console.log("🔄 Force check triggered, clearing flag");
+            }
+            localStorage.removeItem("force_control_check");
+          }
+
+          const shouldShowAIButton =
+            controlMinimized === "true" || aiMinimized === "true";
+
+          if ($DebugTestMode) {
+            //console.log("🤖 Decision logic:");
+            /*console.log(
+              "  - controlMinimized === 'true':",
+              controlMinimized === "true"
+            );*/
+            //console.log("  - aiMinimized === 'true':", aiMinimized === "true");
+            //console.log("  - shouldShowAIButton:", shouldShowAIButton);
+          }
+
+          if (shouldShowAIButton) {
+            if ($DebugTestMode) {
+              //console.log("✅ AI should be minimized - showing button");
+            }
+            this.aiMinimized = true;
+            this.showAIButton();
+          } else {
+            if ($DebugTestMode) {
+              //console.log("❌ AI should not be minimized - hiding button");
+            }
+            this.aiMinimized = false;
+            this.hideAIButton();
+          }
+
+          if ($DebugTestMode) {
+            //console.log("🤖 === AI STATE CHECK COMPLETE ===");
+          }
+        }
+        // 🔧 NEW: Force button visibility check
+        forceButtonVisibilityCheck() {
+          if ($DebugTestMode) {
+            //console.log("🔧 === FORCE BUTTON VISIBILITY CHECK ===");
+            //console.log("🔧 Checking explicit minimized flags...");
+          }
+
+          const controlAiMinimized = localStorage.getItem(
+            "control_ai_minimized"
+          );
+          const controlTranscriptMinimized = localStorage.getItem(
+            "control_transcript_minimized"
+          );
+          const aiMinimized = localStorage.getItem("ai_minimized");
+          const transcriptMinimized = localStorage.getItem(
+            "transcript_minimized"
+          );
+
+          if ($DebugTestMode) {
+            //console.log("🔧 Minimized flags:");
+            //console.log("  - control_ai_minimized:", controlAiMinimized);
+            //console.log( "  - control_transcript_minimized:",controlTranscriptMinimized );
+            //console.log("  - ai_minimized:", aiMinimized);
+            //console.log("  - transcript_minimized:", transcriptMinimized);
+          }
+
+          // Force AI button check
+          if (controlAiMinimized === "true" || aiMinimized === "true") {
+            if ($DebugTestMode) {
+              //console.log( "🔧 FORCE: AI should be minimized - forcing button visible");
+            }
+            this.aiMinimized = true;
+            this.showAIButton();
+          }
+
+          // Force transcript button check
+          /*if (
+            controlTranscriptMinimized === "true" ||
+            transcriptMinimized === "true"
+          ) {
+            if ($DebugTestMode) {
+              //console.log(  "🔧 FORCE: Transcript should be minimized - forcing button visible" );
+            }
+            this.transcriptMinimized = true;
+            this.showTranscriptButton();
+          }*/
+
+          if ($DebugTestMode) {
+            //console.log("🔧 === FORCE CHECK COMPLETE ===");
+          }
+        }
+        /*checkTranscriptState() {
+          if ($DebugTestMode) {
+            //console.log("💬 === CHECKING TRANSCRIPT STATE ===");
+            //console.log("💬 Current time:", Date.now());
+            // console.log("💬 Current transcriptMinimized:", this.transcriptMinimized);
+          }
+
+          const isMinimized = localStorage.getItem(
+            "control_transcript_minimized"
+          );
+          const transcriptMinimized = localStorage.getItem(
+            "transcript_minimized"
+          );
+          const transcriptHeartbeat = localStorage.getItem(
+            "transcript_heartbeat"
+          );
+          const forceCheck = localStorage.getItem("force_control_check");
+
+          if ($DebugTestMode) {
+            // console.log("💬 Storage values:");
+            //console.log("  - control_transcript_minimized:", isMinimized);
+            //console.log("  - transcript_minimized:", transcriptMinimized);
+            //console.log("  - transcript_heartbeat:", transcriptHeartbeat);
+            // console.log("  - force_control_check:", forceCheck);
+          }
+
+          // Check heartbeat age
+          if (transcriptHeartbeat) {
+            const heartbeatAge = Date.now() - parseInt(transcriptHeartbeat);
+            if ($DebugTestMode) {
+              //console.log("💬 Heartbeat analysis:");
+              //console.log("  - Age:", heartbeatAge, "ms");
+              //console.log("  - Is stale (>30s):", heartbeatAge > 30000);
+            }
+
+            // If no heartbeat for 30s, assume minimized
+            if (heartbeatAge > 30000) {
+              if ($DebugTestMode) {
+                //console.log("💬 Heartbeat stale - assuming transcript is minimized");
+              }
+              this.transcriptMinimized = true;
+              this.showTranscriptButton();
+              return;
+            }
+          }
+
+          if (isMinimized === "true" || transcriptMinimized === "true") {
+            if ($DebugTestMode) {
+              //console.log("✅ Transcript explicitly marked as minimized");
+            }
+            this.transcriptMinimized = true;
+            this.showTranscriptButton();
+            return;
+          }
+
+          if ($DebugTestMode) {
+            console.log(
+              "❌ Transcript not marked as minimized - hiding button"
+            );
+          }
+          this.transcriptMinimized = false;
+          this.hideTranscriptButton();
+        }*/
+
+        showAIButton() {
+          if ($DebugTestMode) {
+            //console.log("👁️ showAIButton called");
+          }
+          const aiBtn = document.getElementById("aiBtn");
+          if (aiBtn) {
+            if ($DebugTestMode) {
+              //console.log("👁️ AI button element found, showing...");
+            }
+            aiBtn.style.display = "block";
+            aiBtn.style.pointerEvents = "auto";
+            aiBtn.style.webkitAppRegion = "no-drag";
+            aiBtn.classList.add("show");
+            aiBtn.classList.add("has-notification");
+            if ($DebugTestMode) {
+              //console.log("👁️ AI button shown successfully");
+              //console.log("👁️ AI button display:", aiBtn.style.display);
+              //console.log("👁️ AI button classes:", Array.from(aiBtn.classList));
+            }
+          } else {
+            if ($DebugTestMode) {
+              //console.error("❌ AI button element not found!");
+            }
+          }
+        }
+
+        cleanupRestoreMessages() {
+          if ($DebugTestMode) {
+            console.log(
+              "🧹 CONTROL: ========== CLEANUP RESTORE MESSAGES =========="
+            );
+          }
+
+          const keysToClean = [
+            "ai_command",
+            "window_command",
+            "restore_ai",
+            "show_ai_window",
+            "force_control_check",
+            "control_restore_command",
+            "restore_ai_request",
+            "ai_restore_command",
+            "window_restore_ai",
+          ];
+
+          keysToClean.forEach((key) => {
+            const value = localStorage.getItem(key);
+            if (value) {
+              if ($DebugTestMode) {
+                console.log(`🧹 CONTROL: Removing ${key}:`, value);
+              }
+              localStorage.removeItem(key);
+            }
+          });
+
+          // Clean up numbered restore messages
+          for (let i = 0; i < 10; i++) {
+            const key = `ai_restore_${i}`;
+            const value = localStorage.getItem(key);
+            if (value) {
+              if ($DebugTestMode) {
+                console.log(`🧹 CONTROL: Removing ${key}:`, value);
+              }
+              localStorage.removeItem(key);
+            }
+          }
+
+          if ($DebugTestMode) {
+            console.log("🧹 CONTROL: Restore messages cleanup completed");
+          }
+        }
+
+        hideAIButton() {
+          if ($DebugTestMode) {
+            //console.log("👁️ hideAIButton called");
+          }
+          const aiBtn = document.getElementById("aiBtn");
+          if (aiBtn) {
+            if ($DebugTestMode) {
+              // console.log("👁️ AI button element found, hiding...");
+            }
+            aiBtn.style.display = "none";
+            aiBtn.classList.remove("show");
+            aiBtn.classList.remove("has-notification");
+            if ($DebugTestMode) {
+              //console.log("👁️ AI button hidden successfully");
+              //console.log("👁️ AI button display:", aiBtn.style.display);
+              //console.log("👁️ AI button classes:", Array.from(aiBtn.classList));
+            }
+          } else {
+            if ($DebugTestMode) {
+              //console.error("❌ AI button element not found!");
+            }
+          }
+        }
+
+        /*showTranscriptButton() {
+          if ($DebugTestMode) {
+            //console.log("👁️ showTranscriptButton called");
+          }
+          const transcriptBtn = document.getElementById("transcriptBtn");
+          if (transcriptBtn) {
+            if ($DebugTestMode) {
+              console.log("👁️ Transcript button element found, showing...");
+              console.log(
+                "👁️ Button classes before:",
+                Array.from(transcriptBtn.classList)
+              );
+              console.log(
+                "👁️ Button display before:",
+                transcriptBtn.style.display
+              );
+            }
+
+            transcriptBtn.style.display = "block";
+            transcriptBtn.classList.add("show");
+            transcriptBtn.classList.add("has-notification");
+
+            if ($DebugTestMode) {
+              console.log("👁️ Transcript button shown successfully");
+              console.log(
+                "👁️ Button classes after:",
+                Array.from(transcriptBtn.classList)
+              );
+              console.log(
+                "👁️ Button display after:",
+                transcriptBtn.style.display
+              );
+            }
+          } else {
+            if ($DebugTestMode) {
+              //console.error("❌ Transcript button element not found!");
+            }
+          }
+        }
+
+        hideTranscriptButton() {
+          if ($DebugTestMode) {
+            console.log("👁️ hideTranscriptButton called");
+          }
+
+          const transcriptBtn = document.getElementById("transcriptBtn");
+          if (transcriptBtn) {
+            if ($DebugTestMode) {
+              console.log("👁️ Transcript button element found, hiding...");
+              console.log(
+                "👁️ Button classes before:",
+                Array.from(transcriptBtn.classList)
+              );
+              console.log(
+                "👁️ Button display before:",
+                transcriptBtn.style.display
+              );
+            }
+
+            // 🔧 NEW: Comprehensive hiding
+            transcriptBtn.style.display = "none";
+            transcriptBtn.classList.remove("show");
+            transcriptBtn.classList.remove("has-notification");
+            transcriptBtn.classList.remove("receiving");
+
+            if ($DebugTestMode) {
+              console.log("👁️ Transcript button hidden successfully");
+              console.log(
+                "👁️ Button classes after:",
+                Array.from(transcriptBtn.classList)
+              );
+              console.log(
+                "👁️ Button display after:",
+                transcriptBtn.style.display
+              );
+            }
+          } else {
+            if ($DebugTestMode) {
+              console.error("❌ Transcript button element not found!");
+            }
+          }
+        }*/
+
+        setupWindowCommunication() {
+          if ($DebugTestMode) {
+            console.log("🔧 Setting up window communication...");
+          }
+
+          // Enhanced localStorage monitoring with more detailed logging
+          const checkWindowMessages = () => {
+            try {
+              // Enhanced force check detection
+              const forceCheck = localStorage.getItem("force_control_check");
+              if (forceCheck) {
+                const checkAge = Date.now() - parseInt(forceCheck);
+                if ($DebugTestMode) {
+                  console.log("🔄 ENHANCED Force check detected:");
+                  console.log("  - Force check value:", forceCheck);
+                  console.log("  - Force check age:", checkAge);
+                  console.log("  - Current restoreId:", this.currentRestoreId);
+                  console.log("  - AI restoring:", this.aiRestoring);
+                }
+
+                this.checkAIState();
+              }
+
+              // Enhanced restore message checking with individual logging
+              const allRestoreKeys = [
+                "restore_ai",
+                "show_ai_window",
+                "ai_command",
+                "window_command",
+                "control_restore_command",
+                "ai_restore_command",
+              ];
+
+              allRestoreKeys.forEach((key) => {
+                const value = localStorage.getItem(key);
+                if (value) {
+                  if ($DebugTestMode) {
+                    console.log(`📨 🔍 ENHANCED Found ${key}:`, value);
+                  }
+                  try {
+                    const parsed = JSON.parse(value);
+                    if ($DebugTestMode) {
+                      console.log(`📨 🔍 ENHANCED Parsed ${key}:`, parsed);
+                      console.log(`  - Type: ${parsed.type}`);
+                      console.log(`  - Timestamp: ${parsed.timestamp}`);
+                      console.log(
+                        `  - Age: ${Date.now() - parsed.timestamp}ms`
+                      );
+                      console.log(`  - RestoreId: ${parsed.restoreId}`);
+                      console.log(`  - Source: ${parsed.source}`);
+                    }
+
+                    if (
+                      parsed.timestamp &&
+                      Date.now() - parsed.timestamp < 10000
+                    ) {
+                      if ($DebugTestMode) {
+                        console.log(
+                          `📨 ✅ ENHANCED ${key} is recent, processing...`
+                        );
+                      }
+                    } else {
+                      if ($DebugTestMode) {
+                        console.log(
+                          `📨 ⚠️ ENHANCED ${key} is old (${
+                            Date.now() - parsed.timestamp
+                          }ms), ignoring...`
+                        );
+                      }
+                    }
+                  } catch (e) {
+                    if ($DebugTestMode) {
+                      console.log(`📨 ENHANCED ${key} is not JSON:`, value);
+                    }
+                  }
+                }
+              });
+            } catch (error) {
+              if ($DebugTestMode) {
+                console.warn(
+                  "❌ Error in ENHANCED checkWindowMessages:",
+                  error
+                );
+              }
+            }
+          };
+
+          setInterval(checkWindowMessages, 250);
+
+          // Listen for more custom events
+          const customEvents = [
+            "controlRestoreAI",
+            "restoreAI",
+            "aiRestore",
+            "windowRestore",
+            "showAI",
+          ];
+          customEvents.forEach((eventName) => {
+            window.addEventListener(eventName, (event) => {
+              if ($DebugTestMode) {
+                console.log(
+                  `🎯 Received custom event "${eventName}":`,
+                  event.detail
+                );
+              }
+            });
+          });
+
+          if ($DebugTestMode) {
+            console.log("✅ Window communication setup complete");
+          }
+        }
+
+        testAIConnection() {
+          if ($DebugTestMode) {
+            console.log("🏓 CONTROL: ENHANCED Testing AI window connection...");
+            console.log("🏓 CONTROL: Current time:", Date.now());
+            console.log(
+              "🏓 CONTROL: Current restoreId:",
+              this.currentRestoreId
+            );
+            console.log("🏓 CONTROL: AI restoring state:", this.aiRestoring);
+          }
+
+          const pingMessage = {
+            type: "AI_PING_TEST",
+            timestamp: Date.now(),
+            source: "control",
+            testId: Math.random().toString(36).substr(2, 9),
+            restoreId: this.currentRestoreId,
+          };
+
+          if ($DebugTestMode) {
+            console.log("🏓 CONTROL: ENHANCED Ping message:", pingMessage);
+          }
+
+          // Store with multiple keys and enhanced logging
+          const pingKeys = [
+            "ai_ping_test",
+            "control_ping",
+            "ping_test",
+            "ai_connection_test",
+            "window_ping",
+          ];
+
+          pingKeys.forEach((key) => {
+            localStorage.setItem(key, JSON.stringify(pingMessage));
+            if ($DebugTestMode) {
+              console.log(`🏓 CONTROL: Stored ping with key: ${key}`);
+            }
+          });
+
+          if ($DebugTestMode) {
+            console.log(
+              "🏓 CONTROL: ENHANCED Sent ping test with testId:",
+              pingMessage.testId
+            );
+          }
+
+          // Enhanced response checking with detailed logging
+          setTimeout(() => {
+            const response1 = localStorage.getItem("ai_ping_response");
+            const response2 = localStorage.getItem("ping_response");
+            const response3 = localStorage.getItem("ai_pong");
+            const response4 = localStorage.getItem("ai_connection_response");
+
+            if ($DebugTestMode) {
+              console.log("🏓 CONTROL: ENHANCED Checking ping responses...");
+              console.log("🏓 CONTROL: ai_ping_response:", response1);
+              console.log("🏓 CONTROL: ping_response:", response2);
+              console.log("🏓 CONTROL: ai_pong:", response3);
+              console.log("🏓 CONTROL: ai_connection_response:", response4);
+            }
+
+            const hasResponse =
+              response1 || response2 || response3 || response4;
+
+            if (hasResponse) {
+              if ($DebugTestMode) {
+                console.log(
+                  "🏓 CONTROL: ✅ ENHANCED Received ping response - AI is responsive"
+                );
+              }
+
+              // Clean up
+              [
+                "ai_ping_response",
+                "ping_response",
+                "ai_pong",
+                "ai_connection_response",
+              ].forEach((key) => {
+                localStorage.removeItem(key);
+              });
+            } else {
+              if ($DebugTestMode) {
+                console.log(
+                  "🏓 CONTROL: ❌ ENHANCED No ping response received - AI window may not be responding"
+                );
+              }
+            }
+
+            // Clean up ping messages
+            pingKeys.forEach((key) => {
+              localStorage.removeItem(key);
+            });
+          }, 2000);
+        }
+
+        // AI Window Event Handlers with enhanced debugging
+        onAIMinimizing() {
+          if ($DebugTestMode) {
+            console.log("🔄 === onAIMinimizing START ===");
+            console.log("🔄 Current time:", Date.now());
+            console.log("🔄 Current state - aiMinimized:", this.aiMinimized);
+            console.log("🔄 Current state - aiRestoring:", this.aiRestoring);
+          }
+
+          const aiBtn = document.getElementById("aiBtn");
+          if (aiBtn) {
+            if ($DebugTestMode) {
+              console.log("🔄 Adding 'receiving' class to AI button");
+              console.log(
+                "🔄 Button classes before:",
+                Array.from(aiBtn.classList)
+              );
+            }
+            aiBtn.classList.add("receiving");
+            if ($DebugTestMode) {
+              console.log(
+                "🔄 Button classes after:",
+                Array.from(aiBtn.classList)
+              );
+            }
+          } else {
+            if ($DebugTestMode) {
+              console.error("❌ AI button not found in onAIMinimizing");
+            }
+          }
+          if ($DebugTestMode) {
+            console.log("🔄 === onAIMinimizing END ===");
+          }
+        }
+
+        onAIMinimized() {
+          if ($DebugTestMode) {
+            console.log("🔄 === onAIMinimized START ===");
+            console.log("🔄 Setting aiMinimized = true");
+            console.log("🔄 Previous aiMinimized:", this.aiMinimized);
+          }
+
+          this.aiMinimized = true;
+          if ($DebugTestMode) {
+            console.log("🔄 New aiMinimized:", this.aiMinimized);
+          }
+
+          const aiBtn = document.getElementById("aiBtn");
+
+          if (aiBtn) {
+            if ($DebugTestMode) {
+              console.log("🔄 Updating AI button classes");
+              console.log(
+                "🔄 Button classes before update:",
+                Array.from(aiBtn.classList)
+              );
+            }
+            aiBtn.classList.remove("receiving");
+            aiBtn.classList.add("show");
+            aiBtn.classList.add("has-notification");
+            if ($DebugTestMode) {
+              console.log(
+                "🔄 AI button classes after minimized:",
+                Array.from(aiBtn.classList)
+              );
+              console.log("🔄 AI button display:", aiBtn.style.display);
+            }
+          } else {
+            if ($DebugTestMode) {
+              console.error("❌ AI button not found in onAIMinimized");
+            }
+          }
+
+          if ($DebugTestMode) {
+            console.log("🔄 Setting localStorage flags...");
+          }
+          localStorage.setItem("control_ai_minimized", "true");
+          if ($DebugTestMode) {
+            console.log("🔄 Set control_ai_minimized to true");
+          }
+
+          // Verify the localStorage was set
+          const verification = localStorage.getItem("control_ai_minimized");
+          if ($DebugTestMode) {
+            console.log(
+              "🔄 Verification - control_ai_minimized is now:",
+              verification
+            );
+            console.log("🔄 === onAIMinimized END ===");
+          }
+        }
+
+        onAIRestoring() {
+          if ($DebugTestMode) {
+            console.log("🔄 === onAIRestoring START ===");
+            console.log("🔄 AI window is restoring - showing loading state");
+            console.log("🔄 Previous aiRestoring:", this.aiRestoring);
+            console.log("🔄 Previous aiMinimized:", this.aiMinimized);
+          }
+
+          this.aiRestoring = true;
+          this.restoreAttemptTime = Date.now();
+          this.lastRestoreTime = Date.now();
+
+          if ($DebugTestMode) {
+            console.log(
+              "🔄 Set aiRestoring = true, restoreAttemptTime =",
+              this.restoreAttemptTime
+            );
+            console.log("🔄 Set lastRestoreTime =", this.lastRestoreTime);
+          }
+
+          const aiBtn = document.getElementById("aiBtn");
+          if (aiBtn) {
+            if ($DebugTestMode) {
+              console.log("🔄 Updating AI button for restoring state");
+              console.log(
+                "🔄 Button classes before:",
+                Array.from(aiBtn.classList)
+              );
+              console.log("🔄 Button display before:", aiBtn.style.display);
+            }
+
+            aiBtn.classList.remove("has-notification");
+            aiBtn.classList.add("receiving");
+            // Keep the button visible during restoration
+            aiBtn.style.display = "block";
+            aiBtn.classList.add("show");
+
+            if ($DebugTestMode) {
+              console.log(
+                "🔄 AI button classes after restoring:",
+                Array.from(aiBtn.classList)
+              );
+              console.log("🔄 AI button display:", aiBtn.style.display);
+            }
+          } else {
+            if ($DebugTestMode) {
+              console.error("❌ AI button not found in onAIRestoring");
+            }
+          }
+          if ($DebugTestMode) {
+            console.log("🔄 === onAIRestoring END ===");
+          }
+        }
+
+        onAIRestored(data = {}) {
+          // Add validation to ensure this is a REAL response from AI window
+          if (!data || !data.restoreId || data.source !== "ai") {
+            if ($DebugTestMode) {
+              console.log(
+                "⚠️ Ignoring onAIRestored - not a valid AI response:",
+                data
+              );
+            }
+            return;
+          }
+
+          // Check if this matches our current restore ID
+          if (data.restoreId !== this.currentRestoreId) {
+            if ($DebugTestMode) {
+              console.log("⚠️ Ignoring onAIRestored - wrong restore ID");
+            }
+            return;
+          }
+
+          if ($DebugTestMode) {
+            console.log("🎉 === onAIRestored START ===");
+            console.log("🎉 Restore data received:", data);
+            console.log("🎉 Current aiRestoring:", this.aiRestoring);
+            console.log("🎉 Current currentRestoreId:", this.currentRestoreId);
+            console.log("🎉 Message restoreId:", data.restoreId);
+          }
+
+          // Check if this is for current restore
+          if (!this.aiRestoring) {
+            if ($DebugTestMode) {
+              console.log(
+                "⚠️ Ignoring restore completion - aiRestoring is false"
+              );
+            }
+            return;
+          }
+
+          if (!this.currentRestoreId) {
+            if ($DebugTestMode) {
+              console.log(
+                "⚠️ Ignoring restore completion - no active restore ID"
+              );
+            }
+            return;
+          }
+
+          if ($DebugTestMode) {
+            console.log("🎉 AI window confirmed restoration");
+          }
+
+          // Update states with detailed logging
+          if ($DebugTestMode) {
+            console.log("🎉 Updating states...");
+            console.log("🎉 Before - aiMinimized:", this.aiMinimized);
+            console.log("🎉 Before - aiRestoring:", this.aiRestoring);
+          }
+
+          this.aiMinimized = false;
+          this.aiRestoring = false;
+          this.currentRestoreId = null;
+
+          if ($DebugTestMode) {
+            console.log("🎉 After - aiMinimized:", this.aiMinimized);
+            console.log("🎉 After - aiRestoring:", this.aiRestoring);
+            console.log("🎉 After - currentRestoreId:", this.currentRestoreId);
+          }
+
+          const aiBtn = document.getElementById("aiBtn");
+          if (aiBtn) {
+            if ($DebugTestMode) {
+              console.log("✅ Hiding AI button after successful restore");
+              console.log(
+                "✅ Button classes before hide:",
+                Array.from(aiBtn.classList)
+              );
+              console.log(
+                "✅ Button display before hide:",
+                aiBtn.style.display
+              );
+            }
+
+            aiBtn.classList.remove("receiving", "show", "has-notification");
+            aiBtn.style.display = "none";
+
+            if ($DebugTestMode) {
+              console.log(
+                "✅ Button classes after hide:",
+                Array.from(aiBtn.classList)
+              );
+              console.log("✅ Button display after hide:", aiBtn.style.display);
+            }
+          }
+
+          // Clear localStorage flags with verification
+          if ($DebugTestMode) {
+            console.log("🎉 Clearing localStorage flags...");
+            console.log(
+              "🎉 Before clear - control_ai_minimized:",
+              localStorage.getItem("control_ai_minimized")
+            );
+            console.log(
+              "🎉 Before clear - ai_minimized:",
+              localStorage.getItem("ai_minimized")
+            );
+          }
+
+          console.log(
+            "🚨✅🚨✅🚨✅🚨✅ ALERT: CONTROL_AI_MINIMIZED HAS BEEN RESET!"
+          );
+          localStorage.removeItem("control_ai_minimized");
+          localStorage.removeItem("ai_minimized");
+
+          if ($DebugTestMode) {
+            console.log(
+              "🎉 After clear - control_ai_minimized:",
+              localStorage.getItem("control_ai_minimized")
+            );
+            console.log(
+              "🎉 After clear - ai_minimized:",
+              localStorage.getItem("ai_minimized")
+            );
+          }
+
+          if ($DebugTestMode) {
+            console.log("🎉 === onAIRestored END ===");
+          }
+        }
+
+        onAIRestoreFailed() {
+          if ($DebugTestMode) {
+            console.log("❌ === onAIRestoreFailed START ===");
+            console.log("❌ AI restore failed - keeping button visible");
+            console.log("❌ Current aiRestoring:", this.aiRestoring);
+            console.log("❌ Current aiMinimized:", this.aiMinimized);
+            console.log("❌ Current currentRestoreId:", this.currentRestoreId);
+          }
+
+          this.aiRestoring = false;
+          this.aiMinimized = true; // Keep this true so button stays
+          this.currentRestoreId = null;
+
+          if ($DebugTestMode) {
+            console.log("❌ Set aiRestoring = false, aiMinimized = true");
+            console.log("❌ New aiRestoring:", this.aiRestoring);
+            console.log("❌ New aiMinimized:", this.aiMinimized);
+          }
+
+          const aiBtn = document.getElementById("aiBtn");
+          if (aiBtn) {
+            if ($DebugTestMode) {
+              console.log("❌ Restoring AI button after failed restore");
+              console.log(
+                "❌ Button classes before restore:",
+                Array.from(aiBtn.classList)
+              );
+              console.log(
+                "❌ Button display before restore:",
+                aiBtn.style.display
+              );
+            }
+
+            aiBtn.classList.remove("receiving");
+            aiBtn.classList.add("show");
+            aiBtn.classList.add("has-notification");
+            aiBtn.style.display = "block"; // Force visible
+
+            if ($DebugTestMode) {
+              console.log(
+                "❌ AI button classes after failed restore:",
+                Array.from(aiBtn.classList)
+              );
+              console.log("❌ AI button display:", aiBtn.style.display);
+            }
+          }
+
+          // Don't clear the localStorage flags - keep them so button stays
+          if ($DebugTestMode) {
+            console.log("🔄 Button restored after failed restore attempt");
+          }
+          if ($DebugTestMode) {
+            console.log("❌ === onAIRestoreFailed END ===");
+          }
+        }
+
+        // Transcript Window Event Handlers
+        /* onTranscriptMinimizing() {
+          const transcriptBtn = document.getElementById("transcriptBtn");
+          if (transcriptBtn) {
+            transcriptBtn.classList.add("receiving");
+          }
+        }
+
+       onTranscriptMinimized() {
+          if ($DebugTestMode) {
+            console.log("💬 Transcript confirmed minimized");
+          }
+          this.transcriptMinimized = true;
+          const transcriptBtn = document.getElementById("transcriptBtn");
+
+          if (transcriptBtn) {
+            if ($DebugTestMode) {
+              console.log("💬 Updating transcript button for minimized state");
+              console.log(
+                "💬 Button classes before:",
+                Array.from(transcriptBtn.classList)
+              );
+              console.log(
+                "💬 Button display before:",
+                transcriptBtn.style.display
+              );
+            }
+
+            transcriptBtn.classList.remove("receiving");
+            transcriptBtn.classList.add("show");
+            transcriptBtn.classList.add("has-notification");
+            transcriptBtn.style.display = "block"; // Force visible
+
+            if ($DebugTestMode) {
+              console.log(
+                "💬 Button classes after:",
+                Array.from(transcriptBtn.classList)
+              );
+              console.log(
+                "💬 Button display after:",
+                transcriptBtn.style.display
+              );
+            }
+          }
+
+          // Set flag with timestamp for validation
+          const timestamp = Date.now();
+          localStorage.setItem("control_transcript_minimized", "true");
+          localStorage.setItem(
+            "control_transcript_minimized_time",
+            timestamp.toString()
+          );
+
+          if ($DebugTestMode) {
+            console.log(
+              "💬 Set control_transcript_minimized flags:",
+              timestamp
+            );
+          }
+
+          // Clear heartbeat since window is minimized
+          localStorage.removeItem("transcript_heartbeat");
+        }*/
+
+        /*onTranscriptRestoring() {
+          const transcriptBtn = document.getElementById("transcriptBtn");
+          if (transcriptBtn) {
+            transcriptBtn.classList.remove("has-notification");
+            transcriptBtn.classList.add("receiving");
+          }
+        }*/
+
+        /*onTranscriptRestored() {
+          if ($DebugTestMode) {
+            console.log("💬 Transcript confirmed restored/visible");
+          }
+
+          // 🔧 NEW: Ensure state is consistent
+          this.transcriptMinimized = false;
+
+          // 🔧 NEW: Hide button immediately
+          this.hideTranscriptButton();
+
+          // 🔧 NEW: Clear ALL transcript minimized flags
+          console.log(
+            "🚨🔥💥⚠️❌ ALERT: CONTROL_TRANSCRIPT_MINIMIZED HAS BEEN RESET!"
+          );
+          localStorage.removeItem("control_transcript_minimized");
+          localStorage.removeItem("control_transcript_minimized_time");
+          localStorage.removeItem("transcript_minimized");
+
+          // 🔧 NEW: Set fresh heartbeat
+          localStorage.setItem("transcript_heartbeat", Date.now().toString());
+
+          if ($DebugTestMode) {
+            console.log("💬 Transcript state reset to visible/active");
+          }
+        }*/
+
+        // Find the restoreAI function in your ControlWindowManager class and replace it with this fixed version:
+
+        restoreAI() {
+          console.log("🎯🎯🎯 === ULTRA-ENHANCED AI RESTORE START ===");
+          console.log("🎯 Function entry timestamp:", new Date().toISOString());
+          console.log("🎯 Function entry time (ms):", Date.now());
+          console.log("🎯 Restore attempt #:", ++this.restoreAttempts);
+          console.log("🎯 Stack trace at entry:", new Error().stack);
+
+          // PHASE 1: STATE ANALYSIS
+          console.log("🎯 === PHASE 1: CURRENT STATE ANALYSIS ===");
+          console.log("🎯 Current aiMinimized:", this.aiMinimized);
+          console.log("🎯 Current aiRestoring:", this.aiRestoring);
+          console.log("🎯 Current currentRestoreId:", this.currentRestoreId);
+          console.log("🎯 Current restoreAttempts:", this.restoreAttempts);
+          console.log("🎯 Current lastRestoreTime:", this.lastRestoreTime);
+
+          // Check localStorage BEFORE any changes
+          console.log("🎯 === LOCALSTORAGE BEFORE RESTORE ===");
+          console.log(
+            "🎯 control_ai_minimized:",
+            localStorage.getItem("control_ai_minimized")
+          );
+          console.log("🎯 ai_minimized:", localStorage.getItem("ai_minimized"));
+          console.log("🎯 ai_heartbeat:", localStorage.getItem("ai_heartbeat"));
+          console.log(
+            "🎯 ai_window_state:",
+            localStorage.getItem("ai_window_state")
+          );
+          console.log("🎯 restore_ai:", localStorage.getItem("restore_ai"));
+          console.log(
+            "🎯 ai_restore_request:",
+            localStorage.getItem("ai_restore_request")
+          );
+
+          // PHASE 2: DUPLICATE CHECK
+          console.log("🎯 === PHASE 2: DUPLICATE PREVENTION CHECK ===");
+          if (this.aiRestoring) {
+            console.warn("⚠️ DUPLICATE RESTORE DETECTED!");
+            console.warn("⚠️ aiRestoring is already true, aborting");
+            console.warn("⚠️ currentRestoreId:", this.currentRestoreId);
+            console.warn("⚠️ lastRestoreTime:", this.lastRestoreTime);
+            console.warn(
+              "⚠️ Time since last restore:",
+              Date.now() - this.lastRestoreTime,
+              "ms"
+            );
+            return;
+          }
+
+          // PHASE 3: UI IMMEDIATE RESPONSE
+          console.log("🎯 === PHASE 3: IMMEDIATE UI RESPONSE ===");
+          const aiBtn = document.getElementById("aiBtn");
+          if (aiBtn) {
+            console.log("🎯 AI button found, current state:");
+            console.log("🎯   display:", aiBtn.style.display);
+            console.log("🎯   classes:", Array.from(aiBtn.classList));
+            console.log("🎯   disabled:", aiBtn.disabled);
+
+            console.log("🎯 Hiding AI button immediately...");
+            aiBtn.style.display = "none";
+            aiBtn.classList.remove("show", "has-notification", "receiving");
+
+            console.log("🎯 AI button after hiding:");
+            console.log("🎯   display:", aiBtn.style.display);
+            console.log("🎯   classes:", Array.from(aiBtn.classList));
+          } else {
+            console.error("❌ AI button element not found!");
+          }
+
+          // PHASE 4: STATE UPDATES
+          console.log("🎯 === PHASE 4: INTERNAL STATE UPDATES ===");
+          const previousAiMinimized = this.aiMinimized;
+          const previousAiRestoring = this.aiRestoring;
+          const previousRestoreId = this.currentRestoreId;
+
+          console.log("🎯 Previous states:");
+          console.log("🎯   aiMinimized:", previousAiMinimized, "→ false");
+          console.log("🎯   aiRestoring:", previousAiRestoring, "→ false");
+          console.log("🎯   currentRestoreId:", previousRestoreId, "→ null");
+
+          this.aiMinimized = false;
+          this.aiRestoring = false;
+          this.currentRestoreId = null;
+
+          console.log("🎯 New states confirmed:");
+          console.log("🎯   aiMinimized:", this.aiMinimized);
+          console.log("🎯   aiRestoring:", this.aiRestoring);
+          console.log("🎯   currentRestoreId:", this.currentRestoreId);
+
+          // PHASE 5: MESSAGE CREATION
+          console.log("🎯 === PHASE 5: MESSAGE CREATION ===");
+          const restoreId =
+            Date.now() + Math.random().toString(36).substr(2, 5);
+          const messageData = {
+            type: "RESTORE_AI",
+            timestamp: Date.now(),
+            source: "control",
+            restoreId: restoreId,
+            attempt: this.restoreAttempts,
+            userInitiated: true,
+          };
+
+          console.log("🎯 Created restore message:");
+          console.log("🎯   type:", messageData.type);
+          console.log("🎯   timestamp:", messageData.timestamp);
+          console.log("🎯   source:", messageData.source);
+          console.log("🎯   restoreId:", messageData.restoreId);
+          console.log("🎯   attempt:", messageData.attempt);
+          console.log(
+            "🎯   Full message:",
+            JSON.stringify(messageData, null, 2)
+          );
+
+          try {
+            // PHASE 6: LOCALSTORAGE OPERATIONS
+            console.log("🎯 === PHASE 6: LOCALSTORAGE OPERATIONS ===");
+
+            // Primary storage
+            console.log("🎯 Storing with primary key: ai_restore_request");
+            localStorage.setItem(
+              "ai_restore_request",
+              JSON.stringify(messageData)
+            );
+
+            // Verify primary storage
+            const storedPrimary = localStorage.getItem("ai_restore_request");
+            console.log(
+              "🎯 Primary storage verification:",
+              storedPrimary ? "SUCCESS" : "FAILED"
+            );
+            if (storedPrimary) {
+              try {
+                const parsed = JSON.parse(storedPrimary);
+                console.log(
+                  "🎯 Primary storage parsed successfully:",
+                  parsed.restoreId === restoreId ? "ID MATCH" : "ID MISMATCH"
+                );
+              } catch (e) {
+                console.error("❌ Primary storage parse failed:", e);
+              }
+            }
+
+            // Backup storage keys
+            const backupKeys = [
+              "restore_ai",
+              "show_ai_window",
+              "ai_command",
+              "control_restore_command",
+              "window_restore_ai",
+              "ai_restore_message",
+            ];
+
+            console.log("🎯 Storing with backup keys:", backupKeys);
+            backupKeys.forEach((key, index) => {
+              console.log(
+                `🎯 [${index + 1}/${
+                  backupKeys.length
+                }] Storing with key: ${key}`
+              );
+              localStorage.setItem(key, JSON.stringify(messageData));
+
+              // Immediate verification
+              const stored = localStorage.getItem(key);
+              console.log(
+                `🎯 [${index + 1}/${backupKeys.length}] Verification: ${
+                  stored ? "SUCCESS" : "FAILED"
+                }`
+              );
+            });
+
+            // PHASE 7: MULTI-CHANNEL COMMUNICATION
+            console.log("🎯 === PHASE 7: MULTI-CHANNEL COMMUNICATION ===");
+
+            // Method 1: PostMessage
+            console.log("🎯 [COMM 1/4] PostMessage to parent...");
+            if (window.parent !== window) {
+              console.log(
+                "🎯 [COMM 1/4] Parent window detected, sending message"
+              );
+              window.parent.postMessage(messageData, "*");
+              console.log("🎯 [COMM 1/4] PostMessage sent successfully");
+            } else {
+              console.log(
+                "🎯 [COMM 1/4] No parent window, skipping postMessage"
+              );
+            }
+
+            // Method 2: Custom Events
+            console.log("🎯 [COMM 2/4] Custom events...");
+            const customEvents = [
+              "controlRestoreAI",
+              "restoreAI",
+              "aiRestore",
+              "showAI",
+            ];
+
+            customEvents.forEach((eventName, index) => {
+              console.log(
+                `🎯 [COMM 2/4] [${index + 1}/${
+                  customEvents.length
+                }] Dispatching: ${eventName}`
+              );
+              window.dispatchEvent(
+                new CustomEvent(eventName, { detail: messageData })
+              );
+              console.log(
+                `🎯 [COMM 2/4] [${index + 1}/${
+                  customEvents.length
+                }] Event dispatched successfully`
+              );
+            });
+
+            // Method 3: Electron API
+            console.log("🎯 [COMM 3/4] Electron API...");
+            if (window.electronAPI) {
+              console.log("🎯 [COMM 3/4] Electron API detected");
+
+              if (window.electronAPI.restoreAIWindow) {
+                console.log(
+                  "🎯 [COMM 3/4] Calling electronAPI.restoreAIWindow()"
+                );
+                try {
+                  const result = window.electronAPI.restoreAIWindow();
+                  console.log("🎯 [COMM 3/4] Electron API result:", result);
+                } catch (apiError) {
+                  console.error("❌ [COMM 3/4] Electron API error:", apiError);
+                }
+              } else {
+                console.log(
+                  "🎯 [COMM 3/4] restoreAIWindow method not available"
+                );
+              }
+            } else {
+              console.log("🎯 [COMM 3/4] Electron API not available");
+            }
+
+            // Method 4: Force check trigger
+            console.log("🎯 [COMM 4/4] Force check trigger...");
+            const forceCheckValue = Date.now().toString();
+            localStorage.setItem("force_control_check", forceCheckValue);
+            console.log("🎯 [COMM 4/4] Force check set:", forceCheckValue);
+
+            // PHASE 8: CLEANUP SCHEDULING
+            console.log("🎯 === PHASE 8: CLEANUP SCHEDULING ===");
+            console.log("🎯 Setting cleanup timer for 3 seconds...");
+
+            setTimeout(() => {
+              console.log("🎯 🧹 === CLEANUP PHASE START ===");
+              console.log(
+                "🎯 🧹 Cleanup timer triggered at:",
+                new Date().toISOString()
+              );
+
+              const cleanupKeys = [
+                "ai_restore_request",
+                ...backupKeys,
+                "force_control_check",
+              ];
+
+              cleanupKeys.forEach((key, index) => {
+                const beforeValue = localStorage.getItem(key);
+                console.log(
+                  `🎯 🧹 [${index + 1}/${cleanupKeys.length}] Removing ${key}:`,
+                  beforeValue ? "EXISTS" : "NOT_FOUND"
+                );
+
+                if (beforeValue) {
+                  localStorage.removeItem(key);
+                  const afterValue = localStorage.getItem(key);
+                  console.log(
+                    `🎯 🧹 [${index + 1}/${
+                      cleanupKeys.length
+                    }] Removal result:`,
+                    afterValue ? "FAILED" : "SUCCESS"
+                  );
+                }
+              });
+
+              console.log("🎯 🧹 === CLEANUP PHASE COMPLETE ===");
+            }, 3000);
+          } catch (error) {
+            console.error("❌ === CRITICAL ERROR IN RESTORE AI ===");
+            console.error("❌ Error message:", error.message);
+            console.error("❌ Error stack:", error.stack);
+            console.error("❌ Error at timestamp:", new Date().toISOString());
+
+            // Error recovery
+            console.log("🎯 🆘 === ERROR RECOVERY START ===");
+            console.log("🎯 🆘 Restoring button visibility...");
+
+            if (aiBtn) {
+              aiBtn.style.display = "block";
+              aiBtn.classList.add("show", "has-notification");
+              console.log("🎯 🆘 Button restored");
+            }
+
+            this.aiMinimized = true;
+            console.log("🎯 🆘 aiMinimized reset to true");
+            console.log("🎯 🆘 === ERROR RECOVERY COMPLETE ===");
+          }
+
+          // PHASE 9: LOCALSTORAGE FLAGS CLEANUP
+          console.log("🎯 === PHASE 9: LOCALSTORAGE FLAGS CLEANUP ===");
+          console.log("🎯 Flags BEFORE cleanup:");
+          console.log(
+            "🎯   control_ai_minimized:",
+            localStorage.getItem("control_ai_minimized")
+          );
+          console.log(
+            "🎯   ai_minimized:",
+            localStorage.getItem("ai_minimized")
+          );
+
+          console.log(
+            "🚨✅🚨✅🚨✅🚨✅ ALERT: CONTROL_AI_MINIMIZED HAS BEEN RESET!"
+          );
+          localStorage.removeItem("control_ai_minimized");
+          localStorage.removeItem("ai_minimized");
+
+          console.log("🎯 Flags AFTER cleanup:");
+          console.log(
+            "🎯   control_ai_minimized:",
+            localStorage.getItem("control_ai_minimized")
+          );
+          console.log(
+            "🎯   ai_minimized:",
+            localStorage.getItem("ai_minimized")
+          );
+
+          // PHASE 10: HEARTBEAT SETTING
+          console.log("🎯 === PHASE 10: HEARTBEAT SETTING ===");
+          const heartbeatValue = Date.now().toString();
+          localStorage.setItem("ai_heartbeat", heartbeatValue);
+          console.log("🎯 Fresh AI heartbeat set:", heartbeatValue);
+
+          // Verify heartbeat
+          const verifyHeartbeat = localStorage.getItem("ai_heartbeat");
+          console.log(
+            "🎯 Heartbeat verification:",
+            verifyHeartbeat === heartbeatValue ? "SUCCESS" : "FAILED"
+          );
+
+          // FINAL PHASE: COMPLETION LOG
+          console.log("🎯 === FINAL PHASE: COMPLETION SUMMARY ===");
+          console.log(
+            "🎯 Function completion timestamp:",
+            new Date().toISOString()
+          );
+          console.log(
+            "🎯 Total execution time:",
+            Date.now() - messageData.timestamp,
+            "ms"
+          );
+          console.log("🎯 Final state summary:");
+          console.log("🎯   aiMinimized:", this.aiMinimized);
+          console.log("🎯   aiRestoring:", this.aiRestoring);
+          console.log("🎯   currentRestoreId:", this.currentRestoreId);
+          console.log(
+            "🎯   Button hidden:",
+            aiBtn ? aiBtn.style.display === "none" : "BUTTON_NOT_FOUND"
+          );
+          console.log("🎯   Restore attempts:", this.restoreAttempts);
+          console.log("🎯🎯🎯 === ULTRA-ENHANCED AI RESTORE COMPLETE ===");
+        }
+
+        getTranscriptWords() {
+          return new Promise((resolve, reject) => {
+            console.log("Starting getTranscriptWords() function");
+
+            // First try to use IPC to get transcript words
+            if (
+              window.electronAPI &&
+              typeof window.electronAPI.getTranscriptWords
+            ) {
+              console.log("Electron API detected, using IPC method");
+              console.log("Calling window.electronAPI.getTranscriptWords()");
+
+              window.electronAPI
+                .getTranscriptWords()
+                .then((response) => {
+                  console.log(
+                    "IPC call successful, received response:",
+                    response
+                  );
+
+                  // Extract the words from the response object
+                  const transcriptWords = response.words;
+                  console.log(
+                    `Received ${transcriptWords.length} transcript words`
+                  );
+
+                  if (transcriptWords.length > 0) {
+                    console.log("Sending words to AI window");
+                    this.sendWordsToAIWindow(transcriptWords);
+                  } else {
+                    console.warn("No words received or empty array from IPC");
+                  }
+
+                  resolve(transcriptWords);
+                })
+                .catch((error) => {
+                  console.error("IPC failed with error:", error);
+                  console.error("Error details:", error.message, error.stack);
+                  reject(error);
+                });
+            } else {
+              // IPC not available, use DOM extraction
+              console.error(
+                "IPC renderer not available - electronAPI not found or invoke method missing"
+              );
+              console.warn("Falling back to DOM extraction method");
+              resolve([]); // Resolve with empty array to handle fallback gracefully
+            }
+          });
+        }
+        // Function to send words to AI window
+        sendWordsToAIWindow(words) {
+          return new Promise((resolve, reject) => {
+            // First try to use IPC to get transcript words
+            if (
+              window.electronAPI &&
+              typeof window.electronAPI.sendWordsToAIWindow === "function"
+            ) {
+              console.log("Electron API detected, using IPC method");
+              console.log(
+                "Calling window.electronAPI.sendWordsToAIWindow(words)"
+              );
+
+              window.electronAPI
+                .sendWordsToAIWindow(words)
+                .then(() => {
+                  resolve();
+                })
+                .catch((error) => {
+                  console.error("IPC failed with error:", error);
+                  console.error("Error details:", error.message, error.stack);
+                  reject(error);
+                });
+            } else {
+              // IPC not available, use DOM extraction
+              console.error(
+                "IPC renderer not available - electronAPI not found or invoke method missing"
+              );
+              console.warn("Falling back to DOM extraction method");
+              reject(new Error("IPC renderer not available"));
+            }
+          });
+        }
+        /*restoreTranscript() {
+          if ($DebugTestMode) {
+            console.log(
+              "🔄 ========== TRANSCRIPT RESTORE DEBUG START =========="
+            );
+            console.log(
+              "🔄 CONTROL: restoreTranscript() called at:",
+              new Date().toISOString()
+            );
+            console.log(
+              "🔄 CONTROL: Current transcriptMinimized state:",
+              this.transcriptMinimized
+            );
+            console.log(
+              "🔄 CONTROL: Current localStorage flags before restore:"
+            );
+            console.log(
+              "  - control_transcript_minimized:",
+              localStorage.getItem("control_transcript_minimized")
+            );
+            console.log(
+              "  - transcript_minimized:",
+              localStorage.getItem("transcript_minimized")
+            );
+            console.log(
+              "  - transcript_heartbeat:",
+              localStorage.getItem("transcript_heartbeat")
+            );
+            console.log(
+              "  - transcript_restore_request:",
+              localStorage.getItem("transcript_restore_request")
+            );
+            console.log("🔄 CONTROL: Current sessionStorage flags:");
+            console.log(
+              "  - transcript_minimized_this_session:",
+              sessionStorage.getItem("transcript_minimized_this_session")
+            );
+          }
+
+          // 🔧 NEW: IMMEDIATELY hide the button when clicked
+          if ($DebugTestMode) {
+            console.log("🔄 CONTROL: Calling hideTranscriptButton()...");
+          }
+          this.hideTranscriptButton();
+
+          // 🔧 NEW: Update internal state immediately
+          const previousState = this.transcriptMinimized;
+          this.transcriptMinimized = false;
+
+          if ($DebugTestMode) {
+            console.log(
+              "🔄 CONTROL: Updated internal state - transcriptMinimized:",
+              previousState,
+              "→",
+              this.transcriptMinimized
+            );
+          }
+
+          try {
+            const messageData = {
+              type: "RESTORE_TRANSCRIPT",
+              timestamp: Date.now(),
+              source: "control",
+              restoreId: Date.now() + Math.random().toString(36).substr(2, 5),
+            };
+
+            if ($DebugTestMode) {
+              console.log("🔄 CONTROL: Created restore message:", messageData);
+              console.log("🔄 CONTROL: Storing message in localStorage...");
+            }
+
+            localStorage.setItem(
+              "transcript_restore_request",
+              JSON.stringify(messageData)
+            );
+
+            // Verify storage
+            const storedMessage = localStorage.getItem(
+              "transcript_restore_request"
+            );
+            if ($DebugTestMode) {
+              console.log(
+                "🔄 CONTROL: Verification - stored message:",
+                storedMessage ? "SUCCESS" : "FAILED"
+              );
+              if (storedMessage) {
+                console.log(
+                  "🔄 CONTROL: Stored message content:",
+                  JSON.parse(storedMessage)
+                );
+              }
+            }
+
+            // Additional message sending methods
+            if ($DebugTestMode) {
+              console.log(
+                "🔄 CONTROL: Sending restore message via multiple channels..."
+              );
+            }
+
+            if (window.parent !== window) {
+              if ($DebugTestMode) {
+                console.log("🔄 CONTROL: Sending postMessage to parent...");
+              }
+              window.parent.postMessage(messageData, "*");
+            }
+
+            if ($DebugTestMode) {
+              console.log("🔄 CONTROL: Dispatching custom event...");
+            }
+            window.dispatchEvent(
+              new CustomEvent("controlRestoreTranscript", {
+                detail: messageData,
+              })
+            );
+
+            if (
+              window.electronAPI &&
+              window.electronAPI.restoreTranscriptWindow
+            ) {
+              if ($DebugTestMode) {
+                console.log(
+                  "🔄 CONTROL: Calling electronAPI.restoreTranscriptWindow()..."
+                );
+              }
+              const result = window.electronAPI.restoreTranscriptWindow();
+              if ($DebugTestMode) {
+                console.log("🔄 CONTROL: Electron API result:", result);
+              }
+            } else {
+              if ($DebugTestMode) {
+                console.log("🔄 CONTROL: Electron API not available");
+              }
+            }
+
+            if ($DebugTestMode) {
+              console.log("🔄 CONTROL: Setting cleanup timer for 3 seconds...");
+            }
+            setTimeout(() => {
+              localStorage.removeItem("transcript_restore_request");
+              if ($DebugTestMode) {
+                console.log(
+                  "🔄 CONTROL: Cleanup - removed transcript_restore_request"
+                );
+              }
+            }, 3000);
+          } catch (error) {
+            if ($DebugTestMode) {
+              console.error(
+                "🔄 CONTROL: ❌ ERROR in restoreTranscript():",
+                error
+              );
+              console.error("🔄 CONTROL: Error stack:", error.stack);
+            }
+          }
+
+          // 🔧 NEW: Clear localStorage flags immediately
+          if ($DebugTestMode) {
+            console.log(
+              "🔄 CONTROL: Clearing localStorage flags immediately..."
+            );
+            console.log(
+              "🔄 CONTROL: Before clearing - control_transcript_minimized:",
+              localStorage.getItem("control_transcript_minimized")
+            );
+          }
+
+          console.log(
+            "🚨🚨🚨🚨🚨 ALERT: CONTROL_TRANSCRIPT_MINIMIZED HAS BEEN RESET!"
+          );
+          localStorage.removeItem("control_transcript_minimized");
+          localStorage.removeItem("control_transcript_minimized_time");
+          localStorage.removeItem("transcript_minimized");
+
+          if ($DebugTestMode) {
+            console.log(
+              "🔄 CONTROL: After clearing - control_transcript_minimized:",
+              localStorage.getItem("control_transcript_minimized")
+            );
+            console.log(
+              "🔄 CONTROL: After clearing - transcript_minimized:",
+              localStorage.getItem("transcript_minimized")
+            );
+          }
+
+          // 🔧 NEW: Set fresh heartbeat to indicate transcript is active
+          const heartbeatValue = Date.now().toString();
+          localStorage.setItem("transcript_heartbeat", heartbeatValue);
+
+          if ($DebugTestMode) {
+            console.log("🔄 CONTROL: Set fresh heartbeat:", heartbeatValue);
+            console.log(
+              "🔄 CONTROL: Transcript button hidden immediately on click"
+            );
+            console.log(
+              "🔄 ========== TRANSCRIPT RESTORE DEBUG END =========="
+            );
+          }
+        }*/
+        setupKeepAlive() {
+          this.keepAliveInterval = setInterval(() => {
+            this.sendHeartbeat();
+            this.checkWindowVisibility();
+          }, 30000);
+
+          window.addEventListener("focus", () => {
+            this.ensureWindowVisibility();
+          });
+
+          window.addEventListener("blur", () => {
+            setTimeout(() => {
+              this.ensureWindowVisibility();
+            }, 100);
+          });
+        }
+
+        sendHeartbeat() {
+          // Only send CONTROL heartbeat, not transcript heartbeat
+          localStorage.setItem("control_heartbeat", Date.now().toString());
+
+          if (window.electronAPI && window.electronAPI.sendHeartbeat) {
+            window.electronAPI.sendHeartbeat();
+          }
+
+          console.log("Heartbeat sent at", new Date().toLocaleTimeString());
+          console.log("Window visibility checked");
+        }
+
+        checkWindowVisibility() {
+          const body = document.body;
+          if (body) {
+            body.style.display = "flex";
+            body.style.opacity = "1";
+            body.style.visibility = "visible";
+            body.style.transform = "none";
+            body.style.position = "relative";
+          }
+
+          if (window.electronAPI && window.electronAPI.ensureWindowVisible) {
+            window.electronAPI.ensureWindowVisible();
+          }
+
+          console.log("Window visibility checked");
+        }
+
+        ensureWindowVisibility() {
+          const body = document.body;
+          if (body) {
+            body.style.display = "flex";
+            body.style.opacity = "1";
+            body.style.visibility = "visible";
+            body.style.pointerEvents = "auto";
+          }
+
+          if (window.electronAPI && window.electronAPI.bringToFront) {
+            window.electronAPI.bringToFront();
+          }
+
+          console.log("Window visibility ensured");
+        }
+
+        logWindowState() {
+          const body = document.body;
+          const state = {
+            display: body.style.display || getComputedStyle(body).display,
+            opacity: body.style.opacity || getComputedStyle(body).opacity,
+            visibility:
+              body.style.visibility || getComputedStyle(body).visibility,
+            classList: Array.from(body.classList),
+            windowLocation: { x: window.screenX, y: window.screenY },
+            windowSize: {
+              width: window.innerWidth,
+              height: window.innerHeight,
+            },
+            lastActivity: new Date(this.lastActivity).toLocaleTimeString(),
+            isListening: this.isListening,
+            transcriptMinimized: this.transcriptMinimized,
+            aiMinimized: this.aiMinimized,
+            aiRestoring: this.aiRestoring,
+            currentRestoreId: this.currentRestoreId,
+            restoreAttempts: this.restoreAttempts,
+            messageLogLength: this.messageLog.length,
+          };
+
+          console.log("Window state:", state);
+        }
+
+        setupEventListeners() {
+          document.addEventListener("contextmenu", (e) => {
+            if (e.target.closest(".container")) {
+              e.preventDefault();
+              this.toggleSettingsMenu();
+            }
+          });
+
+          document.addEventListener("click", (e) => {
+            if (!e.target.closest(".container")) {
+              this.hideSettingsMenu();
+            }
+          });
+        }
+
+        setupKeyboardShortcuts() {
+          document.addEventListener("keydown", (e) => {
+            this.lastActivity = Date.now();
+
+            if (e.code === "Space" && !e.ctrlKey && !e.altKey && !e.shiftKey) {
+              e.preventDefault();
+              this.toggleListening();
+            }
+
+            if (e.code === "KeyT" && !e.ctrlKey && !e.altKey && !e.shiftKey) {
+              e.preventDefault();
+              if (this.transcriptMinimized) {
+                this.restoreTranscript();
+              }
+            }
+
+            if (e.code === "KeyA" && !e.ctrlKey && !e.altKey && !e.shiftKey) {
+              e.preventDefault();
+              if (this.aiMinimized) {
+                this.restoreAI();
+              }
+            }
+
+            if (e.code === "KeyS" && !e.ctrlKey && !e.altKey && !e.shiftKey) {
+              e.preventDefault();
+              this.openSettings();
+            }
+
+            if (e.code === "Enter" && e.ctrlKey) {
+              e.preventDefault();
+              this.captureScreenshot();
+            }
+
+            if (e.code === "KeyS" && e.ctrlKey) {
+              e.preventDefault();
+              this.openSettings();
+            }
+
+            if (e.code === "Escape") {
+              this.hideSettingsMenu();
+              this.hideShortcutsHint();
+            }
+
+            if (e.code === "KeyP" && e.ctrlKey && e.shiftKey) {
+              e.preventDefault();
+              this.testAIConnection();
+            }
+
+            if (e.code === "KeyR" && e.ctrlKey && e.shiftKey) {
+              e.preventDefault();
+              this.restoreAI();
+            }
+
+            if (e.code === "KeyC" && e.ctrlKey && e.shiftKey) {
+              e.preventDefault();
+              this.cleanupRestoreMessages();
+            }
+          });
+        }
+
+        setupTooltips() {
+          const buttons = document.querySelectorAll(".btn, .close-btn");
+          buttons.forEach((btn) => {
+            btn.addEventListener("mouseenter", (e) => {
+              const tooltip = e.target.title;
+              if (tooltip) {
+                this.showTooltip(tooltip);
+              }
+            });
+
+            btn.addEventListener("mouseleave", () => {
+              this.hideTooltip();
+            });
+          });
+        }
+
+        setupActivityDetection() {
+          ["mousedown", "mousemove", "keydown", "click", "touchstart"].forEach(
+            (event) => {
+              document.addEventListener(event, () => {
+                this.handleActivity();
+              });
+            }
+          );
+
+          this.handleActivity();
+        }
+
+        handleActivity() {
+          this.lastActivity = Date.now();
+
+          document.body.classList.remove("inactive-mode");
+          document.body.classList.add("fade-mode");
+
+          if (this.fadeTimer) {
+            clearTimeout(this.fadeTimer);
+          }
+
+          // 🔧 NEW: CRITICAL FIX - Don't fade out while listening
+          if (!isListening) {
+            this.fadeTimer = setTimeout(() => {
+              document.body.classList.remove("fade-mode");
+              document.body.classList.add("inactive-mode");
+              this.ensureWindowVisibility();
+            }, 10000);
+          } else {
+            // 🔧 NEW: If listening, keep window visible
+            this.ensureWindowVisibility();
+          }
+        }
+
+        toggleListening() {
+          console.log("🎯 === NATIVE AUDIO toggleListening ===");
+          console.log("🎯 Current state:", this.isListening);
+          console.log("🔧 LanguageTool ready:", this.languageToolReady);
+
+          // 🔧 FIX: Don't change this.isListening here - let main renderer handle it
+          const targetState = !this.isListening;
+
+          const btn = document.getElementById("listenBtn");
+          const statusDot = document.getElementById("statusDot");
+          const statusText = document.getElementById("statusText");
+
+          if (targetState) {
+            // About to start listening - show transitioning state only
+            console.log("▶️ Starting NATIVE audio listening mode...");
+            btn.textContent = "Starting Native...";
+            statusText.textContent = "Starting Native Audio...";
+          } else {
+            // About to stop listening - show transitioning state only
+            console.log("⏸️ Stopping NATIVE audio listening mode...");
+            btn.textContent = "Stopping...";
+            statusText.textContent = "Stopping...";
+          }
+
+          // Call main renderer - it will handle the actual state change
+          if (window.toggleListeningMain) {
+            window.toggleListeningMain();
+          }
+
+          console.log("NATIVE audio listening toggled:", this.isListening);
+        }
+
+        captureScreenshot() {
+          if (window.electronAPI) {
+            window.electronAPI
+              .captureScreenshot()
+              .then((screenshot) => {
+                if (screenshot) {
+                  // Instead of directly processing, add to chat input as preview
+                  this.addScreenshotToChat(screenshot);
+                } else {
+                }
+              })
+              .catch((error) => {
+                console.log("Screenshot error:", error);
+              });
+          }
+        }
+
+        addScreenshotToChat(screenshot) {
+          if ($DebugTestMode) {
+            console.log("📸 Adding screenshot to chat input...");
+            console.log("📸 Screenshot type:", typeof screenshot);
+            console.log("📸 Screenshot length:", screenshot?.length);
+            console.log("📸 Screenshot sample:", screenshot?.substring(0, 50));
+          }
+
+          try {
+            // VALIDATE SCREENSHOT DATA
+            if (!screenshot || typeof screenshot !== "string") {
+              if ($DebugTestMode) {
+                console.error("📸 Invalid screenshot data type");
+              }
+              return;
+            }
+
+            if (screenshot.length === 0) {
+              if ($DebugTestMode) {
+                console.error("📸 Empty screenshot data");
+              }
+              return;
+            }
+
+            // CHECK SIZE LIMITS
+            if (screenshot.length > 10000000) {
+              // 10MB limit
+              if ($DebugTestMode) {
+                console.error("📸 Screenshot too large:", screenshot.length);
+              }
+              return;
+            }
+
+            // Create screenshot attachment data
+            const screenshotAttachment = {
+              type: "image",
+              filename: `screenshot_${new Date()
+                .toISOString()
+                .slice(0, 19)
+                .replace(/:/g, "-")}.png`,
+              data: screenshot,
+              size: screenshot.length,
+              timestamp: Date.now(),
+            };
+
+            // TEST SERIALIZATION
+            const testSerialized = JSON.stringify(screenshotAttachment);
+            const testParsed = JSON.parse(testSerialized);
+            if (testParsed.data !== screenshot) {
+              if ($DebugTestMode) {
+                console.error("📸 Data corruption during serialization");
+              }
+              return;
+            }
+            if ($DebugTestMode) {
+              console.log("📸 ✅ Serialization test passed");
+            }
+
+            // Send message to AI window to add screenshot to input
+            const message = {
+              type: "ADD_SCREENSHOT_ATTACHMENT",
+              attachment: screenshotAttachment,
+              timestamp: Date.now(),
+              source: "control",
+            };
+
+            // Store in localStorage for AI window to pick up
+            localStorage.setItem(
+              "screenshot_attachment",
+              JSON.stringify(message)
+            );
+
+            // Try postMessage as well
+            if (window.parent !== window) {
+              window.parent.postMessage(message, "*");
+            }
+
+            // Dispatch custom event
+            window.dispatchEvent(
+              new CustomEvent("screenshotCaptured", {
+                detail: message,
+              })
+            );
+
+            if ($DebugTestMode) {
+              console.log("📸 Screenshot attachment sent to AI window");
+            }
+          } catch (error) {
+            if ($DebugTestMode) {
+              console.error("❌ Error adding screenshot to chat:", error);
+            }
+          }
+        }
+
+        async openSettings() {
+          if ($DebugTestMode) {
+            console.log("🔧 Opening settings in default browser...");
+          }
+
+          const settingsUrl =
+            "http://localhost/Memoria/public/html/Micro_Learner.html";
+
+          try {
+            // Method 1: Use the new IPC handler (preferred)
+            if (window.electronAPI?.openExternalUrl) {
+              if ($DebugTestMode) {
+                console.log("🔧 Method 1: Using IPC openExternalUrl");
+              }
+
+              const result = await window.electronAPI.openExternalUrl(
+                settingsUrl
+              );
+
+              if (result.success) {
+                if ($DebugTestMode) {
+                  console.log("🔧 ✅ Settings opened successfully via IPC");
+                }
+                return;
+              } else {
+                if ($DebugTestMode) {
+                  console.error("🔧 ❌ IPC method failed:", result.error);
+                }
+              }
+            }
+          } catch (error) {
+            if ($DebugTestMode) {
+              console.error("🔧 ❌ IPC method failed:", error);
+            }
+          }
+
+          // Method 2: Fallback to window.open
+          try {
+            if ($DebugTestMode) {
+              console.log("🔧 Method 2: Using window.open fallback");
+            }
+
+            window.open(settingsUrl, "_blank");
+
+            if ($DebugTestMode) {
+              console.log("🔧 ✅ Settings opened via window.open");
+            }
+          } catch (error) {
+            if ($DebugTestMode) {
+              console.error("🔧 ❌ All methods failed:", error);
+            }
+          }
+        }
+
+        showTooltip(text) {
+          const tooltip = document.getElementById("tooltip");
+          if (tooltip) {
+            tooltip.textContent = text;
+            tooltip.classList.add("show");
+          }
+        }
+
+        hideTooltip() {
+          const tooltip = document.getElementById("tooltip");
+          if (tooltip) {
+            tooltip.classList.remove("show");
+          }
+        }
+
+        toggleSettingsMenu() {
+          const menu = document.getElementById("settingsMenu");
+          if (menu) {
+            menu.classList.toggle("show");
+          }
+        }
+
+        hideSettingsMenu() {
+          const menu = document.getElementById("settingsMenu");
+          if (menu) {
+            menu.classList.remove("show");
+          }
+        }
+
+        hideShortcutsHint() {
+          const hint = document.getElementById("shortcutsHint");
+          if (hint) {
+            hint.classList.remove("show");
+          }
+        }
+
+        closeAll() {
+          if (window.electronAPI && window.electronAPI.closeAll) {
+            window.electronAPI.closeAll();
+          }
+        }
+
+        checkAuth() {
+          const token = localStorage.getItem("memoria_token");
+          const userData = localStorage.getItem("memoria_user");
+
+          if (token && userData) {
+            try {
+              this.authState = {
+                isAuthenticated: true,
+                token: token,
+                user: JSON.parse(userData),
+              };
+              //this.updateAuthStatus();
+            } catch (error) {
+              console.log("Failed to parse auth data:", error);
+            }
+          }
+
+          setTimeout(() => {
+            this.checkAuth();
+          }, 2000);
+        }
+
+        /* updateAuthStatus() {
+          const statusDot = document.getElementById("statusDot");
+          //const statusText = document.getElementById("statusText");
+
+          // ✅ ADDED CHECK: Ensure user and user.email exist and email is a string
+          if (
+            this.authState.isAuthenticated &&
+            this.authState.user &&
+            typeof this.authState.user.email === "string"
+          ) {
+            statusDot.classList.add("auth");
+            statusText.textContent = `Ready - ${
+              this.authState.user.email.split("@")[0]
+            }`;
+          } else {
+            statusDot.classList.remove("auth");
+            //statusText.textContent = "Ready - Free version";
+          }
+        }*/
+
+        restoreSettings() {
+          try {
+            const settings = localStorage.getItem("control_settings");
+            if (settings) {
+              const parsed = JSON.parse(settings);
+              // Apply settings...
+            }
+          } catch (error) {
+            console.log("Failed to restore settings:", error);
+          }
+        }
+
+        saveSettings() {
+          const settings = {
+            transcriptMinimized: this.transcriptMinimized,
+            aiMinimized: this.aiMinimized,
+            aiRestoring: this.aiRestoring,
+            timestamp: Date.now(),
+          };
+
+          localStorage.setItem("control_settings", JSON.stringify(settings));
+        }
+
+        destroy() {
+          if (this.keepAliveInterval) {
+            clearInterval(this.keepAliveInterval);
+          }
+          if (this.fadeTimer) {
+            clearTimeout(this.fadeTimer);
+          }
+          if (this.storageWatcher) {
+            clearInterval(this.storageWatcher);
+          }
+
+          // NEW: Clean up window size listener
+          if (
+            this.windowSizeListenerSet &&
+            window.electronAPI?.removeWindowSizeListener
+          ) {
+            window.electronAPI.removeWindowSizeListener();
+          }
+        }
+
+        // 🔧 NEW: Setup LanguageTool monitoring
+        setupLanguageToolMonitoring() {
+          if ($DebugTestMode) {
+            console.log("🔧 Setting up LanguageTool monitoring...");
+          }
+
+          // Listen for LanguageTool progress
+          if (window.electronAPI?.onLanguageToolProgress) {
+            window.electronAPI.onLanguageToolProgress((progress) => {
+              if ($DebugTestMode) {
+                console.log("📊 LanguageTool progress:", progress);
+              }
+            });
+          }
+
+          // Listen for LanguageTool ready
+          if (window.electronAPI?.onLanguageToolReady) {
+            window.electronAPI.onLanguageToolReady((status) => {
+              if ($DebugTestMode) {
+                console.log("✅ LanguageTool ready:", status);
+              }
+              this.languageToolReady = true;
+            });
+          }
+
+          // Listen for LanguageTool errors
+          if (window.electronAPI?.onLanguageToolError) {
+            window.electronAPI.onLanguageToolError((error) => {
+              if ($DebugTestMode) {
+                console.error("❌ LanguageTool error:", error);
+              }
+            });
+          }
+
+          // Listen for LanguageTool installation complete
+          if (window.electronAPI?.onLanguageToolInstalled) {
+            window.electronAPI.onLanguageToolInstalled((status) => {
+              if ($DebugTestMode) {
+                console.log("✅ LanguageTool installed:", status);
+              }
+              this.languageToolInstalled = true;
+            });
+          }
+
+          // Check initial status
+          this.checkInitialLanguageToolStatus();
+        }
+
+        // 🔧 NEW: Check initial LanguageTool status
+        async checkInitialLanguageToolStatus() {
+          if (window.electronAPI?.getLanguageToolStatus) {
+            try {
+              const status = await window.electronAPI.getLanguageToolStatus();
+              if ($DebugTestMode) {
+                console.log("🔍 Initial LanguageTool status:", status);
+              }
+            } catch (error) {
+              if ($DebugTestMode) {
+                console.error(
+                  "Failed to get initial LanguageTool status:",
+                  error
+                );
+              }
+            }
+          }
+        }
+      }
+
+      function toggleListening() {
+        console.log("🎯 === FIXED TOGGLE LISTENING ===");
+        console.log("🎯 Current state:", isListening);
+
+        const btn = document.getElementById("listenBtn");
+
+        // Disable button during transition
+        if (btn) {
+          btn.disabled = true;
+        }
+
+        try {
+          if (
+            window.toggleListeningMain &&
+            typeof window.toggleListeningMain === "function"
+          ) {
+            window.toggleListeningMain();
+
+            // Re-enable button after delay
+            setTimeout(() => {
+              if (btn) btn.disabled = false;
+            }, 1000);
+          } else {
+            console.error("❌ Main renderer not available");
+            if (btn) {
+              btn.textContent = "Error";
+              btn.disabled = false;
+            }
+          }
+        } catch (error) {
+          console.error("❌ Error:", error);
+          if (btn) {
+            btn.textContent = isListening ? "⏸ Stop" : "▶ Listen";
+            btn.disabled = false;
+          }
+        }
+      }
+      /*
+      function restoreTranscript() {
+        if ($DebugTestMode) {
+          console.log("🎯 restoreTranscript global function called");
+        }
+        if (window.controlManager) {
+          window.controlManager.restoreTranscript();
+        } else {
+          if ($DebugTestMode) {
+            console.error("❌ controlManager not available");
+          }
+        }
+      }
+*/
+      // ULTRA-ENHANCED global restoreAI function with even more debugging
+      function restoreAI() {
+        console.log("🌍🌍🌍 === ULTRA-ENHANCED GLOBAL RESTORE AI CALLED ===");
+        console.log(
+          "🌍 Global function entry timestamp:",
+          new Date().toISOString()
+        );
+        console.log("🌍 User clicked the AI restore button");
+        console.log("🌍 Call stack:", new Error().stack);
+
+        // PHASE 1: MANAGER AVAILABILITY CHECK
+        console.log("🌍 === PHASE 1: MANAGER AVAILABILITY CHECK ===");
+        console.log("🌍 window object exists:", typeof window !== "undefined");
+        console.log(
+          "🌍 window.controlManager exists:",
+          typeof window.controlManager !== "undefined"
+        );
+        console.log(
+          "🌍 window.controlManager type:",
+          typeof window.controlManager
+        );
+
+        if (!window.controlManager) {
+          console.error("❌ === CRITICAL: CONTROL MANAGER NOT AVAILABLE ===");
+          console.error("❌ window object:", typeof window);
+          console.error("❌ window.controlManager:", window.controlManager);
+          console.error(
+            "❌ Available window properties:",
+            Object.keys(window).filter((k) => k.includes("control"))
+          );
+
+          // FALLBACK MECHANISM
+          console.log("🆘 === FALLBACK MECHANISM ACTIVATED ===");
+          try {
+            console.log("🆘 Creating fallback restore message...");
+            const fallbackMessage = {
+              type: "AI_RESTORE_REQUEST_FALLBACK",
+              timestamp: Date.now(),
+              source: "control_fallback",
+              fallbackReason: "controlManager_not_available",
+              userAgent: navigator.userAgent,
+              url: window.location.href,
+            };
+
+            console.log("🆘 Fallback message created:", fallbackMessage);
+
+            // Multiple fallback storage attempts
+            const fallbackKeys = [
+              "ai_restore_fallback",
+              "emergency_ai_restore",
+              "backup_restore_ai",
+              "fallback_ai_command",
+            ];
+
+            fallbackKeys.forEach((key, index) => {
+              console.log(
+                `🆘 [${index + 1}/${
+                  fallbackKeys.length
+                }] Storing fallback with key: ${key}`
+              );
+              localStorage.setItem(key, JSON.stringify(fallbackMessage));
+
+              const verification = localStorage.getItem(key);
+              console.log(
+                `🆘 [${index + 1}/${fallbackKeys.length}] Verification:`,
+                verification ? "SUCCESS" : "FAILED"
+              );
+            });
+
+            // Force check
+            const forceValue = Date.now().toString();
+            localStorage.setItem("force_control_check", forceValue);
+            console.log("🆘 Force check set:", forceValue);
+
+            // Additional emergency signals
+            localStorage.setItem(
+              "emergency_restore_signal",
+              Date.now().toString()
+            );
+            localStorage.setItem("ai_restore_emergency", "true");
+
+            console.log("🆘 Fallback mechanism completed");
+          } catch (fallbackError) {
+            console.error("❌ Fallback mechanism failed:", fallbackError);
+            console.error("❌ Fallback error stack:", fallbackError.stack);
+          }
+
+          console.log("🌍 === GLOBAL FUNCTION ENDING (NO MANAGER) ===");
+          return;
+        }
+
+        // PHASE 2: METHOD AVAILABILITY CHECK
+        console.log("🌍 === PHASE 2: METHOD AVAILABILITY CHECK ===");
+        console.log(
+          "🌍 controlManager.restoreAI exists:",
+          typeof window.controlManager.restoreAI !== "undefined"
+        );
+        console.log(
+          "🌍 controlManager.restoreAI type:",
+          typeof window.controlManager.restoreAI
+        );
+        console.log(
+          "🌍 Available controlManager methods:",
+          Object.getOwnPropertyNames(window.controlManager).filter(
+            (prop) => typeof window.controlManager[prop] === "function"
+          )
+        );
+
+        if (!window.controlManager.restoreAI) {
+          console.error("❌ === CRITICAL: RESTORE AI METHOD NOT FOUND ===");
+          console.error(
+            "❌ Method type:",
+            typeof window.controlManager.restoreAI
+          );
+          console.error(
+            "❌ Available methods:",
+            Object.keys(window.controlManager).filter(
+              (k) => typeof window.controlManager[k] === "function"
+            )
+          );
+          console.log("🌍 === GLOBAL FUNCTION ENDING (NO METHOD) ===");
+          return;
+        }
+
+        // PHASE 3: PRE-CALL STATE LOGGING
+        console.log("🌍 === PHASE 3: PRE-CALL STATE LOGGING ===");
+        console.log("🌍 Manager state before call:");
+        console.log("🌍   aiMinimized:", window.controlManager.aiMinimized);
+        console.log("🌍   aiRestoring:", window.controlManager.aiRestoring);
+        console.log(
+          "🌍   currentRestoreId:",
+          window.controlManager.currentRestoreId
+        );
+        console.log(
+          "🌍   restoreAttempts:",
+          window.controlManager.restoreAttempts
+        );
+        console.log(
+          "🌍   lastRestoreTime:",
+          window.controlManager.lastRestoreTime
+        );
+
+        // Check localStorage before call
+        console.log("🌍 LocalStorage before call:");
+        console.log(
+          "🌍   control_ai_minimized:",
+          localStorage.getItem("control_ai_minimized")
+        );
+        console.log("🌍   ai_minimized:", localStorage.getItem("ai_minimized"));
+        console.log("🌍   ai_heartbeat:", localStorage.getItem("ai_heartbeat"));
+
+        // PHASE 4: THE ACTUAL METHOD CALL
+        console.log("🌍 === PHASE 4: EXECUTING METHOD CALL ===");
+        console.log("📞 About to call controlManager.restoreAI()...");
+        console.log("📞 Call timestamp:", new Date().toISOString());
+
+        let callResult = null;
+        let callError = null;
+        const callStartTime = Date.now();
+
+        try {
+          console.log("📞 CALLING NOW...");
+          callResult = window.controlManager.restoreAI();
+          console.log("📞 Method call completed successfully");
+          console.log("📞 Call duration:", Date.now() - callStartTime, "ms");
+          console.log("📞 Return value:", callResult);
+          console.log("📞 Return value type:", typeof callResult);
+        } catch (error) {
+          callError = error;
+          console.error("❌ === METHOD CALL FAILED ===");
+          console.error("❌ Error during method call:", error.message);
+          console.error("❌ Error type:", error.constructor.name);
+          console.error("❌ Error stack:", error.stack);
+          console.error(
+            "❌ Call duration before error:",
+            Date.now() - callStartTime,
+            "ms"
+          );
+        }
+
+        // PHASE 5: POST-CALL STATE VERIFICATION
+        console.log("🌍 === PHASE 5: POST-CALL STATE VERIFICATION ===");
+
+        // Immediate state check
+        console.log("🌍 Manager state IMMEDIATELY after call:");
+        console.log("🌍   aiMinimized:", window.controlManager.aiMinimized);
+        console.log("🌍   aiRestoring:", window.controlManager.aiRestoring);
+        console.log(
+          "🌍   currentRestoreId:",
+          window.controlManager.currentRestoreId
+        );
+        console.log(
+          "🌍   restoreAttempts:",
+          window.controlManager.restoreAttempts
+        );
+
+        // Check localStorage after call
+        console.log("🌍 LocalStorage IMMEDIATELY after call:");
+        console.log(
+          "🌍   control_ai_minimized:",
+          localStorage.getItem("control_ai_minimized")
+        );
+        console.log("🌍   ai_minimized:", localStorage.getItem("ai_minimized"));
+        console.log("🌍   ai_heartbeat:", localStorage.getItem("ai_heartbeat"));
+        console.log(
+          "🌍   ai_restore_request:",
+          localStorage.getItem("ai_restore_request")
+        );
+
+        // UI state check
+        const aiBtn = document.getElementById("aiBtn");
+        if (aiBtn) {
+          console.log("🌍 AI Button state after call:");
+          console.log("🌍   display:", aiBtn.style.display);
+          console.log("🌍   classes:", Array.from(aiBtn.classList));
+          console.log("🌍   disabled:", aiBtn.disabled);
+        } else {
+          console.log("🌍 AI Button: NOT FOUND");
+        }
+
+        // PHASE 6: DELAYED STATE VERIFICATION
+        console.log("🌍 === PHASE 6: SCHEDULING DELAYED VERIFICATION ===");
+
+        [100, 250, 500, 1000, 2000].forEach((delay, index) => {
+          setTimeout(() => {
+            console.log(
+              `🌍 ⏰ [DELAYED CHECK ${index + 1}/5] After ${delay}ms:`
+            );
+            console.log(
+              `🌍 ⏰   aiMinimized: ${window.controlManager?.aiMinimized}`
+            );
+            console.log(
+              `🌍 ⏰   aiRestoring: ${window.controlManager?.aiRestoring}`
+            );
+            console.log(
+              `🌍 ⏰   control_ai_minimized: ${localStorage.getItem(
+                "control_ai_minimized"
+              )}`
+            );
+            console.log(
+              `🌍 ⏰   ai_restore_request: ${
+                localStorage.getItem("ai_restore_request") ? "EXISTS" : "NONE"
+              }`
+            );
+
+            if (aiBtn) {
+              console.log(`🌍 ⏰   Button display: ${aiBtn.style.display}`);
+            }
+          }, delay);
+        });
+
+        // PHASE 7: ERROR RECOVERY (if needed)
+        if (callError) {
+          console.log("🌍 === PHASE 7: ERROR RECOVERY ===");
+          console.log("🆘 Attempting error recovery...");
+
+          try {
+            if (window.controlManager.onAIRestoreFailed) {
+              console.log("🆘 Calling onAIRestoreFailed...");
+              window.controlManager.onAIRestoreFailed();
+              console.log("🆘 onAIRestoreFailed completed");
+            } else {
+              console.log("🆘 onAIRestoreFailed method not available");
+            }
+          } catch (recoveryError) {
+            console.error("❌ Recovery failed:", recoveryError);
+            console.error("❌ Recovery error stack:", recoveryError.stack);
+          }
+        }
+
+        // FINAL SUMMARY
+        console.log("🌍 === FINAL SUMMARY ===");
+        console.log(
+          "🌍 Global function completion timestamp:",
+          new Date().toISOString()
+        );
+        console.log(
+          "🌍 Total execution time:",
+          Date.now() - callStartTime,
+          "ms"
+        );
+        console.log("🌍 Call successful:", !callError);
+        console.log("🌍 Call result:", callResult);
+        console.log("🌍 Error occurred:", !!callError);
+        if (callError) {
+          console.log("🌍 Error summary:", callError.message);
+        }
+        console.log("🌍🌍🌍 === ULTRA-ENHANCED GLOBAL RESTORE AI COMPLETE ===");
+      }
+      function captureScreenshot() {
+        if ($DebugTestMode) {
+          console.log("🎯 captureScreenshot global function called");
+        }
+        if (window.controlManager) {
+          window.controlManager.captureScreenshot();
+        } else {
+          if ($DebugTestMode) {
+            console.error("❌ controlManager not available");
+          }
+        }
+      }
+
+      function getTranscriptWords() {
+        if ($DebugTestMode) {
+          console.log("🎯 getTranscriptWords global function called");
+        }
+        if (window.controlManager) {
+          window.controlManager.getTranscriptWords();
+        } else {
+          if ($DebugTestMode) {
+            console.error("❌ controlManager not available");
+          }
+        }
+      }
+
+      function closeAll() {
+        if ($DebugTestMode) {
+          console.log("🎯 closeAll global function called");
+        }
+        if (window.controlManager) {
+          window.controlManager.closeAll();
+        } else {
+          if ($DebugTestMode) {
+            console.error("❌ controlManager not available");
+          }
+        }
+      }
+
+      function broadcastListeningState(newState, status = null) {
+        isListening = newState;
+        window.isListening = newState;
+
+        // Broadcast to control bar
+        const event = new CustomEvent("listeningStateChanged", {
+          detail: {
+            isListening: newState,
+            status: status || (newState ? "🎤 Listening..." : "Ready"),
+            timestamp: Date.now(),
+          },
+        });
+        window.dispatchEvent(event);
+      }
+
+      function handleRightClick(event) {
+        if ($DebugTestMode) {
+          console.log("🎯 handleRightClick global function called");
+        }
+        event.preventDefault();
+        if (window.controlManager) {
+          window.controlManager.toggleSettingsMenu();
+        } else {
+          if ($DebugTestMode) {
+            console.error("❌ controlManager not available");
+          }
+        }
+      }
+
+      function openSettings() {
+        if ($DebugTestMode) {
+          console.log("🎯 openSettings global function called");
+        }
+        if (window.controlManager) {
+          window.controlManager.openSettings();
+        } else {
+          if ($DebugTestMode) {
+            console.error("❌ controlManager not available");
+          }
+        }
+      }
+
+      // Initialize when DOM is loaded
+      document.addEventListener("DOMContentLoaded", () => {
+        try {
+          window.controlManager = new ControlWindowManager();
+          if ($DebugTestMode) {
+            console.log("✅ ControlWindowManager created successfully");
+            console.log(
+              "✅ window.controlManager:",
+              typeof window.controlManager
+            );
+            console.log(
+              "✅ Available methods:",
+              Object.keys(window.controlManager).filter(
+                (k) => typeof window.controlManager[k] === "function"
+              )
+            );
+          }
+        } catch (error) {
+          if ($DebugTestMode) {
+            console.error("❌ Failed to create ControlWindowManager:", error);
+            console.error("❌ Error stack:", error.stack);
+          }
+        }
+        if ($DebugTestMode) {
+          console.log("🚀 DOM loaded, initializing ControlWindowManager...");
+          console.log("🚀 NATIVE AUDIO MODE ENABLED");
+          console.log("🚀 Current timestamp:", new Date().toISOString());
+          console.log("🚀 Document ready state:", document.readyState);
+        }
+
+        const btn = document.getElementById("listenBtn");
+        btn.disabled = true; // Disable until ready
+        btn.textContent = "Loading Native Audio...";
+
+        // Check if main renderer is ready AND native audio is available
+        const checkMainRenderer = setInterval(() => {
+          if (
+            window.startListening &&
+            typeof window.startListening === "function"
+          ) {
+            // Additional check for native audio capability
+            if (window.electronAPI?.getScreenCaptureSource) {
+              clearInterval(checkMainRenderer);
+              btn.disabled = false;
+              btn.textContent = "▶ Listen";
+              btn.onclick = toggleListening; // Set up click handler
+
+              if ($DebugTestMode) {
+                console.log("✅ Native audio capability confirmed");
+              }
+            } else {
+              // Fallback mode
+              clearInterval(checkMainRenderer);
+              btn.disabled = false;
+              btn.textContent = "▶ Listen (Fallback)";
+              btn.onclick = toggleListening;
+
+              if ($DebugTestMode) {
+                console.warn("⚠️ Native audio not available, using fallback");
+              }
+            }
+          }
+        }, 100);
+
+        if ($DebugTestMode) {
+          console.log(
+            "✅ Enhanced persistent control window initialized with EXTENSIVE debug logging"
+          );
+        }
+      });
+
+      // Save settings before unload
+      window.addEventListener("beforeunload", () => {
+        if ($DebugTestMode) {
+          console.log("👋 Window unloading, saving settings...");
+        }
+        if (window.controlManager) {
+          window.controlManager.saveSettings();
+        }
+      });
+
+      // Handle page visibility changes
+      document.addEventListener("visibilitychange", () => {
+        if ($DebugTestMode) {
+          console.log("👁️ Visibility changed, hidden:", document.hidden);
+        }
+        if (window.controlManager && !document.hidden) {
+          window.controlManager.ensureWindowVisibility();
+        }
+      });
+
+      // Enhanced window visibility checker
+      setInterval(() => {
+        if (isListening) {
+          // Check if window is actually visible
+          const isVisible =
+            document.visibilityState === "visible" &&
+            !document.hidden &&
+            document.body.style.display !== "none" &&
+            document.body.style.visibility !== "hidden";
+
+          if (!isVisible) {
+            if ($DebugTestMode) {
+              console.warn(
+                "Control window not visible while listening, fixing..."
+              );
+            }
+
+            // Force visibility
+            document.body.style.display = "flex";
+            document.body.style.visibility = "visible";
+            document.body.style.opacity = "1";
+
+            // Request main process to fix window
+            if (window.electronAPI?.ensureControlWindowVisible) {
+              window.electronAPI.ensureControlWindowVisible();
+            }
+          }
+        }
+      }, 1000);
+
+      // 🔧 NEW: Listen for state changes from main renderer
+      window.addEventListener("listeningStateChanged", (event) => {
+        const newState = event.detail.isListening;
+        const status = event.detail.status;
+
+        // Update control manager state
+        if (window.controlManager) {
+          window.controlManager.isListening = newState;
+        }
+
+        // Update UI
+        const btn = document.getElementById("listenBtn");
+        // const statusDot = document.getElementById("statusDot");
+        //const statusText = document.getElementById("statusText");
+
+        if (btn) {
+          btn.textContent = newState ? "⏸ Stop" : "▶ Listen";
+          if (newState) {
+            btn.classList.add("active");
+          } else {
+            btn.classList.remove("active");
+          }
+        }
+
+        /*if (statusDot) {
+          if (newState) {
+            statusDot.classList.add("active");
+          } else {
+            statusDot.classList.remove("active");
+          }
+        }*/
+
+        /*if (statusText) {
+          statusText.textContent = status;
+        }*/
+      });
+
+      let isExpanded = false;
+      let expandTimeout = null;
+      let collapseTimeout = null;
+
+      // Function to expand
+      async function expandWindow() {
+        if (!isExpanded) {
+          if (expandTimeout) clearTimeout(expandTimeout);
+
+          expandTimeout = setTimeout(async () => {
+            if ($DebugTestMode) {
+              console.log("🎛️ Expanding window");
+            }
+
+            try {
+              const result = await window.electronAPI.expandControlWindow();
+              if (result.success) {
+                isExpanded = true;
+                document.body.classList.add("expanded");
+              }
+            } catch (error) {
+              if ($DebugTestMode) {
+                console.error("❌ Error expanding window:", error);
+              }
+            }
+          }, 50);
+        }
+      }
+
+      // Function to collapse
+      async function collapseWindow() {
+        if (isExpanded) {
+          if (collapseTimeout) clearTimeout(collapseTimeout);
+
+          collapseTimeout = setTimeout(async () => {
+            if ($DebugTestMode) {
+              console.log("🎛️ Collapsing window");
+            }
+
+            try {
+              const result = await window.electronAPI.collapseControlWindow();
+              if (result.success) {
+                isExpanded = false;
+                document.body.classList.remove("expanded");
+              }
+            } catch (error) {
+              if ($DebugTestMode) {
+                console.error("❌ Error collapsing window:", error);
+              }
+            }
+          }, 200);
+        }
+      }
+
+      // Clear any pending timeouts
+      function clearTimeouts() {
+        if (expandTimeout) {
+          clearTimeout(expandTimeout);
+          expandTimeout = null;
+        }
+        if (collapseTimeout) {
+          clearTimeout(collapseTimeout);
+          collapseTimeout = null;
+        }
+      }
+
+      /*document.addEventListener("DOMContentLoaded", () => {
+        const container = document.querySelector(".container_wrapper");
+
+        const container2 = document.querySelector(".body");
+        container2.addEventListener("mouseenter", (e) => {
+          console.log("Mouse entered container");
+          clearTimeouts();
+          expandWindow();
+          container.classList.add("drag");
+        });
+
+        container2.addEventListener("mouseleave", (e) => {
+          console.log("Mouse left container");
+          clearTimeouts();
+          collapseWindow();
+          container.classList.remove("drag");
+        });
+
+        console.log("🎯 Mouse event listeners attached to container");
+      });*/
+      // Handle when window regains focus
+      window.addEventListener("focus", () => {
+        // Don't auto-expand on focus, wait for mouse movement
+      });
+    </script>
+
+    <script src="enhanced-audio-capture.js"></script>
+    <script src="main-renderer.js"></script>
+  </body>
+</html>

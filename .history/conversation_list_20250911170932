@@ -1,0 +1,602 @@
+[
+  {
+    "topic": "User Affirmation for File Search",
+    "conversation_id": "conv_1757615766586_9jeev21qy",
+    "timestamp": "2025-09-11 18:36:06.000000",
+    "unix_timestamp": 1757608566
+  },
+  {
+    "topic": "User's Single-Word Inquiry: 'day'",
+    "conversation_id": "conv_1757615695804_g5szzqefp",
+    "timestamp": "2025-09-11 18:34:55.000000",
+    "unix_timestamp": 1757608495
+  },
+  {
+    "topic": "User Initiated 'dede' Query",
+    "conversation_id": "conv_1757615659577_036xqf2hh",
+    "timestamp": "2025-09-11 18:34:19.000000",
+    "unix_timestamp": 1757608459
+  },
+  {
+    "topic": "User Request for File Escape",
+    "conversation_id": "conv_1757615595557_ocb6yv8ul",
+    "timestamp": "2025-09-11 18:33:15.000000",
+    "unix_timestamp": 1757608395
+  },
+  {
+    "topic": "New User Initiation and File Sharing Attempt",
+    "conversation_id": "conv_1757615527435_mgx9dnoyd",
+    "timestamp": "2025-09-11 18:32:07.000000",
+    "unix_timestamp": 1757608327
+  },
+  {
+    "topic": "Unclear User Request: 'Coming'",
+    "conversation_id": "conv_1757615460670_eacuufbaj",
+    "timestamp": "2025-09-11 18:31:00.000000",
+    "unix_timestamp": 1757608260
+  },
+  {
+    "topic": "User Initiates Conversation with Single Word",
+    "conversation_id": "conv_1757615395518_i6pdc879c",
+    "timestamp": "2025-09-11 18:29:55.000000",
+    "unix_timestamp": 1757608195
+  },
+  {
+    "topic": "User Input 'ddd' - No Files Found",
+    "conversation_id": "conv_1757615335214_sj1ifmold",
+    "timestamp": "2025-09-11 18:28:55.000000",
+    "unix_timestamp": 1757608135
+  },
+  {
+    "topic": "Unclear File Request",
+    "conversation_id": "conv_1757615271548_p0jry3s4a",
+    "timestamp": "2025-09-11 18:27:51.000000",
+    "unix_timestamp": 1757608071
+  },
+  {
+    "topic": "User Apology and Clarification Request for File Handling",
+    "conversation_id": "conv_1757615210910_vx2hfppwe",
+    "timestamp": "2025-09-11 18:26:50.000000",
+    "unix_timestamp": 1757608010
+  },
+  {
+    "topic": "User Initiated Test",
+    "conversation_id": "conv_1757615145014_338qpcrp4",
+    "timestamp": "2025-09-11 18:25:45.000000",
+    "unix_timestamp": 1757607945
+  },
+  {
+    "topic": "Unclear Initial Request",
+    "conversation_id": "conv_1757614897826_ghcgq5ibj",
+    "timestamp": "2025-09-11 18:21:37.000000",
+    "unix_timestamp": 1757607697
+  },
+  {
+    "topic": "User Initiates Another Test",
+    "conversation_id": "conv_1757614688966_xonjqblun",
+    "timestamp": "2025-09-11 18:19:27.000000",
+    "unix_timestamp": 1757607567
+  },
+  {
+    "topic": "Unclear User Request - 'die'",
+    "conversation_id": "conv_1757614584533_11jvdocku",
+    "timestamp": "2025-09-11 18:16:24.000000",
+    "unix_timestamp": 1757607384
+  },
+  {
+    "topic": "User Expresses Lack of Time",
+    "conversation_id": "conv_1757614502188_l637ynlka",
+    "timestamp": "2025-09-11 18:15:02.000000",
+    "unix_timestamp": 1757607302
+  },
+  {
+    "topic": "User Negative Confirmation",
+    "conversation_id": "conv_1757614440954_uhkf9446y",
+    "timestamp": "2025-09-11 18:14:00.000000",
+    "unix_timestamp": 1757607240
+  },
+  {
+    "topic": "Unclear Affirmation Requiring Context",
+    "conversation_id": "conv_1757614352514_g96kc8c06",
+    "timestamp": "2025-09-11 18:12:32.000000",
+    "unix_timestamp": 1757607152
+  },
+  {
+    "topic": "User Initiated Conversation with 'bro'",
+    "conversation_id": "conv_1757614291630_rxkjq3o08",
+    "timestamp": "2025-09-11 18:11:31.000000",
+    "unix_timestamp": 1757607091
+  },
+  {
+    "topic": "Unclear User Input",
+    "conversation_id": "conv_1757614180143_f292yc4yz",
+    "timestamp": "2025-09-11 18:09:40.000000",
+    "unix_timestamp": 1757606980
+  },
+  {
+    "topic": "User's Single-Word Input: 'japs'",
+    "conversation_id": "conv_1757614031375_kn14elel1",
+    "timestamp": "2025-09-11 18:07:11.000000",
+    "unix_timestamp": 1757606831
+  },
+  {
+    "topic": "User Request for File Processing Clarification",
+    "conversation_id": "conv_1757613963969_jb3jj3e73",
+    "timestamp": "2025-09-11 18:06:03.000000",
+    "unix_timestamp": 1757606763
+  },
+  {
+    "topic": "User Cautionary Remark Regarding Empty File Submission",
+    "conversation_id": "conv_1757613869759_7vjyuqqnm",
+    "timestamp": "2025-09-11 18:04:29.000000",
+    "unix_timestamp": 1757606669
+  },
+  {
+    "topic": "User Input: 'japns'",
+    "conversation_id": "conv_1757613723114_dekjk56pp",
+    "timestamp": "2025-09-11 18:02:03.000000",
+    "unix_timestamp": 1757606523
+  },
+  {
+    "topic": "Ambiguous File Reference",
+    "conversation_id": "conv_1757613655448_lrl03jkpt",
+    "timestamp": "2025-09-11 18:00:55.000000",
+    "unix_timestamp": 1757606455
+  },
+  {
+    "topic": "Unclear File Request",
+    "conversation_id": "conv_1757613589020_s7n6e7hnb",
+    "timestamp": "2025-09-11 17:59:49.000000",
+    "unix_timestamp": 1757606389
+  },
+  {
+    "topic": "User Initiated File Access Request",
+    "conversation_id": "conv_1757613528714_41x1jphx3",
+    "timestamp": "2025-09-11 17:58:48.000000",
+    "unix_timestamp": 1757606328
+  },
+  {
+    "topic": "User Request for Assistance",
+    "conversation_id": "conv_1757613466248_46ex7oae5",
+    "timestamp": "2025-09-11 17:57:46.000000",
+    "unix_timestamp": 1757606266
+  },
+  {
+    "topic": "User Initiated Test Request",
+    "conversation_id": "conv_1757613393736_24n56f313",
+    "timestamp": "2025-09-11 17:56:33.000000",
+    "unix_timestamp": 1757606193
+  },
+  {
+    "topic": "Unclear User Query",
+    "conversation_id": "conv_1757613332193_8et9t9xec",
+    "timestamp": "2025-09-11 17:55:32.000000",
+    "unix_timestamp": 1757606132
+  },
+  {
+    "topic": "Unclear File Request",
+    "conversation_id": "conv_1757613266160_4elplb2oc",
+    "timestamp": "2025-09-11 17:54:26.000000",
+    "unix_timestamp": 1757606066
+  },
+  {
+    "topic": "Inquiry Regarding Shared Files",
+    "conversation_id": "conv_1757613203132_b6j41uwrs",
+    "timestamp": "2025-09-11 17:53:23.000000",
+    "unix_timestamp": 1757606003
+  },
+  {
+    "topic": "User Inquiry for 'Jiffy'",
+    "conversation_id": "conv_1757613138349_q4mrgjwrm",
+    "timestamp": "2025-09-11 17:52:18.000000",
+    "unix_timestamp": 1757605938
+  },
+  {
+    "topic": "User Initiates Interaction with Unclear Intent",
+    "conversation_id": "conv_1757613038162_04xh5g5ba",
+    "timestamp": "2025-09-11 17:50:38.000000",
+    "unix_timestamp": 1757605838
+  },
+  {
+    "topic": "User Affirmation of File Sharing",
+    "conversation_id": "conv_1757612963821_di3e6azv0",
+    "timestamp": "2025-09-11 17:49:23.000000",
+    "unix_timestamp": 1757605763
+  },
+  {
+    "topic": "Unclear User Request: 'skrew'",
+    "conversation_id": "conv_1757612901508_7ar9pfvjb",
+    "timestamp": "2025-09-11 17:48:21.000000",
+    "unix_timestamp": 1757605701
+  },
+  {
+    "topic": "User's Single-Word Exclamation",
+    "conversation_id": "conv_1757612838342_ynoftajoi",
+    "timestamp": "2025-09-11 17:47:18.000000",
+    "unix_timestamp": 1757605638
+  },
+  {
+    "topic": "User Initiates Conversation with Informal Greeting",
+    "conversation_id": "conv_1757612770204_0kjn07p7m",
+    "timestamp": "2025-09-11 17:46:10.000000",
+    "unix_timestamp": 1757605570
+  },
+  {
+    "topic": "User's Inquery for Shared Files",
+    "conversation_id": "conv_1757612697774_yyezhl7ma",
+    "timestamp": "2025-09-11 17:44:57.000000",
+    "unix_timestamp": 1757605497
+  },
+  {
+    "topic": "User Reporting a Problem with Missing Files",
+    "conversation_id": "conv_1757612631712_90izyb2ov",
+    "timestamp": "2025-09-11 17:43:51.000000",
+    "unix_timestamp": 1757605431
+  },
+  {
+    "topic": "Unclear File Request for 'fork'",
+    "conversation_id": "conv_1757612544398_y3dkvnhhk",
+    "timestamp": "2025-09-11 17:42:24.000000",
+    "unix_timestamp": 1757605344
+  },
+  {
+    "topic": "User Initiates Conversation with Single Word Topic",
+    "conversation_id": "conv_1757612484147_te2ec4f4u",
+    "timestamp": "2025-09-11 17:41:24.000000",
+    "unix_timestamp": 1757605284
+  },
+  {
+    "topic": "User Lunch Inquiry",
+    "conversation_id": "conv_1757612420593_5hbjadldq",
+    "timestamp": "2025-09-11 17:40:20.000000",
+    "unix_timestamp": 1757605220
+  },
+  {
+    "topic": "Initial User Greeting",
+    "conversation_id": "conv_1757612357661_voih5im91",
+    "timestamp": "2025-09-11 17:39:17.000000",
+    "unix_timestamp": 1757605157
+  },
+  {
+    "topic": "User Inquiry for Memory Retrieval",
+    "conversation_id": "conv_1757612281717_zv7vhzbbo",
+    "timestamp": "2025-09-11 17:38:01.000000",
+    "unix_timestamp": 1757605081
+  },
+  {
+    "topic": "User Expresses Frustration with Unclear Request",
+    "conversation_id": "conv_1757612213894_80jw4c86h",
+    "timestamp": "2025-09-11 17:36:53.000000",
+    "unix_timestamp": 1757605013
+  },
+  {
+    "topic": "User Inquiry on 'guns'",
+    "conversation_id": "conv_1757612140195_xedkawi5l",
+    "timestamp": "2025-09-11 17:35:40.000000",
+    "unix_timestamp": 1757604940
+  },
+  {
+    "topic": "Ambiguous User Request: 'war'",
+    "conversation_id": "conv_1757612071499_ggc0fnvx6",
+    "timestamp": "2025-09-11 17:34:31.000000",
+    "unix_timestamp": 1757604871
+  },
+  {
+    "topic": "Unspecified File Assistance Request",
+    "conversation_id": "conv_1757611992048_lgchoz28p",
+    "timestamp": "2025-09-11 17:33:12.000000",
+    "unix_timestamp": 1757604792
+  },
+  {
+    "topic": "User Initiated Interaction",
+    "conversation_id": "conv_1757611873255_zc07hv6yh",
+    "timestamp": "2025-09-11 17:31:13.000000",
+    "unix_timestamp": 1757604673
+  },
+  {
+    "topic": "User Request for Conversation 100000000000000000000",
+    "conversation_id": "conv_1757611586553_08wfsovv1",
+    "timestamp": "2025-09-11 17:26:26.000000",
+    "unix_timestamp": 1757604386
+  },
+  {
+    "topic": "Unclear User Request",
+    "conversation_id": "conv_1757611468889_lgk7uqn04",
+    "timestamp": "2025-09-11 17:24:28.000000",
+    "unix_timestamp": 1757604268
+  },
+  {
+    "topic": "User Awaiting Instruction",
+    "conversation_id": "conv_1757611364943_sliw1m942",
+    "timestamp": "2025-09-11 17:22:44.000000",
+    "unix_timestamp": 1757604164
+  },
+  {
+    "topic": "User Initiated Test Request",
+    "conversation_id": "conv_1757611182537_1rxeaqo43",
+    "timestamp": "2025-09-11 17:19:42.000000",
+    "unix_timestamp": 1757603982
+  },
+  {
+    "topic": "User Initiates Another Test",
+    "conversation_id": "conv_1757611094986_n07uip02u",
+    "timestamp": "2025-09-11 17:18:15.000000",
+    "unix_timestamp": 1757603895
+  },
+  {
+    "topic": "User Initiates Another Test",
+    "conversation_id": "conv_1757611002187_a6zw04pqz",
+    "timestamp": "2025-09-11 17:16:42.000000",
+    "unix_timestamp": 1757603802
+  },
+  {
+    "topic": "User Request for 'Another'",
+    "conversation_id": "conv_1757610915612_31l13f7r2",
+    "timestamp": "2025-09-11 17:15:15.000000",
+    "unix_timestamp": 1757603715
+  },
+  {
+    "topic": "User Initiates Another Test",
+    "conversation_id": "conv_1757610795905_r4s2p95ml",
+    "timestamp": "2025-09-11 17:13:15.000000",
+    "unix_timestamp": 1757603595
+  },
+  {
+    "topic": "User Request for Another Item",
+    "conversation_id": "conv_1757610592568_lwah5e2yh",
+    "timestamp": "2025-09-11 17:11:29.000000",
+    "unix_timestamp": 1757603489
+  },
+  {
+    "topic": "User's Second Attempt at File Submission",
+    "conversation_id": "conv_1757610369867_f4l3ptkbo",
+    "timestamp": "2025-09-11 17:08:07.000000",
+    "unix_timestamp": 1757603287
+  },
+  {
+    "topic": "New Conversation Initiation",
+    "conversation_id": "conv_1757609517217_yp9ya6gcb",
+    "timestamp": "2025-09-11 16:51:57.000000",
+    "unix_timestamp": 1757602317
+  },
+  {
+    "topic": "Inquiry about Hockey Files",
+    "conversation_id": "conv_1757609190244_bnlwh2tnx",
+    "timestamp": "2025-09-11 16:50:21.000000",
+    "unix_timestamp": 1757602221
+  },
+  {
+    "topic": "Unclear Cockroach Query",
+    "conversation_id": "conv_1757608994499_p40picuel",
+    "timestamp": "2025-09-11 16:43:14.000000",
+    "unix_timestamp": 1757601794
+  },
+  {
+    "topic": "User Initiates New Test",
+    "conversation_id": "conv_1757608355906_z1ae13gkk",
+    "timestamp": "2025-09-11 16:32:35.000000",
+    "unix_timestamp": 1757601155
+  },
+  {
+    "topic": "Initial User Greeting and File Request",
+    "conversation_id": "conv_1757608270080_t6srf5441",
+    "timestamp": "2025-09-11 16:31:10.000000",
+    "unix_timestamp": 1757601070
+  },
+  {
+    "topic": "User Expresses Confusion Regarding File Request",
+    "conversation_id": "conv_1757607816393_td5nq67fy",
+    "timestamp": "2025-09-11 16:23:36.000000",
+    "unix_timestamp": 1757600616
+  },
+  {
+    "topic": "Unclear Input and File Request",
+    "conversation_id": "conv_1757606641599_c5r2p3qma",
+    "timestamp": "2025-09-11 16:04:01.000000",
+    "unix_timestamp": 1757599441
+  },
+  {
+    "topic": "User Initiating Testing Phase",
+    "conversation_id": "conv_1757541638042_s0ag1j9sb",
+    "timestamp": "2025-09-10 22:00:38.000000",
+    "unix_timestamp": 1757534438
+  },
+  {
+    "topic": "User Initiates Second Test",
+    "conversation_id": "conv_1757540821507_bnm17u31b",
+    "timestamp": "2025-09-10 21:47:01.000000",
+    "unix_timestamp": 1757533621
+  },
+  {
+    "topic": "Ambiguous User Request for Testing",
+    "conversation_id": "conv_1757539887492_712znwhnk",
+    "timestamp": "2025-09-10 21:31:27.000000",
+    "unix_timestamp": 1757532687
+  },
+  {
+    "topic": "User Initiates Interaction with Number 100",
+    "conversation_id": "conv_1757530046252_1b8y3gf75",
+    "timestamp": "2025-09-10 18:47:26.000000",
+    "unix_timestamp": 1757522846
+  },
+  {
+    "topic": "User Inquiry: 'cashier'",
+    "conversation_id": "conv_1757529987860_itmunk6gj",
+    "timestamp": "2025-09-10 18:46:27.000000",
+    "unix_timestamp": 1757522787
+  },
+  {
+    "topic": "Minimum Wage Inquiry - File Missing",
+    "conversation_id": "conv_1757529914503_iu6ygzjkb",
+    "timestamp": "2025-09-10 18:45:14.000000",
+    "unix_timestamp": 1757522714
+  },
+  {
+    "topic": "User Initiates Interaction with Ambiguous Input",
+    "conversation_id": "conv_1757529853203_zcm36v3m4",
+    "timestamp": "2025-09-10 18:44:13.000000",
+    "unix_timestamp": 1757522653
+  },
+  {
+    "topic": "User Initiated Communication with Empty File",
+    "conversation_id": "conv_1757529691085_r4riyilo6",
+    "timestamp": "2025-09-10 18:41:31.000000",
+    "unix_timestamp": 1757522491
+  },
+  {
+    "topic": "User Request for Message 100",
+    "conversation_id": "conv_1757529600619_hpmwm24d0",
+    "timestamp": "2025-09-10 18:40:00.000000",
+    "unix_timestamp": 1757522400
+  },
+  {
+    "topic": "User Indicates File Issue Without Providing Content",
+    "conversation_id": "conv_1757529530114_bb1lz3y89",
+    "timestamp": "2025-09-10 18:38:50.000000",
+    "unix_timestamp": 1757522330
+  },
+  {
+    "topic": "Unclear File Request - Arrested",
+    "conversation_id": "conv_1757529459850_42f0ry2ds",
+    "timestamp": "2025-09-10 18:37:39.000000",
+    "unix_timestamp": 1757522259
+  },
+  {
+    "topic": "User Inquiry about \"cops\"",
+    "conversation_id": "conv_1757529398121_k8z9vd74a",
+    "timestamp": "2025-09-10 18:36:38.000000",
+    "unix_timestamp": 1757522198
+  },
+  {
+    "topic": "User Inquiry Regarding 'Trump'",
+    "conversation_id": "conv_1757529340180_gyy4lm22g",
+    "timestamp": "2025-09-10 18:35:40.000000",
+    "unix_timestamp": 1757522140
+  },
+  {
+    "topic": "User Request for 'flash'",
+    "conversation_id": "conv_1757529280302_qz9wqbnvq",
+    "timestamp": "2025-09-10 18:34:40.000000",
+    "unix_timestamp": 1757522080
+  },
+  {
+    "topic": "User Inquiry for News and AI File Processing",
+    "conversation_id": "conv_1757529214827_hhlkle7gm",
+    "timestamp": "2025-09-10 18:33:34.000000",
+    "unix_timestamp": 1757522014
+  },
+  {
+    "topic": "User Initiates Creation Request",
+    "conversation_id": "conv_1757529158722_5d0q3yivu",
+    "timestamp": "2025-09-10 18:32:38.000000",
+    "unix_timestamp": 1757521958
+  },
+  {
+    "topic": "User Request for File Listing",
+    "conversation_id": "conv_1757529109254_gal5lm7fz",
+    "timestamp": "2025-09-10 18:31:49.000000",
+    "unix_timestamp": 1757521909
+  },
+  {
+    "topic": "User Initiates Editing Request",
+    "conversation_id": "conv_1757529045081_0iujq4ufn",
+    "timestamp": "2025-09-10 18:30:45.000000",
+    "unix_timestamp": 1757521845
+  },
+  {
+    "topic": "Unclear Query and No Files Found",
+    "conversation_id": "conv_1757528980153_jtmmqvwu3",
+    "timestamp": "2025-09-10 18:29:40.000000",
+    "unix_timestamp": 1757521780
+  },
+  {
+    "topic": "User Confirmation of Task Completion",
+    "conversation_id": "conv_1757528948589_hth2uom4f",
+    "timestamp": "2025-09-10 18:29:08.000000",
+    "unix_timestamp": 1757521748
+  },
+  {
+    "topic": "User Request for Results Without Shared Files",
+    "conversation_id": "conv_1757528890673_l2mc40pfv",
+    "timestamp": "2025-09-10 18:28:10.000000",
+    "unix_timestamp": 1757521690
+  },
+  {
+    "topic": "Inquiry for Purpose",
+    "conversation_id": "conv_1757528829740_ez4rptosa",
+    "timestamp": "2025-09-10 18:27:09.000000",
+    "unix_timestamp": 1757521629
+  },
+  {
+    "topic": "User Request for Explanation Without Files",
+    "conversation_id": "conv_1757528774196_1a6l2vbnt",
+    "timestamp": "2025-09-10 18:26:14.000000",
+    "unix_timestamp": 1757521574
+  },
+  {
+    "topic": "User Request for Repetition",
+    "conversation_id": "conv_1757528699881_mchfv1ppm",
+    "timestamp": "2025-09-10 18:24:59.000000",
+    "unix_timestamp": 1757521499
+  },
+  {
+    "topic": "Unclear Command: 'run'",
+    "conversation_id": "conv_1757528636551_3w3wetm33",
+    "timestamp": "2025-09-10 18:23:56.000000",
+    "unix_timestamp": 1757521436
+  },
+  {
+    "topic": "User Inquiry for Games",
+    "conversation_id": "conv_1757528570692_mddv53luf",
+    "timestamp": "2025-09-10 18:22:50.000000",
+    "unix_timestamp": 1757521370
+  },
+  {
+    "topic": "Unclear User Query Regarding Files",
+    "conversation_id": "conv_1757528513830_vkqklhvkm",
+    "timestamp": "2025-09-10 18:21:53.000000",
+    "unix_timestamp": 1757521313
+  },
+  {
+    "topic": "User Request for 'to back' - No Files Found",
+    "conversation_id": "conv_1757528453427_rvxu21qu8",
+    "timestamp": "2025-09-10 18:20:53.000000",
+    "unix_timestamp": 1757521253
+  },
+  {
+    "topic": "User Request for Previous Files",
+    "conversation_id": "conv_1757528412668_t9cijc2qb",
+    "timestamp": "2025-09-10 18:20:12.000000",
+    "unix_timestamp": 1757521212
+  },
+  {
+    "topic": "User Inquiry for 'lady'",
+    "conversation_id": "conv_1757528349627_gj5lby6zq",
+    "timestamp": "2025-09-10 18:19:09.000000",
+    "unix_timestamp": 1757521149
+  },
+  {
+    "topic": "User Expresses Confusion Regarding File Retrieval",
+    "conversation_id": "conv_1757528285290_vd2oh37jp",
+    "timestamp": "2025-09-10 18:18:05.000000",
+    "unix_timestamp": 1757521085
+  },
+  {
+    "topic": "User's Initial Polite Request",
+    "conversation_id": "conv_1757528218555_6r3gpo7rq",
+    "timestamp": "2025-09-10 18:16:58.000000",
+    "unix_timestamp": 1757521018
+  },
+  {
+    "topic": "User Inquiry about Shared File History",
+    "conversation_id": "conv_1757528152230_68u0l6w6m",
+    "timestamp": "2025-09-10 18:15:52.000000",
+    "unix_timestamp": 1757520952
+  },
+  {
+    "topic": "User Inquiry on Science",
+    "conversation_id": "conv_1757528090923_21t9vxacp",
+    "timestamp": "2025-09-10 18:14:50.000000",
+    "unix_timestamp": 1757520890
+  }
+]

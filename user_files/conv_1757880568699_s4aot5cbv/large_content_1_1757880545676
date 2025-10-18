@@ -1,0 +1,2246 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Micro Learner AI- Your AI Memory That Never Forgets</title>
+    <!-- Google Sign-In -->
+    <meta
+      name="google-signin-client_id"
+      content="276407218386-cugc87dqivvd3gnop411aos9fg0n06kd.apps.googleusercontent.com"
+    />
+    <script
+      src="https://accounts.google.com/gsi/client"
+      async
+      defer
+      onload="window.onGoogleSDKLoad && window.onGoogleSDKLoad()"
+    ></script>
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Stripe -->
+    <script src="https://js.stripe.com/v3/"></script>
+    <link rel="stylesheet" href="../css/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav>
+      <div class="nav-container">
+        <a href="#" class="logo"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="100 100 200 200"
+            width="80"
+            height="80"
+            style="display: flex; position: relative; right: 20px"
+          >
+            <!-- Define the gradient -->
+            <defs>
+              <linearGradient
+                id="blueGradient"
+                x1="0%"
+                y1="0%"
+                x2="100%"
+                y2="100%"
+                gradientUnits="objectBoundingBox"
+              >
+                <stop
+                  offset="0%"
+                  style="stop-color: #4facfe; stop-opacity: 1"
+                />
+                <stop
+                  offset="100%"
+                  style="stop-color: #00f2fe; stop-opacity: 1"
+                />
+              </linearGradient>
+            </defs>
+
+            <!-- BLACK SVGs (underneath layer) -->
+            <g transform="translate(200, 200)">
+              <!-- First SVG: 19,151 x 19,151 with 22° rotation (largest, scaled to 191) -->
+              <svg
+                width="191"
+                height="191"
+                viewBox="0 0 256 256"
+                x="-95"
+                y="-95"
+              >
+                <g transform="rotate(22 128 128)">
+                  <rect width="256" height="256" fill="none" />
+                  <path
+                    d="M54.46,201.54c-9.2-9.2-3.1-28.53-7.78-39.85C41.82,150,24,140.5,24,128s17.82-22,22.68-33.69C51.36,83,45.26,63.66,54.46,54.46S83,51.36,94.31,46.68C106.05,41.82,115.5,24,128,24S150,41.82,161.69,46.68c11.32,4.68,30.65-1.42,39.85,7.78s3.1,28.53,7.78,39.85C214.18,106.05,232,115.5,232,128S214.18,150,209.32,161.69c-4.68,11.32,1.42,30.65-7.78,39.85s-28.53,3.1-39.85,7.78C150,214.18,140.5,232,128,232s-22-17.82-33.69-22.68C83,204.64,63.66,210.74,54.46,201.54Z"
+                    fill="none"
+                    stroke="black"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="8"
+                  />
+                </g>
+              </svg>
+
+              <!-- Second SVG: 15,135 x 15,135 with no rotation (medium, scaled to 151) -->
+              <svg
+                width="151"
+                height="151"
+                viewBox="0 0 256 256"
+                x="-75"
+                y="-75"
+              >
+                <rect width="256" height="256" fill="none" />
+                <path
+                  d="M54.46,201.54c-9.2-9.2-3.1-28.53-7.78-39.85C41.82,150,24,140.5,24,128s17.82-22,22.68-33.69C51.36,83,45.26,63.66,54.46,54.46S83,51.36,94.31,46.68C106.05,41.82,115.5,24,128,24S150,41.82,161.69,46.68c11.32,4.68,30.65-1.42,39.85,7.78s3.1,28.53,7.78,39.85C214.18,106.05,232,115.5,232,128S214.18,150,209.32,161.69c-4.68,11.32,1.42,30.65-7.78,39.85s-28.53,3.1-39.85,7.78C150,214.18,140.5,232,128,232s-22-17.82-33.69-22.68C83,204.64,63.66,210.74,54.46,201.54Z"
+                  fill="none"
+                  stroke="black"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="8"
+                />
+              </svg>
+
+              <!-- Third SVG: 11,808 x 11,808 with 22° rotation (smallest, scaled to 118) -->
+              <svg
+                width="118"
+                height="118"
+                viewBox="0 0 256 256"
+                x="-59"
+                y="-59"
+              >
+                <g transform="rotate(22 128 128)">
+                  <rect width="256" height="256" fill="none" />
+                  <path
+                    d="M54.46,201.54c-9.2-9.2-3.1-28.53-7.78-39.85C41.82,150,24,140.5,24,128s17.82-22,22.68-33.69C51.36,83,45.26,63.66,54.46,54.46S83,51.36,94.31,46.68C106.05,41.82,115.5,24,128,24S150,41.82,161.69,46.68c11.32,4.68,30.65-1.42,39.85,7.78s3.1,28.53,7.78,39.85C214.18,106.05,232,115.5,232,128S214.18,150,209.32,161.69c-4.68,11.32,1.42,30.65-7.78,39.85s-28.53,3.1-39.85,7.78C150,214.18,140.5,232,128,232s-22-17.82-33.69-22.68C83,204.64,63.66,210.74,54.46,201.54Z"
+                    fill="none"
+                    stroke="black"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="8"
+                  />
+                </g>
+              </svg>
+            </g>
+
+            <!-- COLORED SVGs (on top layer) -->
+            <g transform="translate(200, 200)">
+              <!-- First SVG: 19,151 x 19,151 with NO rotation (largest, scaled to 191) -->
+              <svg
+                width="191"
+                height="191"
+                viewBox="0 0 256 256"
+                x="-95"
+                y="-95"
+              >
+                <rect width="256" height="256" fill="none" />
+                <path
+                  d="M54.46,201.54c-9.2-9.2-3.1-28.53-7.78-39.85C41.82,150,24,140.5,24,128s17.82-22,22.68-33.69C51.36,83,45.26,63.66,54.46,54.46S83,51.36,94.31,46.68C106.05,41.82,115.5,24,128,24S150,41.82,161.69,46.68c11.32,4.68,30.65-1.42,39.85,7.78s3.1,28.53,7.78,39.85C214.18,106.05,232,115.5,232,128S214.18,150,209.32,161.69c-4.68,11.32,1.42,30.65-7.78,39.85s-28.53,3.1-39.85,7.78C150,214.18,140.5,232,128,232s-22-17.82-33.69-22.68C83,204.64,63.66,210.74,54.46,201.54Z"
+                  fill="none"
+                  stroke="url(#blueGradient)"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="8"
+                />
+              </svg>
+
+              <!-- Second SVG: 15,135 x 15,135 with 22° rotation (medium, scaled to 151) -->
+              <svg
+                width="151"
+                height="151"
+                viewBox="0 0 256 256"
+                x="-75"
+                y="-75"
+              >
+                <g transform="rotate(22 128 128)">
+                  <rect width="256" height="256" fill="none" />
+                  <path
+                    d="M54.46,201.54c-9.2-9.2-3.1-28.53-7.78-39.85C41.82,150,24,140.5,24,128s17.82-22,22.68-33.69C51.36,83,45.26,63.66,54.46,54.46S83,51.36,94.31,46.68C106.05,41.82,115.5,24,128,24S150,41.82,161.69,46.68c11.32,4.68,30.65-1.42,39.85,7.78s3.1,28.53,7.78,39.85C214.18,106.05,232,115.5,232,128S214.18,150,209.32,161.69c-4.68,11.32,1.42,30.65-7.78,39.85s-28.53,3.1-39.85,7.78C150,214.18,140.5,232,128,232s-22-17.82-33.69-22.68C83,204.64,63.66,210.74,54.46,201.54Z"
+                    fill="none"
+                    stroke="url(#blueGradient)"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="8"
+                  />
+                </g>
+              </svg>
+
+              <!-- Third SVG: 11,808 x 11,808 with NO rotation (smallest, scaled to 118) -->
+              <svg
+                width="118"
+                height="118"
+                viewBox="0 0 256 256"
+                x="-59"
+                y="-59"
+              >
+                <rect width="256" height="256" fill="none" />
+                <path
+                  d="M54.46,201.54c-9.2-9.2-3.1-28.53-7.78-39.85C41.82,150,24,140.5,24,128s17.82-22,22.68-33.69C51.36,83,45.26,63.66,54.46,54.46S83,51.36,94.31,46.68C106.05,41.82,115.5,24,128,24S150,41.82,161.69,46.68c11.32,4.68,30.65-1.42,39.85,7.78s3.1,28.53,7.78,39.85C214.18,106.05,232,115.5,232,128S214.18,150,209.32,161.69c-4.68,11.32,1.42,30.65-7.78,39.85s-28.53,3.1-39.85,7.78C150,214.18,140.5,232,128,232s-22-17.82-33.69-22.68C83,204.64,63.66,210.74,54.46,201.54Z"
+                  fill="none"
+                  stroke="url(#blueGradient)"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="8"
+                />
+              </svg>
+            </g>
+          </svg>
+          Micro Learner<small style="font-size: 12px">AI</small
+          ><span class="beta-badge">Beta</span></a
+        >
+        <div class="nav-center">
+          <a href="#features">Features</a>
+          <a href="#how-it-works">How it works</a>
+          <a href="#pricing">Pricing</a>
+          <!-- <a href="#resources">Resources</a>
+          <a href="#company">Company</a>-->
+        </div>
+        <div class="nav-right" id="nav-buttons">
+          <button class="btn btn-text" id="nav-login-btn">Sign in</button>
+          <button class="btn btn-outline" id="nav-signup-btn">
+            Get started
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Landing Page -->
+    <div id="landing-page">
+      <!-- Hero Section -->
+      <section class="hero">
+        <div class="hero-grid">
+          <div class="hero-content">
+            <h1>
+              Your AI with <span class="gradient-text">Unlimited</span> memory</span>
+            </h1>
+            <p>
+              Choose from ChatGPT, Claude 3.5, Claude 4.0, DeepSeek Chat, or
+              DeepSeek R1. Micro Learner learns how you work, remembers every
+              conversation, and becomes your perfect digital assistant.
+            </p>
+
+            <div class="hero-actions">
+              <button class="btn btn-primary">Start Now</button>
+            </div>
+
+            <p class="hero-note">✓ No credit card required</p>
+          </div>
+
+          <div class="demo-container">
+            <div class="demo-frame">
+              <div class="demo-header">
+                <div class="status-indicator"></div>
+                <span style="font-size: 0.875rem; color: #6b6b6b"
+                  >AI Memory Active</span
+                >
+                <span
+                  style="margin-left: auto; font-size: 0.75rem; color: #8a8a8a"
+                  >1,247 memories</span
+                >
+              </div>
+
+              <div class="demo-content">
+                <div class="memory-item">
+                  <div class="memory-date">2 hours ago - Team Meeting</div>
+                  <div class="memory-text">
+                    "Launch the new feature by March 15th with A/B testing"
+                  </div>
+                </div>
+
+                <div class="memory-item">
+                  <div class="memory-date">Yesterday - Client Call</div>
+                  <div class="memory-text">
+                    "Budget approved for $50K, prefer monthly billing"
+                  </div>
+                </div>
+
+                <div class="memory-item">
+                  <div class="memory-date">Last Week - Strategy Session</div>
+                  <div class="memory-text">
+                    "Focus on enterprise clients in Q2, hire 2 engineers"
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Stats Section -->
+      <section class="stats">
+        <div class="stats-container">
+          <div class="stat-item">
+            <h3>5 AI Models</h3>
+            <p>Choose your perfect AI</p>
+          </div>
+          <div class="stat-item">
+            <h3>Unlimited</h3>
+            <p>Memory storage</p>
+          </div>
+          <div class="stat-item">
+            <h3>5x Faster</h3>
+            <p>Token processing</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Features Section -->
+      <section id="features" class="features">
+        <div class="features-header">
+          <h2>Everything you need in an AI assistant</h2>
+          <p>
+            Micro Learner isn't just another chatbot. It's an AI that truly
+            understands and remembers you.
+          </p>
+        </div>
+
+        <div class="features-list">
+          <div class="feature-item">
+            <div class="feature-icon">🤖</div>
+            <div class="feature-content">
+              <h3>Multiple AI Models</h3>
+              <p>
+                Switch between ChatGPT, Claude 3.5, Claude 4.0, DeepSeek Chat,
+                and DeepSeek R1 anytime.
+              </p>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <div class="feature-icon">💾</div>
+            <div class="feature-content">
+              <h3>Perfect memory recall</h3>
+              <p>
+                Search any conversation, meeting, or decision your past. Your AI
+                remembers everything.
+              </p>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <div class="feature-icon">✏️</div>
+            <div class="feature-content">
+              <h3>Edit memories</h3>
+              <p>
+                Pro, Elite & Enterprise users can edit past thoughts and change
+                AI models mid-conversation.
+              </p>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <div class="feature-icon">🎯</div>
+            <div class="feature-content">
+              <h3>Micro Training</h3>
+              <p>
+                Configure AI behavior with Micro Training. Enterprise teams can
+                share configurations.
+              </p>
+            </div>
+          </div>
+
+          <!--<div class="feature-item">
+            <div class="feature-icon">📊</div>
+            <div class="feature-content">
+              <h3>Context control</h3>
+              <p>
+                Elite & Enterprise users control thought context (1-12) for
+                deeper conversations.
+              </p>
+            </div>
+          </div>-->
+
+          <div class="feature-item">
+            <div class="feature-icon">👥</div>
+            <div class="feature-content">
+              <h3>Team monitoring</h3>
+              <p>
+                Enterprise admins & members can monitor team memebers Micro
+                Training to improve their own Micro Trainer.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- How It Works -->
+      <section id="how-it-works" class="how-it-works">
+        <div class="how-container">
+          <h2>Get started in minutes</h2>
+
+          <div class="steps">
+            <div class="step">
+              <div class="step-number">STEP 1</div>
+              <h3>Sign up & choose AI</h3>
+              <p>Create account and select your preferred AI model.</p>
+            </div>
+
+            <div class="step">
+              <div class="step-number">STEP 2</div>
+              <h3>Configure Micro Training</h3>
+              <p>Set up Micro Training and customize AI behavior.</p>
+            </div>
+
+            <div class="step">
+              <div class="step-number">STEP 3</div>
+              <h3>Start remembering</h3>
+              <p>Your AI learns and remembers everything for you.</p>
+            </div>
+          </div>
+
+          <button class="btn btn-primary">Start Now</button>
+        </div>
+      </section>
+
+      <!-- Pricing -->
+      <section id="pricing" class="pricing">
+        <div class="pricing-header">
+          <h2>Choose your plan</h2>
+        </div>
+
+        <div class="pricing-cards" id="pricing-cards">
+          <div class="pricing-card">
+            <div class="plan-icon">🌱</div>
+            <h3 class="plan-name">Free</h3>
+            <div class="plan-price">
+              <span class="price-amount">$0</span>
+              <span class="price-period">/month</span>
+            </div>
+            <p class="plan-description">Perfect for first time AI learners</p>
+
+            <ul class="plan-features">
+              <li><span class="check-icon"></span> 15 messages per day</li>
+              <li>
+                <span class="check-icon"></span> 3K words memory (4K tokens)
+              </li>
+              <li><span class="check-icon"></span> Basic AI models</li>
+              <li><span class="check-icon"></span> Resets every 6.5 hours</li>
+            </ul>
+
+            <button class="plan-button">Start free</button>
+          </div>
+
+          <div class="pricing-card featured">
+            <span class="badge">POPULAR</span>
+            <div class="plan-icon">⚡</div>
+            <h3 class="plan-name">Pro</h3>
+            <div class="plan-price">
+              <span class="price-amount">$25</span>
+              <span class="price-period">/month</span>
+            </div>
+            <p class="plan-description">For professionals who need more</p>
+
+            <ul class="plan-features">
+              <li><span class="check-icon"></span> Increased usage</li>
+              <li><span class="check-icon"></span> Edit old thoughts</li>
+              <li><span class="check-icon"></span> Change AI models</li>
+              <li><span class="check-icon"></span> Small Micro Training</li>
+              <li><span class="check-icon"></span> Unlimited memory</li>
+              <li><span class="check-icon"></span> Resets every 5 hours</li>
+            </ul>
+
+            <button class="plan-button primary">Start Now</button>
+          </div>
+
+          <div class="pricing-card">
+            <div class="plan-icon">🚀</div>
+            <h3 class="plan-name">Elite</h3>
+            <div class="plan-price">
+              <span class="price-amount">$120</span>
+              <span class="price-period">/month</span>
+            </div>
+            <p class="plan-description">Maximum power & control</p>
+
+            <ul class="plan-features">
+              <li><span class="check-icon"></span> 5x increased usage</li>
+              <li><span class="check-icon"></span> Edit thoughts & models</li>
+              <li><span class="check-icon"></span> Larger Micro Training</li>
+              <li><span class="check-icon"></span> Unlimited memory</li>
+              <li><span class="check-icon"></span> Context control (1-10)</li>
+              <li><span class="check-icon"></span> Resets every 5 hours</li>
+            </ul>
+
+            <button class="plan-button">Start Now</button>
+          </div>
+
+          <div class="pricing-card">
+            <div class="plan-icon">🏢</div>
+            <h3 class="plan-name">Enterprise</h3>
+            <div class="plan-price">
+              <span class="price-amount">$150</span>
+              <span class="price-period">/user/month</span>
+            </div>
+            <p class="plan-description">For teams that work together</p>
+
+            <ul class="plan-features">
+              <li><span class="check-icon"></span> Everything in Elite</li>
+              <li><span class="check-icon"></span> Shared Micro Training</li>
+              <li><span class="check-icon"></span> User monitoring</li>
+              <li><span class="check-icon"></span> Context control (1-12)</li>
+              <li><span class="check-icon"></span> Team analytics</li>
+              <li><span class="check-icon"></span> Resets every 4 hours</li>
+            </ul>
+
+            <button class="plan-button">Start Now</button>
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 3rem">
+          <p style="color: #6b6b6b; font-size: 0.875rem">
+            <strong>Referral Program:</strong> Get a free $20 for a plan when
+            you refer a friend! They get a free $20 too!
+          </p>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <div class="footer-content">
+          <div
+            class="footer-brand"
+            style="display: flex; flex-direction: column; align-items: center"
+          >
+            <h3>Micro Learner<small style="font-size: 12px">AI</small></h3>
+            <p>
+              The AI assistant that never forgets. Built for professionals who
+              value their time and knowledge.
+            </p>
+          </div>
+
+          <!--  <div class="footer-links">
+            <h4>Product</h4>
+            <ul>
+              <li><a href="#">Features</a></li>
+              <li><a href="#">Pricing</a></li>
+              <li><a href="#">Security</a></li>
+              <li><a href="#">Roadmap</a></li>
+            </ul>
+          </div>
+
+         <div class="footer-links">
+            <h4>Company</h4>
+            <ul>
+              <li><a href="#">About</a></li>
+              <li><a href="#">Blog</a></li>
+              <li><a href="#">Careers</a></li>
+              <li><a href="#">Contact</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-links">
+            <h4>Resources</h4>
+            <ul>
+              <li><a href="#">Documentation</a></li>
+              <li><a href="#">API</a></li>
+              <li><a href="#">Support</a></li>
+              <li><a href="#">Status</a></li>
+            </ul>
+          </div>-->
+        </div>
+
+        <div class="footer-bottom">
+          <div class="social-media">
+            <a href="#" aria-label="Facebook">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" aria-label="Twitter">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" aria-label="Instagram">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" aria-label="LinkedIn">
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+            <a href="#" aria-label="YouTube">
+              <i class="fab fa-youtube"></i>
+            </a>
+            <a href="#" aria-label="TikTok">
+              <i class="fab fa-tiktok"></i>
+            </a>
+          </div>
+          <p>
+            &copy; 2025 Micro Learner<small style="font-size: 8px">AI</small>.
+            All rights reserved. Privacy Policy · Terms of Service
+          </p>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="dashboard">
+      <div class="dashboard-nav">
+        <div class="dashboard-nav-content">
+          <h2>Dashboard</h2>
+          <div class="user-info">
+            <span
+              id="user-email"
+              style="font-size: 0.875rem; color: #6b6b6b"
+            ></span>
+            <div class="user-avatar" id="user-avatar">
+              <span id="user-initials"></span>
+            </div>
+            <button class="btn btn-text" id="logout-btn">Sign out</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="dashboard-container">
+        <aside class="dashboard-menu">
+          <a class="menu-item display_none">Analytics</a>
+          <a class="menu-item Configuration-menu-item display_none">Configuration</a>
+          <a class="menu-item display_none">Memory Search</a>
+          <a class="menu-item">Download app</a>
+          <a class="menu-item Team-menu-item">Team</a>
+          <a class="menu-item">Billing</a>
+          <a class="menu-item display_none">Resources</a>
+          <a class="menu-item">Company</a>
+          <a class="menu-item">Settings</a>
+        </aside>
+
+        <main class="dashboard-main" id="dashboard-content">
+          <!-- Analytics Section -->
+          <div
+            class="dashboard-section"
+            id="analytics-section"
+            style="display: none"
+          >
+            <h3>Usage Analytics</h3>
+            <p style="color: #6b6b6b; margin-bottom: 2rem">
+              Track your AI usage and performance
+            </p>
+
+            <div class="analytics-grid">
+              <div class="analytics-card">
+                <div class="analytics-title">Messages Today</div>
+                <div class="analytics-value" id="messages-today">0</div>
+              </div>
+              <div class="analytics-card">
+                <div class="analytics-title">Tokens Used</div>
+                <div class="analytics-value" id="tokens-used">0</div>
+              </div>
+              <div class="analytics-card">
+                <div class="analytics-title">Memory Size</div>
+                <div class="analytics-value" id="memory-size">0</div>
+              </div>
+              <div class="analytics-card">
+                <div class="analytics-title">Active Model</div>
+                <div class="analytics-value" id="active-model">ChatGPT</div>
+              </div>
+            </div>
+
+            <h4 style="margin: 2rem 0 1rem">Weekly Usage Trend</h4>
+            <div class="analytics-chart" id="usage-chart">
+              <!-- Chart bars populated by JavaScript -->
+            </div>
+          </div>
+
+          <!-- Memory Search Section -->
+          <div
+            class="dashboard-section memory-search-section"
+            id="memory-search-section"
+            style="display: none"
+          >
+            <h3>Memory Search</h3>
+            <p style="color: #6b6b6b; margin-bottom: 2rem">
+              Search through all your conversations and memories
+            </p>
+
+            <div class="form-group">
+              <input
+                type="text"
+                class="form-input"
+                placeholder="Search memories..."
+                id="memory-search"
+              />
+            </div>
+
+            <div id="memory-results">
+              <!-- Results populated by JavaScript -->
+            </div>
+          </div>
+
+  <!-- Download App Section -->
+<div
+  class="dashboard-section"
+  id="download-app-section"
+  style="display: none"
+>
+  <h3>Download Our App</h3>
+  <p style="color: #6b6b6b; margin-bottom: 2rem">
+    Take Micro Learner with you wherever you go. Download the app and log in with your existing website account to access your AI assistant, memories, and settings instantly.
+  </p>
+
+  <div class="app-features" style="margin-bottom: 2.5rem;">
+    <div class="feature-item" style="display: flex; align-items: flex-start; margin-bottom: 1.5rem;">
+      <div style="background: #f0f5ff; padding: 0.5rem; border-radius: 8px; margin-right: 1rem;">
+        <span style="font-size: 1.5rem;">📱</span>
+      </div>
+      <div>
+        <h4 style="margin: 0 0 0.5rem 0;">Seamless App Access</h4>
+        <p style="color: #6b6b6b; margin: 0;">Log in with your website account to use all Micro Learner features on your iOS or Android device.</p>
+      </div>
+    </div>
+    
+    <div class="feature-item" style="display: flex; align-items: flex-start; margin-bottom: 1.5rem;">
+      <div style="background: #f0f5ff; padding: 0.5rem; border-radius: 8px; margin-right: 1rem;">
+        <span style="font-size: 1.5rem;">🔔</span>
+      </div>
+      <div>
+        <h4 style="margin: 0 0 0.5rem 0;">Instant Notifications</h4>
+        <p style="color: #6b6b6b; margin: 0;">Stay updated with notifications when your AI shares new insights or recalls key memories.</p>
+      </div>
+    </div>
+    
+    <div class="feature-item" style="display: flex; align-items: flex-start;">
+      <div style="background: #f0f5ff; padding: 0.5rem; border-radius: 8px; margin-right: 1rem;">
+        <span style="font-size: 1.5rem;">📊</span>
+      </div>
+      <div>
+        <h4 style="margin: 0 0 0.5rem 0;">Sync Across Devices</h4>
+        <p style="color: #6b6b6b; margin: 0;">Your memories and preferences stay synchronized across all your devices seamlessly.</p>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn btn-outline">Download App</button>
+</div>
+
+          <!-- Configuration Section -->
+          <div
+            class="dashboard-section"
+            id="configuration-section"
+            style="display: none"
+          >
+            <div class="form-section">
+              <h3>AI Configuration</h3>
+              <p style="color: #6b6b6b; margin-bottom: 2rem">
+                Customize how Micro Learner works for you
+              </p>
+
+              <div class="form-group">
+                <label class="form-label">AI Model Selection</label>
+                <div class="modal-selector">
+                  <div class="modal-option" data-model="chatgpt">
+                    <h4>ChatGPT</h4>
+                    <p>OpenAI's GPT-4</p>
+                  </div>
+                  <div class="modal-option" data-model="claude-3.5">
+                    <h4>Claude 3.5</h4>
+                    <p>Anthropic's fast model</p>
+                  </div>
+                  <div class="modal-option" data-model="claude-4.0">
+                    <h4>Claude 4.0</h4>
+                    <p>Most capable Claude</p>
+                  </div>
+                  <div class="modal-option" data-model="deepseek-chat">
+                    <h4>DeepSeek Chat</h4>
+                    <p>Efficient reasoning</p>
+                  </div>
+                  <div class="modal-option" data-model="deepseek-r1">
+                    <h4>DeepSeek R1</h4>
+                    <p>Advanced reasoning</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Micro Training</label>
+                <textarea
+                  class="form-textarea"
+                  id="pre-prompts"
+                  placeholder="Example: You are a helpful assistant focused on productivity. Always provide actionable insights."
+                ></textarea>
+                <p class="form-hint">
+                  Configure how your AI should behave (Pro: 200 chars, Elite:
+                  500 chars, Enterprise: 1000 chars)
+                </p>
+              </div>
+
+              <div
+                class="form-group"
+                id="context-control"
+                style="display: none"
+              >
+                <label class="form-label">Thought Context Level</label>
+                <div class="slider-container">
+                  <input
+                    type="range"
+                    class="slider"
+                    id="context-slider"
+                    min="1"
+                    max="10"
+                    value="5"
+                  />
+                  <div class="slider-value" id="context-value">5</div>
+                </div>
+                <p class="form-hint">
+                  Higher values provide more context but use more tokens
+                </p>
+              </div>
+
+              <button class="btn btn-primary" id="save-config-btn">
+                Save changes
+              </button>
+            </div>
+          </div>
+
+<!-- Enhanced Team Section (Enterprise only) -->
+<div
+  class="dashboard-section"
+  id="team-section"
+  style="display: none"
+>
+  <!-- Team Header Section -->
+  <div
+    class="team-header-section"
+    style="
+      margin-bottom: 2.5rem;
+      padding: 1.5rem;
+      background: #f8f8f8;
+      border-radius: 12px;
+    "
+  >
+    <!-- Team Name Section with Header -->
+    <div class="team-name-section" style="margin-bottom: 1.5rem">
+      <div style="margin-bottom: 0.5rem; font-size: 0.875rem; color: #6b6b6b; font-weight: 500;">
+        Team Name
+      </div>
+      <div class="team-name-display" id="team-name-display">
+        <h3
+          style="margin: 0; display: inline-block; font-size: 1.5rem"
+          id="team-name-text"
+        >
+          Team Name
+        </h3>
+        <button
+          class="btn btn-text edit-team-name-btn"
+          id="edit-team-name-btn"
+          style="
+            margin-left: 1rem;
+            font-size: 0.875rem;
+            display: none;
+          "
+        >
+          Edit
+        </button>
+      </div>
+      <div
+        class="team-name-edit"
+        id="team-name-edit"
+        style="display: none"
+      >
+        <div style="display: flex; gap: 0.5rem; align-items: center">
+          <input
+            type="text"
+            class="form-input"
+            id="team-name-input"
+            style="flex: 1"
+            placeholder="Enter team name"
+          />
+          <button
+            class="btn btn-primary"
+            id="save-team-name-btn"
+            style="padding: 0.5rem 1rem"
+          >
+            Save
+          </button>
+          <button
+            class="btn btn-text"
+            id="cancel-team-name-btn"
+            style="padding: 0.5rem 1rem"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Team Description Section with Header -->
+    <div class="team-description-section">
+      <div style="margin-bottom: 0.5rem; font-size: 0.875rem; color: #6b6b6b; font-weight: 500;">
+        Team Description
+      </div>
+      <div
+        class="team-description-display"
+        id="team-description-display"
+      >
+        <p
+          style="color: #6b6b6b; margin: 0; font-size: 0.875rem"
+          id="team-description-text"
+        >
+          Team description
+        </p>
+        <button
+          class="btn btn-text edit-team-description-btn"
+          id="edit-team-description-btn"
+          style="
+            margin-left: 0.5rem;
+            font-size: 0.75rem;
+            display: none;
+          "
+        >
+          Edit
+        </button>
+      </div>
+      <div
+        class="team-description-edit"
+        id="team-description-edit"
+        style="display: none"
+      >
+        <div
+          style="display: flex; flex-direction: column; gap: 0.5rem"
+        >
+          <textarea
+            class="form-textarea"
+            id="team-description-input"
+            placeholder="Enter team description"
+            style="min-height: 80px"
+          ></textarea>
+          <div style="display: flex; gap: 0.5rem">
+            <button
+              class="btn btn-primary"
+              id="save-team-description-btn"
+              style="padding: 0.5rem 1rem"
+            >
+              Save
+            </button>
+            <button
+              class="btn btn-text"
+              id="cancel-team-description-btn"
+              style="padding: 0.5rem 1rem"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Team Members Section -->
+  <h3>Team Members</h3>
+  <p style="color: #6b6b6b; margin-bottom: 1.5rem">
+    Manage team access and view individual member configurations
+  </p>
+
+  <div class="search-section">
+    <div class="search-container">
+      <div class="search-icon">🔍</div>
+      <input
+        type="text"
+        class="search-input"
+        id="member-search-input"
+        placeholder="Search team members by name, email, or model..."
+      />
+    </div>
+  </div>
+
+  <!-- Team Members List -->
+  <div class="team-members-container" id="team-members-container">
+    <!-- Members will be populated by JavaScript -->
+  </div>
+
+  <!-- Add Member Button -->
+  <button
+    class="btn btn-outline"
+    id="invite-member-btn"
+    style="margin-top: 1.5rem"
+  >
+    + Invite member
+  </button>
+
+  <!-- Team Statistics -->
+  <div
+    class="team-stats-section"
+    style="
+      margin-top: 2.5rem;
+      padding: 1.5rem;
+      background: #f8f8f8;
+      border-radius: 12px;
+    "
+  >
+    <h4 style="margin-bottom: 1rem">Team Statistics</h4>
+    <div
+      style="
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+        text-align: center;
+      "
+    >
+      <div class="team-stat">
+        <div
+          style="font-size: 1.5rem; font-weight: 700; color: #1a1a1a"
+          id="total-members-count"
+        >
+          0
+        </div>
+        <div style="font-size: 0.75rem; color: #8a8a8a">
+          Total Members
+        </div>
+      </div>
+      <div class="team-stat display_none">
+        <div
+          style="font-size: 1.5rem; font-weight: 700; color: #1a1a1a"
+          id="total-team-usage"
+        >
+          0
+        </div>
+        <div style="font-size: 0.75rem; color: #8a8a8a">
+          Total Usage
+        </div>
+      </div>
+      <div class="team-stat display_none">
+        <div
+          style="font-size: 1.5rem; font-weight: 700; color: #1a1a1a"
+          id="avg-usage-per-member"
+        >
+          0
+        </div>
+        <div style="font-size: 0.75rem; color: #8a8a8a">
+          Avg Per Member
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+          <!-- Billing Section -->
+          <div
+            class="dashboard-section"
+            id="billing-section"
+            style="display: none"
+          >
+            <h3>Billing & Subscription</h3>
+            <p style="color: #6b6b6b; margin-bottom: 2rem">
+              Manage your subscription and payment methods
+            </p>
+
+            <div class="billing-card">
+              <div class="billing-row">
+                <span class="billing-label">Current Plan</span>
+                <span class="billing-value" id="current-plan">Free</span>
+              </div>
+              <div
+                class="billing-row"
+                id="next-month-plan-row"
+                style="display: none"
+              >
+                <span class="billing-label">Next Month's Plan</span>
+                <span class="billing-value" id="next-month-plan">-</span>
+              </div>
+              <div class="billing-row">
+                <span class="billing-label">Status</span>
+                <span class="billing-value" id="billing-status">Active</span>
+              </div>
+                <div class="billing-row display_none">
+                <span class="billing-label">Next Payment Charge Date</span>
+                <span class="billing-value" id="billing-status">8/24/25</span>
+              </div>
+              <div class="billing-row display_none">
+                <span class="billing-label">Next Reset</span>
+                <span class="billing-value" id="next-reset">In 6.5 hours</span>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 1rem; margin-top: 1.5rem">
+              <button class="btn btn-outline" id="change-plan-btn">
+                Upgrade Plan
+              </button>
+              <button class="btn btn-outline" id="update-payment-btn">
+                Update Payment Method
+              </button>
+            </div>
+
+            <!-- Credit Balance Section - Updated -->
+            <div class="referral-section">
+              <h4>Available Credits</h4>
+              <p
+                style="color: #6b6b6b; font-size: 0.875rem; margin-bottom: 1rem"
+              >
+                Your current credit balance from referrals and promotions.
+              </p>
+              <div
+                class="billing-card"
+                style="background: white; border: 1px solid #e0f2fe; margin: 0"
+              >
+                <div class="billing-row">
+                  <span class="billing-label">Current Balance</span>
+                  <span
+                    class="billing-value"
+                    style="color: #22c55e; font-size: 1.25rem"
+                    id="credit-balance"
+                    >$0.00</span
+                  >
+                </div>
+                <div class="billing-row">
+                  <span class="billing-label">Overall Credits Earned</span>
+                  <span class="billing-value" id="total-credits-earned"
+                    >$0.00</span
+                  >
+                </div>
+                <div class="billing-row" style="border-bottom: none">
+                  <span class="billing-label">Total Friends Referred</span>
+                  <span class="billing-value" id="total-friends-referred"
+                    >0</span
+                  >
+                </div>
+                <div class="billing-row" style="border-bottom: none">
+                  <span class="billing-label">Your Referral Code</span>
+                  <div
+                    class="billing-value"
+                    style="display: flex; align-items: center; gap: 0.5rem"
+                  >
+                    <span
+                      id="referral-code-display"
+                      style="
+                        font-family: monospace;
+                        background: #f5f5f5;
+                        padding: 0.25rem 0.5rem;
+                        border-radius: 4px;
+                        font-size: 0.875rem;
+                      "
+                    >
+                      Loading...
+                    </span>
+                    <button
+  id="copy-referral-code-btn"
+  style="
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.875rem;
+    padding: 0.25rem;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  "
+  onmouseover="this.style.backgroundColor='#f0f0f0'"
+  onmouseout="this.style.backgroundColor='transparent'"
+  title="Copy referral code"
+>
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+  </svg>
+</button>
+                  </div>
+                </div>
+              </div>
+              <p
+                style="color: #8a8a8a; font-size: 0.75rem; margin-top: 0.75rem"
+              >
+                Credits are automatically applied to your next monthly payment.
+                Referral credits never expire. Each friend gives you $20 in
+                credits once they sign up for a paid plan!
+              </p>
+            </div>
+
+            <h4 style="margin: 2rem 0 1rem">Payment History</h4>
+            <div class="billing-card" id="payment-history">
+              <!-- Payment history populated by JavaScript -->
+            </div>
+          </div>
+
+          <!-- Resources Section 
+          <div
+            class="dashboard-section"
+            id="resources-section"
+            style="display: none"
+          >
+            <h3>Resources</h3>
+            <p style="color: #6b6b6b; margin-bottom: 2rem">
+              Everything you need to get the most out of Micro Learner
+            </p>
+
+            <div class="resource-card">
+              <div class="resource-header">
+                <div class="resource-icon">📚</div>
+                <h4>Quick Start Guide</h4>
+              </div>
+              <p>Coming soon! Stay tuned!
+                Get up and running with Micro Learner in minutes. Learn the
+                basics of memory management, AI models, and configuration.
+              </p>
+              <button class="btn btn-outline" data-resource="quickstart">
+                View Guide
+              </button>
+            </div>
+
+            <div class="resource-card">
+              <div class="resource-header">
+                <div class="resource-icon">🔧</div>
+                <h4>API Documentation</h4>
+              </div>
+              <p>Coming soon! Stay tuned!</p>
+              <p>
+                Integrate Micro Learner into your workflow with our comprehensive API.
+                Full REST API with webhooks support.
+              </p>
+              <button class="btn btn-outline" data-resource="api">
+                View API Docs
+              </button>
+            </div>
+
+            <div class="resource-card" style="display: none">
+              <div class="resource-header">
+                <div class="resource-icon">🎥</div>
+                <h4>Video Tutorials</h4>
+              </div>
+              <p>
+                Watch step-by-step tutorials on advanced features, team
+                management, and productivity tips.
+              </p>
+              <button class="btn btn-outline" data-resource="videos">
+                Watch Videos
+              </button>
+            </div>
+
+            <div class="resource-card">
+              <div class="resource-header">
+                <div class="resource-icon">💡</div>
+                <h4>Knowledge Base</h4>
+              </div>
+              <p>Coming soon! Stay tuned!</p>
+              <p>
+                Search our extensive knowledge base for answers to common
+                questions and troubleshooting guides.
+              </p>
+              <div class="search-box">
+                <input
+                  type="text"
+                  class="form-input"
+                  placeholder="Search knowledge base..."
+                  id="kb-search"
+                />
+                <button class="btn btn-primary" id="kb-search-btn">
+                  Search
+                </button>
+              </div>
+            </div>
+
+            <div class="resource-card">
+              <div class="resource-header">
+                <div class="resource-icon">👥</div>
+                <h4>Community Forum</h4>
+              </div>
+              <p>Coming soon! Stay tuned!</p>
+               <p>
+                Join our community of power users. Share tips, get help, and
+                discover new ways to use Micro Learner.
+              </p>
+              <button class="btn btn-outline" data-resource="forum">
+                Visit Forum
+              </button>
+            </div>
+
+            <div class="resource-card">
+              <div class="resource-header">
+                <div class="resource-icon">🆘</div>
+                <h4>Get Support</h4>
+              </div>
+              <p>
+                Need help? Our support team is here for you. Enterprise, Elite,
+                and Pro users get priority support.
+              </p>
+              <button class="btn btn-primary" id="contact-support-btn">
+                Contact Support
+              </button>
+            </div>
+          </div>-->
+
+          <!-- Company Section -->
+          <div
+            class="dashboard-section"
+            id="company-section"
+            style="display: none"
+          >
+            <h3>Company</h3>
+            <p style="color: #6b6b6b; margin-bottom: 2rem">
+              Learn more about Micro Learner and our mission
+            </p>
+
+            <!-- About Us -->
+            <div class="company-card">
+              <h4>About Micro Learner</h4>
+              <p>
+                We're building the future of AI-assisted productivity. Our
+                mission is to create an AI that truly understands and remembers
+                you, making every interaction more meaningful and productive.
+              </p>
+              <div class="company-stats">
+                <div class="company-stat">
+                  <h5>Founded</h5>
+                  <p>2025</p>
+                </div>
+                <div class="company-stat">
+                  <h5>Team Size</h5>
+                  <p>12 people</p>
+                </div>
+                <div class="company-stat">
+                  <h5>Users</h5>
+                  <p>10,000+</p>
+                </div>
+                <div class="company-stat">
+                  <h5>Memories Stored</h5>
+                  <p>10M+</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Our Team -->
+            <div class="company-card" style="display: none">
+              <h4>Our Team</h4>
+              <p>
+                We're a passionate team of engineers, designers, and AI
+                researchers dedicated to building the best memory-enhanced AI
+                assistant.
+              </p>
+              <div class="team-showcase">
+                <div class="team-member-card">
+                  <div class="member-avatar">JD</div>
+                  <h5>John Doe</h5>
+                  <p>CEO & Founder</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Blog & Updates -->
+            <!--<div class="company-card">
+              <h4>Latest Updates</h4>
+              <p>Coming soon! Stay tuned!</p>
+              <div class="blog-list">
+                <article class="blog-item">
+                  <span class="blog-date">Dec 15, 2025</span>
+                  <h5>Introducing DeepSeek R1 Integration</h5>
+                  <p>
+                    We're excited to announce support for DeepSeek's advanced
+                    reasoning model...
+                  </p>
+                  <a href="#" data-blog-post="deepseek-r1">Read more →</a>
+                </article>
+                <article class="blog-item">
+                  <span class="blog-date">Dec 10, 2025</span>
+                  <h5>Beta Launch: 50% Off All Plans</h5>
+                  <p>
+                    Join our beta program and get 50% off all paid plans while
+                    helping us improve...
+                  </p>
+                  <a href="#" data-blog-post="beta-launch">Read more →</a>
+                </article>
+                <article class="blog-item">
+                  <span class="blog-date">Dec 5, 2025</span>
+                  <h5>The Future of AI Memory</h5>
+                  <p>
+                    Why we believe persistent memory is the key to truly helpful
+                    AI assistants...
+                  </p>
+                  <a href="#" data-blog-post="ai-memory-future">Read more →</a>
+                </article>
+              </div>
+              <button
+                class="btn btn-outline"
+                style="margin-top: 1rem"
+                id="view-all-posts-btn"
+              >
+                View All Posts
+              </button>
+            </div>-->
+
+            <!-- Careers -->
+            <div class="company-card" style="display: none">
+              <h4>Join Our Team</h4>
+              <p>
+                We're always looking for talented people who share our vision of
+                building the future of AI productivity.
+              </p>
+              <div class="job-list">
+                <div class="job-item">
+                  <div>
+                    <h5>Senior Backend Engineer</h5>
+                    <p>San Francisco, CA / Remote</p>
+                  </div>
+                  <button
+                    class="btn btn-outline btn-sm"
+                    data-job="backend-engineer"
+                  >
+                    View Job
+                  </button>
+                </div>
+                <div class="job-item">
+                  <div>
+                    <h5>AI/ML Engineer</h5>
+                    <p>San Francisco, CA / Remote</p>
+                  </div>
+                  <button class="btn btn-outline btn-sm" data-job="ml-engineer">
+                    View Job
+                  </button>
+                </div>
+                <div class="job-item">
+                  <div>
+                    <h5>Product Designer</h5>
+                    <p>Remote</p>
+                  </div>
+                  <button
+                    class="btn btn-outline btn-sm"
+                    data-job="product-designer"
+                  >
+                    View Job
+                  </button>
+                </div>
+              </div>
+              <button
+                class="btn btn-primary"
+                style="margin-top: 1rem"
+                id="view-all-positions-btn"
+              >
+                View All Positions
+              </button>
+            </div>
+
+            <!-- Contact -->
+            <div class="company-card">
+              <h4>Contact Us</h4>
+              <div class="contact-info">
+                <div class="contact-item">
+                  <strong>Support</strong>
+                  <p>tech@MicroLearnerAI.com</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Settings Section -->
+          <div
+            class="dashboard-section"
+            id="settings-section"
+            style="display: none"
+          >
+            <h3>Account Settings</h3>
+            <p style="color: #6b6b6b; margin-bottom: 2rem">
+              Manage your account preferences
+            </p>
+
+            <!--<div class="form-group">
+              <label class="form-label">Auto Detect Questions</label>
+              <label
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 0.5rem;
+                  font-weight: normal;
+                "
+              >
+                <div class="toggle-switch">
+                  <input type="checkbox" id="auto-detect-questions" />
+                  <span class="toggle-slider"></span>
+                </div>
+                Automatically detect questions in transcript recordings
+              </label>
+            </div>-->
+
+            <div class="form-section">
+              <h4 style="margin-bottom: 1rem">Profile Information</h4>
+
+              <div class="form-group">
+                <label class="form-label">Display Name</label>
+                <input type="text" class="form-input" id="display-name" />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Email</label>
+                <input
+                  type="email"
+                  class="form-input"
+                  id="settings-email"
+                  disabled
+                />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Email Notifications</label>
+                <label
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    font-weight: normal;
+                  "
+                >
+                  <input type="checkbox" id="email-notifications" checked />
+                  Receive updates about your AI's learning progress
+                </label>
+              </div>
+
+              <button class="btn btn-primary" id="save-settings-btn">
+                Save settings
+              </button>
+            </div>
+
+            <div class="form-section" style="margin-top: 3rem">
+              <h4 style="margin-bottom: 1rem; color: #e00">Danger Zone</h4>
+
+              <!-- Cancel Plan Button - Only for paid plans -->
+              <button
+                class="btn btn-outline"
+                style="
+                  color: #e00;
+                  border-color: #e00;
+                  margin-bottom: 1rem;
+                  display: none;
+                "
+                id="cancel-plan-btn"
+              >
+                Cancel Plan
+              </button>
+
+              <!-- Leave Team Button - Only for enterprise team members -->
+              <button
+                class="btn btn-outline"
+                style="
+                  color: #e00;
+                  border-color: #e00;
+                  margin-bottom: 1rem;
+                  display: none;
+                "
+                id="leave-team-btn"
+              >
+                Leave Team
+              </button>
+
+              <!-- Delete Team Button - Only for enterprise team leaders -->
+              <button
+                class="btn btn-outline"
+                style="
+                  color: #e00;
+                  border-color: #e00;
+                  margin-bottom: 1rem;
+                  display: none;
+                "
+                id="delete-team-btn"
+              >
+                Delete Team
+              </button>
+
+              <!-- Delete Account Button - Always visible -->
+              <button
+                class="btn btn-outline"
+                style="color: #e00; border-color: #e00"
+                id="delete-account-btn"
+              >
+                Delete Account
+              </button>
+            </div>
+          </div>
+        </main>
+
+        <aside class="dashboard-stats">
+          <div class="stat-card" style="display: none">
+            <div class="stat-label">Messages Today</div>
+            <div class="stat-value" id="messages-used">0 / 15</div>
+            <div class="progress-ring">
+              <svg viewBox="0 0 120 120">
+                <circle class="progress-bg" cx="60" cy="60" r="50"></circle>
+                <circle
+                  class="progress-fill"
+                  cx="60"
+                  cy="60"
+                  r="50"
+                  id="usage-progress"
+                ></circle>
+              </svg>
+              <div class="progress-text" id="usage-percent">0% used</div>
+            </div>
+          </div>
+
+          <div class="stat-card" style="display: none">
+            <div class="stat-label">Memory Used</div>
+            <div class="stat-value" id="memory-used">0 / 3K</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-label">Plan Features</div>
+            <div
+              style="font-size: 0.75rem; color: #6b6b6b; line-height: 1.6"
+              id="plan-features"
+            >
+              • 15 messages/day<br />
+              • 3K word memory<br />
+              • Resets after 6.5hrs
+            </div>
+          </div>
+
+          <button
+            class="btn btn-outline"
+            style="width: 100%; margin-top: 1rem"
+            id="stats-upgrade-btn"
+          >
+            Upgrade plan
+          </button>
+        </aside>
+      </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+      <div class="modal-content">
+        <button class="modal-close">×</button>
+
+        <div class="modal-header">
+          <h2 class="modal-title">Welcome back</h2>
+          <p class="modal-subtitle">Sign in to your Micro Learner account</p>
+        </div>
+
+        <div
+          id="g_id_onload"
+          data-client_id="276407218386-cugc87dqivvd3gnop411aos9fg0n06kd.apps.googleusercontent.com"
+          data-context="signin"
+          data-ux_mode="popup"
+          data-callback="handleGoogleSignIn"
+          data-auto_prompt="false"
+          data-use_fedcm_for_prompt="true"
+        ></div>
+
+        <!-- Replace your custom button with Google's actual button -->
+        <div
+          id="google-signin-login"
+          style="justify-content: center; display: flex"
+        ></div>
+
+        <div class="divider">OR</div>
+
+        <form id="login-form">
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-input" id="login-email" required />
+          </div>
+
+          <div class="form-group" style="margin-bottom: 5px">
+            <label class="form-label">Password</label>
+            <input
+              type="password"
+              class="form-input"
+              id="login-password"
+              required
+            />
+          </div>
+
+          <div style="text-align: right; margin-bottom: 1rem">
+            <a
+              href="#"
+              id="forgot-password-link"
+              style="
+                color: #6b6b6b;
+                font-size: 0.875rem;
+                text-decoration: none;
+                transition: color 0.2s ease;
+              "
+              onmouseover="this.style.color='#1a1a1a'"
+              onmouseout="this.style.color='#6b6b6b'"
+            >
+              Forgot your password?
+            </a>
+          </div>
+
+          <button
+            type="submit"
+            class="btn btn-primary"
+            style="width: 100%; margin-top: 0"
+          >
+            Sign in
+          </button>
+        </form>
+
+        <p
+          style="
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #6b6b6b;
+            font-size: 0.875rem;
+          "
+        >
+          Don't have an account?
+          <a
+            href="#"
+            class="show-signup-link"
+            style="color: #1a1a1a; font-weight: 500"
+            >Sign up</a
+          >
+        </p>
+      </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div id="forgot-password-modal" class="modal">
+      <div class="modal-content">
+        <button class="modal-close">×</button>
+
+        <!-- Step 1: Enter Email -->
+        <div id="forgot-password-step-1" class="forgot-password-step">
+          <div class="modal-header">
+            <h2 class="modal-title">Reset Your Password</h2>
+            <p class="modal-subtitle">
+              Enter your email address and we'll send you a verification code
+            </p>
+          </div>
+
+          <form id="forgot-password-email-form">
+            <div class="form-group">
+              <label class="form-label">Email Address</label>
+              <input
+                type="email"
+                class="form-input"
+                id="forgot-password-email"
+                required
+                placeholder="Enter your email address"
+              />
+            </div>
+
+            <button
+              type="submit"
+              class="btn btn-primary"
+              style="width: 100%; margin-top: 1rem"
+            >
+              Send Verification Code
+            </button>
+          </form>
+
+          <p
+            style="
+              text-align: center;
+              margin-top: 1.5rem;
+              color: #6b6b6b;
+              font-size: 0.875rem;
+            "
+          >
+            Remember your password?
+            <a
+              href="#"
+              class="back-to-login-link"
+              style="color: #1a1a1a; font-weight: 500"
+              >Sign in</a
+            >
+          </p>
+        </div>
+
+        <!-- Step 2: Enter Verification Code -->
+        <div
+          id="forgot-password-step-2"
+          class="forgot-password-step"
+          style="display: none"
+        >
+          <div class="modal-header">
+            <h2 class="modal-title">Enter Verification Code</h2>
+            <p class="modal-subtitle">
+              We sent a 6-digit code to <span id="reset-email-display"></span>
+            </p>
+          </div>
+
+          <form id="forgot-password-code-form">
+            <div class="form-group">
+              <label class="form-label">Verification Code</label>
+              <input
+                type="text"
+                class="form-input"
+                id="verification-code"
+                required
+                placeholder="Enter 6-digit code"
+                maxlength="6"
+                style="
+                  text-align: center;
+                  font-size: 1.25rem;
+                  letter-spacing: 0.25rem;
+                "
+              />
+            </div>
+
+            <div style="text-align: center; margin-bottom: 1rem">
+              <button
+                type="button"
+                class="btn btn-text"
+                id="resend-code-btn"
+                style="font-size: 0.875rem"
+              >
+                Didn't receive the code? Resend
+              </button>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%">
+              Verify Code
+            </button>
+          </form>
+
+          <p
+            style="
+              text-align: center;
+              margin-top: 1.5rem;
+              color: #6b6b6b;
+              font-size: 0.875rem;
+            "
+          >
+            Want to try a different email?
+            <a
+              href="#"
+              class="back-to-email-link"
+              style="color: #1a1a1a; font-weight: 500"
+              >Go back</a
+            >
+          </p>
+        </div>
+
+        <!-- Step 3: Set New Password -->
+        <div
+          id="forgot-password-step-3"
+          class="forgot-password-step"
+          style="display: none"
+        >
+          <div class="modal-header">
+            <h2 class="modal-title">Create New Password</h2>
+            <p class="modal-subtitle">Enter your new password below</p>
+          </div>
+
+          <form id="forgot-password-reset-form">
+            <div class="form-group">
+              <label class="form-label">New Password</label>
+              <input
+                type="password"
+                class="form-input"
+                id="new-password"
+                required
+                placeholder="Enter new password"
+              />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Confirm New Password</label>
+              <input
+                type="password"
+                class="form-input"
+                id="confirm-new-password"
+                required
+                placeholder="Confirm new password"
+              />
+            </div>
+
+            <div
+              style="font-size: 0.75rem; color: #6b6b6b; margin-bottom: 1rem"
+            >
+              Password must be at least 8 characters long
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%">
+              Reset Password
+            </button>
+          </form>
+        </div>
+
+        <!-- Success Step -->
+        <div
+          id="forgot-password-success"
+          class="forgot-password-step"
+          style="display: none"
+        >
+          <div class="modal-header">
+            <div style="text-align: center; margin-bottom: 1rem">
+              <div
+                style="
+                  width: 60px;
+                  height: 60px;
+                  background: #22c55e;
+                  border-radius: 50%;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  margin: 0 auto 1rem;
+                "
+              >
+                <span style="color: white; font-size: 1.5rem">✓</span>
+              </div>
+            </div>
+            <h2 class="modal-title">Password Reset Successful!</h2>
+            <p class="modal-subtitle">
+              Your password has been updated successfully
+            </p>
+          </div>
+
+          <button
+            class="btn btn-primary"
+            style="width: 100%"
+            id="go-to-login-btn"
+          >
+            Continue to Sign In
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signup-modal" class="modal">
+      <div class="modal-content">
+        <button class="modal-close">×</button>
+
+        <div class="modal-header">
+          <h2 class="modal-title">Get started</h2>
+          <p class="modal-subtitle">Create your Micro Learner account</p>
+        </div>
+
+        <div
+          id="g_id_onload"
+          data-client_id="276407218386-cugc87dqivvd3gnop411aos9fg0n06kd.apps.googleusercontent.com"
+          data-context="signin"
+          data-ux_mode="popup"
+          data-callback="handleGoogleSignIn"
+          data-auto_prompt="false"
+          data-use_fedcm_for_prompt="true"
+        ></div>
+
+        <!-- Replace your custom button with Google's actual button -->
+        <div
+          id="google-signin-signup"
+          style="justify-content: center; display: flex"
+        ></div>
+
+        <div class="divider">OR</div>
+
+        <form id="signup-form">
+          <div class="form-group">
+            <label class="form-label">Full name</label>
+            <input type="text" class="form-input" id="signup-name" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-input" id="signup-email" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <input
+              type="password"
+              class="form-input"
+              id="signup-password"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Referral Code (optional)</label>
+            <input
+              type="text"
+              class="form-input"
+              id="signup-referral"
+              placeholder="Enter code for discount"
+            />
+            <p class="form-hint">Have a referral code? Get $20 off!!!</p>
+          </div>
+
+          <button
+            type="submit"
+            class="btn btn-primary"
+            style="width: 100%; margin-top: 1rem"
+          >
+            Create account
+          </button>
+        </form>
+
+        <p
+          style="
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #6b6b6b;
+            font-size: 0.875rem;
+          "
+        >
+          Already have an account?
+          <a
+            href="#signIn"
+            class="show-login-link"
+            style="color: #1a1a1a; font-weight: 500"
+            >Sign in</a
+          >
+        </p>
+      </div>
+    </div>
+    <!-- Enterprise Invite Modal -->
+    <div id="enterprise-invite-modal" class="enterprise-invitation-modal modal">
+      <div class="enterprise-modal-content modal-content">
+        <div class="enterprise-modal-header">
+          <div class="enterprise-modal-icon">👥</div>
+          <h2 class="enterprise-modal-title">Team Invitations</h2>
+          <p class="enterprise-modal-subtitle">
+            You have pending team invitations
+          </p>
+        </div>
+
+        <div class="enterprise-modal-body">
+          <!-- Important Notice -->
+          <div class="important-notice">
+            <div class="notice-icon">⚠️</div>
+            <div class="notice-content">
+              <div class="notice-title">Important Limitation</div>
+              <div class="notice-text">
+                You can only be a member of <strong>one team at a time</strong>.
+                Accepting an invitation will remove you from any current team.
+                Choose the team that best fits your needs.
+              </div>
+            </div>
+          </div>
+
+          <!-- Multiple Invites Notice -->
+          <div
+            class="multiple-invites-notice"
+            id="multiple-invites-notice"
+            style="display: none"
+          >
+            <div class="notice-icon">ℹ️</div>
+            <div class="notice-content">
+              <div class="notice-title">Multiple Invitations</div>
+              <div class="notice-text">
+                You have multiple team invitations. Please review each carefully
+                and choose the team that's right for you.
+              </div>
+            </div>
+          </div>
+
+          <!-- Invites List -->
+          <div class="enterprise-invites-list" id="enterprise-invites-list">
+            <!-- Invites will be populated by JavaScript -->
+          </div>
+        </div>
+
+        <div class="enterprise-modal-footer">
+          <p class="enterprise-footer-text">
+            Please review each invitation carefully. Once you accept an
+            invitation, you'll become part of that team and gain access to all
+            Enterprise features.
+          </p>
+          <div class="enterprise-footer-actions">
+            <button
+              class="btn-decline-all-invites"
+              id="decline-all-invites-btn"
+              style="display: none"
+            >
+              Decline All Invitations
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Choose Plan Modal (Post-Signup) -->
+    <div id="choose-plan-modal" class="modal">
+      <div class="modal-content upgrade-content">
+        <button class="modal-close" id="close-choose-plan">×</button>
+
+        <div class="modal-header">
+          <h2 class="modal-title">Welcome to Micro Learner!</h2>
+          <p class="modal-subtitle">Choose your plan to get started</p>
+        </div>
+
+        <div class="plan-selector" id="choose-plan-selector">
+          <!-- Free Plan Option -->
+          <div class="plan-option" data-plan="free">
+            <div class="plan-option-header">
+              <span class="plan-option-name">Free</span>
+              <span class="plan-option-price">$0/mo</span>
+            </div>
+            <div class="plan-option-features">
+              15 messages/day • 3K word memory • Basic AI models • Resets after
+              6.5hrs
+            </div>
+          </div>
+
+          <!-- Pro Plan Option -->
+          <div class="plan-option" data-plan="pro">
+            <div class="plan-option-header">
+              <span class="plan-option-name">Pro</span>
+              <span class="plan-option-price">$25/mo</span>
+            </div>
+            <div class="plan-option-features">
+              Increased usage • Edit thoughts • Change AI models • Small Micro
+              Training • 5hr reset
+            </div>
+          </div>
+
+          <!-- Elite Plan Option -->
+          <div class="plan-option" data-plan="elite">
+            <div class="plan-option-header">
+              <span class="plan-option-name">Elite</span>
+              <span class="plan-option-price">$120/mo</span>
+            </div>
+            <div class="plan-option-features">
+              5x usage • Large Micro Training • Context control (1-10) • All AI
+              models • 5hr reset
+            </div>
+          </div>
+
+          <!-- Enterprise Plan Option -->
+          <div class="plan-option" data-plan="enterprise">
+            <div class="plan-option-header">
+              <span class="plan-option-name">Enterprise</span>
+              <span class="plan-option-price">$150/user/mo</span>
+            </div>
+            <div class="plan-option-features">
+              Everything in Elite • Team features • Shared prompts • User
+              monitoring • 4hr reset
+            </div>
+          </div>
+        </div>
+
+        <!-- Promo Code Section -->
+        <div class="promo-section">
+          <label class="form-label">Have a promo code?</label>
+          <div class="promo-row">
+            <input
+              type="text"
+              class="form-input promo-input"
+              id="choose-plan-promo-code"
+              placeholder="Enter promo code"
+            />
+            <button class="btn btn-outline" id="apply-choose-plan-promo-btn">
+              Apply
+            </button>
+          </div>
+        </div>
+
+        <!-- Pricing Breakdown -->
+        <div class="checkout-details" id="choose-plan-checkout-details">
+          <div class="checkout-row">
+            <span>Selected Plan</span>
+            <span id="choose-plan-selected-name">Free</span>
+          </div>
+          <div class="checkout-row">
+            <span>Monthly Price</span>
+            <span id="choose-plan-monthly-price">$0</span>
+          </div>
+          <div
+            class="checkout-row"
+            id="choose-plan-discount-row"
+            style="display: none"
+          >
+            <span>Discount</span>
+            <span id="choose-plan-discount-amount">-</span>
+          </div>
+          <div class="checkout-row total">
+            <span>Total</span>
+            <span id="choose-plan-total-price">$0</span>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <button
+          class="btn btn-primary"
+          style="width: 100%; margin-bottom: 1rem"
+          id="confirm-plan-choice-btn"
+        >
+          Continue with Selected Plan
+        </button>
+
+        <p
+          style="
+            text-align: center;
+            font-size: 0.875rem;
+            color: #6b6b6b;
+            margin: 0;
+          "
+        >
+          You can change your plan anytime from your dashboard
+        </p>
+      </div>
+    </div>
+
+    <!-- Upgrade Modal -->
+    <div id="upgrade-modal" class="modal">
+      <div class="modal-content upgrade-content">
+        <button class="modal-close">×</button>
+
+        <div class="modal-header">
+          <h2 class="modal-title">Upgrade Your Plan</h2>
+          <p class="modal-subtitle">Choose the plan that's right for you</p>
+        </div>
+
+        <div class="plan-selector" id="plan-selector">
+          <div class="plan-option" data-plan="pro">
+            <div class="plan-option-header">
+              <span class="plan-option-name">Pro</span>
+              <span class="plan-option-price">$25/mo</span>
+            </div>
+            <div class="plan-option-features">
+              Increased usage • Edit thoughts • Change AI models • Small Micro
+              Training • 5hr reset
+            </div>
+          </div>
+
+          <div class="plan-option" data-plan="elite">
+            <div class="plan-option-header">
+              <span class="plan-option-name">Elite</span>
+              <span class="plan-option-price">$120/mo</span>
+            </div>
+            <div class="plan-option-features">
+              5x usage • Large Micro Training • Context control (1-10) • All AI
+              models • 5hr reset
+            </div>
+          </div>
+          <div class="plan-option" data-plan="enterprise">
+            <div class="plan-option-header">
+              <span class="plan-option-name">Enterprise</span>
+              <span class="plan-option-price">$150/user/mo</span>
+            </div>
+            <div class="plan-option-features">
+              Everything in Elite • Team features • Shared prompts • User
+              monitoring • 4hr reset
+            </div>
+          </div>
+        </div>
+
+        <div class="promo-section">
+          <label class="form-label">Have a promo code?</label>
+          <div class="promo-row">
+            <input
+              type="text"
+              class="form-input promo-input"
+              id="promo-code"
+              placeholder="Enter promo code"
+            />
+            <button class="btn btn-outline" id="apply-promo-btn">Apply</button>
+          </div>
+        </div>
+
+        <div class="checkout-details" id="checkout-details">
+          <div class="checkout-row">
+            <span>Selected Plan</span>
+            <span id="selected-plan-name">-</span>
+          </div>
+          <div class="checkout-row">
+            <span>Monthly Price</span>
+            <span id="monthly-price">-</span>
+          </div>
+          <div class="checkout-row" id="discount-row" style="display: none">
+            <span>Discount</span>
+            <span id="discount-amount">-</span>
+          </div>
+          <div class="checkout-row total">
+            <span>Total</span>
+            <span id="total-price">-</span>
+          </div>
+        </div>
+
+        <button
+          class="btn btn-primary"
+          style="width: 100%"
+          id="proceed-checkout-btn"
+        >
+          Proceed to Checkout
+        </button>
+      </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Load Micro_Learner-app.js -->
+    <script src="../js/Micro_Learner-app.js"></script>
+  </body>
+</html>

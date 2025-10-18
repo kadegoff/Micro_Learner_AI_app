@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Micro Learner AI</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <!-- LIBRARIES FOR GETTING CONTENT OF ENCRPYTED FILES -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js"></script>
+
+    <!-- Load modules in correct order -->
+    <script src="ai/config.js"></script>
+    <script src="ai/appState.js"></script>
+    <script src="ai/environment.js"></script>
+    <script src="ai/contentManager.js"></script>
+    <script src="ai/messageManager.js"></script>
+    <script src="ai/authManager.js"></script>
+    <script src="ai/fileUpdateHandler.js"></script>
+    <script src="ai/chatManager.js"></script>
+    <script src="ai/historyManager.js"></script>
+    <script src="ai/chatInputManager.js"></script>
+    <script src="ai/aiWindowState.js"></script>
+    <script src="ai/uiManager.js"></script>
+    <script src="ai/utils.js"></script>
+    <script src="ai/main.js"></script>
+
+    <!-- CSS for ai -->
+    <link rel="stylesheet" href="ai.css" />
+    <link rel="stylesheet" href="different_computer_styles.css" />
+    <!-- Add highlight.js for syntax highlighting -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/vs2015.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/json.min.js"></script>
+    <script>
+      // Initialize Highlight.js to highlight all code blocks
+      hljs.highlightAll();
+    </script>
+  </head>
+  <body>
+    <div class="header">
+      <div class="title">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="100 100 200 200"
+          width="50"
+          height="50"
+          style="display: flex; position: relative"
+        >
+          <!-- Define the gradient -->
+          <defs>
+            <linearGradient
+              id="blueGradient"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="100%"
+              gradientUnits="objectBoundingBox"
+            >
+              <stop offset="0%" style="stop-color: #4facfe; stop-opacity: 1" />
+              <stop
+                offset="100%"
+                style="stop-color: #00f2fe; stop-opacity: 1"
+              />
+            </linearGradient>
+          </defs>
+
+          <!-- BLACK SVGs (underneath layer) -->
+          <g transform="translate(200, 200)">
+            <!-- First SVG: 19,151 x 19,151 with 22° rotation (largest, scaled to 191) -->
+            <svg width="191" height="191" viewBox="0 0 256 256" x="-95" y="-95">
+              <g transform="rotate(22 128 128)">
+                <rect width="256" height="256" fill="none" />
+                <path
+                  d="M54.46,201.54c-9.2-9.2-3.1-28.53-7.78-39.85C41.82,150,24,140.5,24,128s17.82-22,22.68-33.69C51.36,83,45.26,63.66,54.46,54.46S83,51.36,94.31,46.68C106.05,41.82,115.5,24,128,24S150,41.82,161.69,46.68c11.32,4.68,30.65-1.42,39.85,7.78s3.1,28.53,7.78,39.85C214.18,106.05,232,115.5,232,128S214.18,150,209.32,161.69c-4.68,11.32,1.42,30.65-7.78,39.85s-28.53,3.1-39.85,7.78C150,214.18,140.5,232,128,232s-22-17.82-33.69-22.68C83,204.64,63.66,210.74,54.46,201.54Z"
+                  fill="none"
+                  stroke="white"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="8"
+                />
+              </g>
+            </svg>
+
+            <!-- Second SVG: 15,135 x 15,135 with no rotation (medium, scaled to 151) -->
+            <svg width="151" height="151" viewBox="0 0 256 256" x="-75" y="-75">
+              <rect width="256" height="256" fill="none" />
+              <path
+                d="M54.46,201.54c-9.2-9.2-3.1-28.53-7.78-39.85C41.82,150,24,140.5,24,128s17.82-22,22.68-33.69C51.36,83,45.26,63.66,54.46,54.46S83,51.36,94.31,46.68C106.05,41.82,115.5,24,128,24S150,41.82,161.69,46.68c11.32,4.68,30.65-1.42,39.85,7.78s3.1,28.53,7.78,39.85C214.18,106.05,232,115.5,232,128S214.18,150,209.32,161.69c-4.68,11.32,1.42,30.65-7.78,39.85s-28.53,3.1-39.85,7.78C150,214.18,140.5,232,128,232s-22-17.82-33.69-22.68C83,204.64,63.66,210.74,54.46,201.54Z"
+                fill="none"
+                stroke="white"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="8"
+              />
+            </svg>
+
+            <!-- Third SVG: 11,808 x 11,808 with 22° rotation (smallest, scaled to 118) -->
+            <svg width="118" height="118" viewBox="0 0 256 256" x="-59" y="-59">
+              <g transform="rotate(22 128 128)">
+                <rect width="256" height="256" fill="none" />
+                <path
+                  d="M54.46,201.54c-9.2-9.2-3.1-28.53-7.78-39.85C41.82,150,24,140.5,24,128s17.82-22,22.68-33.69C51.36,83,45.26,63.66,54.46,54.46S83,51.36,94.31,46.68C106.05,41.82,115.5,24,128,24S150,41.82,161.69,46.68c11.32,4.68,30.65-1.42,39.85,7.78s3.1,28.53,7.78,39.85C214.18,106.05,232,115.5,232,128S214.18,150,209.32,161.69c-4.68,11.32,1.42,30.65-7.78,39.85s-28.53,3.1-39.85,7.78C150,214.18,140.5,232,128,232s-22-17.82-33.69-22.68C83,204.64,63.66,210.74,54.46,201.54Z"
+                  fill="none"
+                  stroke="white"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="8"
+                />
+              </g>
+            </svg>
+          </g>
+
+          <!-- COLORED SVGs (on top layer) -->
+          <g transform="translate(200, 200)">
+            <!-- First SVG: 19,151 x 19,151 with NO rotation (largest, scaled to 191) -->
+            <svg width="191" height="191" viewBox="0 0 256 256" x="-95" y="-95">
+              <rect width="256" height="256" fill="none" />
+              <path
+                d="M54.46,201.54c-9.2-9.2-3.1-28.53-7.78-39.85C41.82,150,24,140.5,24,128s17.82-22,22.68-33.69C51.36,83,45.26,63.66,54.46,54.46S83,51.36,94.31,46.68C106.05,41.82,115.5,24,128,24S150,41.82,161.69,46.68c11.32,4.68,30.65-1.42,39.85,7.78s3.1,28.53,7.78,39.85C214.18,106.05,232,115.5,232,128S214.18,150,209.32,161.69c-4.68,11.32,1.42,30.65-7.78,39.85s-28.53,3.1-39.85,7.78C150,214.18,140.5,232,128,232s-22-17.82-33.69-22.68C83,204.64,63.66,210.74,54.46,201.54Z"
+                fill="none"
+                stroke="url(#blueGradient)"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="8"
+              />
+            </svg>
+
+            <!-- Second SVG: 15,135 x 15,135 with 22° rotation (medium, scaled to 151) -->
+            <svg width="151" height="151" viewBox="0 0 256 256" x="-75" y="-75">
+              <g transform="rotate(22 128 128)">
+                <rect width="256" height="256" fill="none" />
+                <path
+                  d="M54.46,201.54c-9.2-9.2-3.1-28.53-7.78-39.85C41.82,150,24,140.5,24,128s17.82-22,22.68-33.69C51.36,83,45.26,63.66,54.46,54.46S83,51.36,94.31,46.68C106.05,41.82,115.5,24,128,24S150,41.82,161.69,46.68c11.32,4.68,30.65-1.42,39.85,7.78s3.1,28.53,7.78,39.85C214.18,106.05,232,115.5,232,128S214.18,150,209.32,161.69c-4.68,11.32,1.42,30.65-7.78,39.85s-28.53,3.1-39.85,7.78C150,214.18,140.5,232,128,232s-22-17.82-33.69-22.68C83,204.64,63.66,210.74,54.46,201.54Z"
+                  fill="none"
+                  stroke="url(#blueGradient)"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="8"
+                />
+              </g>
+            </svg>
+
+            <!-- Third SVG: 11,808 x 11,808 with NO rotation (smallest, scaled to 118) -->
+            <svg width="118" height="118" viewBox="0 0 256 256" x="-59" y="-59">
+              <rect width="256" height="256" fill="none" />
+              <path
+                d="M54.46,201.54c-9.2-9.2-3.1-28.53-7.78-39.85C41.82,150,24,140.5,24,128s17.82-22,22.68-33.69C51.36,83,45.26,63.66,54.46,54.46S83,51.36,94.31,46.68C106.05,41.82,115.5,24,128,24S150,41.82,161.69,46.68c11.32,4.68,30.65-1.42,39.85,7.78s3.1,28.53,7.78,39.85C214.18,106.05,232,115.5,232,128S214.18,150,209.32,161.69c-4.68,11.32,1.42,30.65-7.78,39.85s-28.53,3.1-39.85,7.78C150,214.18,140.5,232,128,232s-22-17.82-33.69-22.68C83,204.64,63.66,210.74,54.46,201.54Z"
+                fill="none"
+                stroke="url(#blueGradient)"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="8"
+              />
+            </svg>
+          </g>
+        </svg>
+
+        <div class="text-wrapper">
+          <span>Micro</span>
+          <span class="learner-ai-group">Learner<small>AI</small></span>
+        </div>
+      </div>
+
+      <div class="header-controls">
+        <button
+          class="new-chat-button"
+          id="newChatButton"
+          title="Start a new conversation"
+        >
+          +
+        </button>
+        <button class="history-menu-button" id="historyButton">
+          <svg
+            class="chat-bubble-icon"
+            fill="white"
+            viewBox="0 0 512 512"
+            height="1em"
+          >
+            <path
+              d="M123.6 391.3c12.9-9.4 29.6-11.8 44.6-6.4c26.5 9.6                                                                                 56.2 15.1 87.8 15.1c124.7 0 208-80.5 208-160s-83.3-160-208-160S48 160.5 48 240c0 32 12.4 62.8 35.7 89.2c8.6 9.7                                                                                 12.8 22.5 11.8 35.5c-1.4 18.1-5.7 34.7-11.3 49.4c17-7.9 31.1-16.7 39.4-22.7zM21.2 431.9c1.8-2.7 3.5-5.4                                                                                 5.1-8.1c10-16.6 19.5-38.4 21.4-62.9C17.7 326.8 0 285.1 0 240C0 125.1 114.6 32 256 32s256 93.1 256 208s-114.6                                                                                 208-256 208c-37.1 0-72.3-6.4-104.1-17.9c-11.9 8.7-31.3 20.6-54.3 30.6c-15.1 6.6-32.3 12.6-50.1 16.1c-.8 .2-1.6                                                                                 .3-2.4 .5c-4.4 .8-8.7 1.5-13.2 1.9c-.2 0-.5 .1-.7 .1c-5.1 .5-10.2 .8-15.3 .8c-6.5 0-12.3-3.9-14.8-9.9c-2.5-6-1.1-12.8                                                                                 3.4-17.4c4.1-4.2 7.8-8.7 11.3-13.5c1.7-2.3 3.3-4.6 4.8-6.9c.1-.2 .2-.3 .3-.5z"
+            ></path>
+          </svg>
+        </button>
+        <div class="window-controls"></div>
+      </div>
+    </div>
+
+    <!-- History Panel -->
+    <div class="history-panel" id="historyPanel">
+      <div class="history-header">
+        <div class="history-title">Chat History</div>
+        <div class="history-header-controls">
+          <button class="close-history" id="closeHistoryButton">×</button>
+        </div>
+      </div>
+      <div class="history-search">
+        <input
+          type="text"
+          class="search-input"
+          id="historySearch"
+          placeholder="Search transcript and AI messages..."
+        />
+      </div>
+      <div class="history-content" id="historyContent">
+        <!-- History items will be populated here -->
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="content" id="aiContent">
+        <div class="welcome-header">
+          <h1>How can I help you today?</h1>
+        </div>
+      </div>
+      <div class="chat-input-container">
+        <div class="attachment-previews" id="attachmentPreviews">
+          <!-- Document and screenshot previews will appear here -->
+        </div>
+        <div class="chat-input-wrapper">
+          <textarea
+            class="chat-input"
+            id="chatInput"
+            placeholder="Ask me anything..."
+            rows="1"
+          ></textarea>
+          <div class="ai_chat_box_row">
+            <!-- Left side controls -->
+            <div class="left-controls">
+              <!-- Attachment Button -->
+              <button
+                class="attachment-button"
+                id="attachmentButton"
+                title="Attach files or images"
+              >
+                <svg
+                  class="attachment-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <path d="M12 5v14M5 12h14" />
+                </svg>
+              </button>
+              <!-- Context+ Toggle -->
+              <div
+                class="context-plus-toggle display_none"
+                id="contextPlusToggle"
+                title="Toggle Context+ for enhanced memory and context"
+              >
+                <span class="context-plus-label">Context+</span>
+              </div>
+
+              <!-- Hidden file input -->
+              <input
+                type="file"
+                id="attachmentInput"
+                class="attachment-input"
+                multiple
+                accept="image/*,application/pdf,.doc,.docx,.txt,.csv,.json,.html,.htm,.css,.js,.jsx,.ts,.tsx,.py,.php,.java,.cpp,.c,.cs,.go,.rs,.sh,.bat,.xml,.sql,.md,.yaml,.yml,.ini,.cfg,.conf,.log,.diff,.patch"
+              />
+            </div>
+
+            <!-- Right side controls -->
+            <div class="chat-controls">
+              <div class="ai-dropdown-container" id="aiDropdownContainer">
+                <!-- This will be populated by JavaScript based on auth state -->
+              </div>
+              <div
+                id="token-limit-indicator"
+                style="display: none; padding: 5px; text-align: center"
+              ></div>
+              <button class="send-button" id="sendButton">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="minimize-notification" id="minimizeNotification">
+      Minimized to Control Center
+    </div>
+  </body>
+</html>

@@ -1,0 +1,52 @@
+{
+  "name": "Micro Learner AI",
+  "version": "1.0.0",
+  "description": "AI-powered meeting assistant with live transcription",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "build:win": "electron-builder --win",
+    "build:mac": "electron-builder --mac",
+    "build:linux": "electron-builder --linux",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "pip install vosk && node download-models.js"
+  },
+  "build": {
+    "appId": "com.microlearner.ai-assistant",
+    "productName": "Your Awesome App",
+    "copyright": "Copyright © 2025 Micro Learner AI",
+    "directories": {
+      "output": "release-builds"
+    },
+    "files": [
+      "**/*",
+      "!node_modules/**/*",
+      "!release-builds/**/*",
+      "!.git/**/*"
+    ],
+    "win": {
+      "icon": "assets/icon.png"
+    },
+    "mac": {
+      "icon": "assets/icon.png"
+    },
+    "linux": {
+      "icon": "assets/icon.png"
+    }
+  },
+  "keywords": [
+    "electron",
+    "speech-recognition",
+    "ai"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^27.0.0"
+  },
+  "dependencies": {
+    "compromise": "^14.14.4",
+    "python-shell": "^5.0.0"
+  }
+}

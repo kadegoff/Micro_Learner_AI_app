@@ -1,0 +1,16 @@
+{
+  "token": "5d24ece41369aa8ecea9c54d9c160bb13b0222f88817d14087f43c27b74425d1",
+  "user": {
+    "id": 573890530296084,
+    "email": "tazgoff@gmail.com",
+    "name": "Tasman Goff",
+    "plan": "Free",
+    "plan_features": {
+      "memory": "4k tokens",
+      "basic_features": true
+    },
+    "referral_code": "DNF8GL90",
+    "referral_credit": 0
+  },
+  "timestamp": 1751430946925
+}

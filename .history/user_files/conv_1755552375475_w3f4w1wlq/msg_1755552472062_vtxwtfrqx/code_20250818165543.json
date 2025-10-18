@@ -1,0 +1,41 @@
+{
+  "id": "68a39abfdb66a_1755552447",
+  "filename": "basic-examples.js",
+  "language": "javascript",
+  "sections": {
+    "variables": {
+      "type": "declaration",
+      "name": "variable_examples",
+      "start_line": 1,
+      "end_line": 5,
+      "content": "// Variable declarations\nconst name = 'John';\nlet age = 30;\nvar isStudent = false;"
+    },
+    "function_example": {
+      "type": "function",
+      "name": "greet",
+      "start_line": 7,
+      "end_line": 11,
+      "content": "// Function example\nfunction greet(person) {\n  return `Hello, ${person}!`;\n}\nconsole.log(greet(name));"
+    },
+    "array_operations": {
+      "type": "operation",
+      "name": "array_manipulation",
+      "start_line": 13,
+      "end_line": 19,
+      "content": "// Array operations\nconst numbers = [1, 2, 3, 4, 5];\nconst doubled = numbers.map(num => num * 2);\nconst evens = numbers.filter(num => num % 2 === 0);\n\nconsole.log('Doubled:', doubled);\nconsole.log('Evens:', evens);"
+    },
+    "object_example": {
+      "type": "declaration",
+      "name": "object_demo",
+      "start_line": 21,
+      "end_line": 28,
+      "content": "// Object example\nconst person = {\n  firstName: 'Jane',\n  lastName: 'Doe',\n  fullName() {\n    return `${this.firstName} ${this.lastName}`;\n  }\n};\n\nconsole.log(person.fullName());"
+    }
+  },
+  "metadata": {
+    "total_lines": 28,
+    "complexity": "beginner",
+    "dependencies": [],
+    "description": "Basic JavaScript examples covering variables, functions, arrays, and objects"
+  }
+}
