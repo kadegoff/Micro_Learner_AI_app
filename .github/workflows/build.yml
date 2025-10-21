@@ -1,37 +1,46 @@
 name: Build All Platforms
 
-on: [push] # Runs automatically when you push code
+on: [push]
 
 jobs:
   build-windows:
-    runs-on: windows-latest # ← Microsoft provides Windows machines
+    runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-      - run: npm install && npm run build:win
-      - uses: actions/upload-artifact@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - run: npm install
+      - run: npm run build:win
+      - uses: actions/upload-artifact@v4
         with:
           name: windows-build
           path: release-builds/
 
   build-mac:
-    runs-on: macos-latest # ← Apple provides Mac machines
+    runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-      - run: npm install && npm run build:mac
-      - uses: actions/upload-artifact@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - run: npm install
+      - run: npm run build:mac
+      - uses: actions/upload-artifact@v4
         with:
           name: mac-build
           path: release-builds/
 
   build-linux:
-    runs-on: ubuntu-latest # ← GitHub provides Linux machines
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-      - run: npm install && npm run build:linux
-      - uses: actions/upload-artifact@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - run: npm install
+      - run: npm run build:linux
+      - uses: actions/upload-artifact@v4
         with:
           name: linux-build
           path: release-builds/
